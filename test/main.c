@@ -48,11 +48,12 @@ int main(int argc, char const *argv[])
     osal_sem_give(sem, 0);
     osal_task_delay(1);
 
-    flag = 1;
+    flag = 1;// exit taskEntry
 
     osal_sem_give(sem, 0);
     osal_task_delay(1);
 
+    // wait task exit
     osal_task_join(task);
 
     osal_sem_destroy(sem);

@@ -7,8 +7,7 @@ osal_task_t osal_task_create(osal_task_func_t func, void *arg, osal_task_attr_t 
 {
     pthread_t thread;
     int32_t ret = pthread_create(&thread, NULL, func, arg);
-    if (ret != 0)
-        return NULL;
+    if (ret != 0) { return NULL; }
 
     return (osal_task_t)thread;
 }
