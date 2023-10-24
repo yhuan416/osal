@@ -6,6 +6,8 @@
 #include <string.h>
 #include <stdint.h>
 
+#include "osal_common.h"
+
 // task
 #include "osal_task.h"
 
@@ -16,15 +18,18 @@
 #include "osal_mutex.h"
 
 // sem
+#include "osal_sem.h"
 
 // mq(msg queue)
+#include "osal_mq.h"
 
 // timer
 
 // uptime
 uint64_t osal_uptime(void);
 
-// reboot
+// system
+#include "osal_system.h"
 
 // get_version
 const char *osal_get_version(void);
