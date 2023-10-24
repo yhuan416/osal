@@ -6,10 +6,13 @@
 #include <string.h>
 #include <stdint.h>
 
+// task
 #include "osal_task.h"
 
+// mem
 #include "osal_mem.h"
 
+// mutex
 #include "osal_mutex.h"
 
 // sem
@@ -19,6 +22,7 @@
 // timer
 
 // uptime
+uint64_t osal_uptime(void);
 
 // reboot
 
