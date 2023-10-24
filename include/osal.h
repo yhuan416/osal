@@ -10,4 +10,6 @@
 
 #include "osal_mem.h"
 
+#include "osal_mutex.h"
+
 #endif // !_OSAL_H_
