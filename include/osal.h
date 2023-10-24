@@ -14,8 +14,14 @@
 
 // sem
 
-// queue
+// mq(msg queue)
 
 // timer
+
+// uptime
+
+// reboot
+
+// get_version
 
 #endif // !_OSAL_H_

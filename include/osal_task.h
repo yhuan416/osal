@@ -52,7 +52,7 @@ void osal_task_delay_ms(uint32_t ms);
 /**
  * @brief Current task delay some seconds
  * 
- * @param ms delay seconds
+ * @param s delay seconds
  */
 void osal_task_delay(uint32_t s);
 
