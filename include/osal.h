@@ -23,5 +23,6 @@
 // reboot
 
 // get_version
+const char *osal_get_version(void);
 
 #endif // !_OSAL_H_

@@ -6,6 +6,6 @@ project(osal)
 file(GLOB_RECURSE srcs_posix posix/*.c)
 
 # posix
-add_library(osal STATIC ${srcs_posix})
+add_library(osal STATIC ${srcs_posix} osal.c)
 target_include_directories(osal PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
 target_link_libraries(osal PRIVATE pthread)
