@@ -12,4 +12,10 @@
 
 #include "osal_mutex.h"
 
+// sem
+
+// queue
+
+// timer
+
 #endif // !_OSAL_H_

@@ -13,6 +13,7 @@ typedef void *(*osal_task_func_t)(void *arg);
 typedef struct osal_task_attr_t {
     const char *name;   // name of the task
     uint32_t stackSize; // stack size of the task
+    uint32_t affinity;  // affinity of the task
     uint16_t priority;  // priority of the task
 } osal_task_attr_t;
 
