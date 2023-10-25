@@ -20,13 +20,6 @@ CU_TEST_TEARDOWN() {
 
 }
 
-static void mem_malloc1(void)
-{
-    void *buff = osal_malloc(1024);
-    CU_ASSERT_PTR_NOT_NULL(buff);
-    osal_free(buff);
-}
-
 static void mem_calloc1(void)
 {
     void *buff = osal_calloc(1024, 1);
@@ -34,19 +27,22 @@ static void mem_calloc1(void)
     osal_free(buff);
 }
 
-static void mem_realloc1(void)
+static void mem_calloc2(void)
 {
-    void *buff = osal_malloc(1024);
-    CU_ASSERT_PTR_NOT_NULL(buff);
-
-    buff = osal_realloc(buff, 2048);
-    CU_ASSERT_PTR_NOT_NULL(buff);
-
+    void *buff = osal_calloc(0, 1);
+    CU_ASSERT_PTR_NULL(buff);
     osal_free(buff);
 }
 
-CUNIT_CI_RUN(CU_MAIN_EXE_NAME,
-             CUNIT_CI_TEST(mem_malloc1),
+static void mem_calloc3(void)
+{
+    void *buff = osal_calloc(1024, 0);
+    CU_ASSERT_PTR_NULL(buff);
+    osal_free(buff);
+}
+
+CUNIT_CI_RUN("mem_calloc",
              CUNIT_CI_TEST(mem_calloc1),
-             CUNIT_CI_TEST(mem_realloc1)
+             CUNIT_CI_TEST(mem_calloc2),
+             CUNIT_CI_TEST(mem_calloc3)
 );
