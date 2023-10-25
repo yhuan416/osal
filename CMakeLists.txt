@@ -1,7 +1,8 @@
 cmake_minimum_required(VERSION 3.5)
 
-project(osal)
+project(osal C)
 
+# 使能ctest
 enable_testing()
 
 # 获取posix目录下的所有文件
