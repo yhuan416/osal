@@ -5,7 +5,8 @@
 #include "osal_posix.h"
 #endif
 
-enum OSAL_API_RET {
+enum OSAL_API_RET
+{
     OSAL_API_OK = 0,
     OSAL_API_FAIL = -1,
     OSAL_API_TIMEOUT = -2,
@@ -16,15 +17,60 @@ enum OSAL_API_RET {
 #define OSAL_API_WAITFOREVER (-1)
 
 //////////////////////////////////////////////// mem
+
+/**
+ * @name osal_malloc
+ * 
+ * @brief same as malloc
+ *
+ */
 typedef void *(*osal_api_malloc)(size_t size);
+
+/**
+ * @name osal_free
+ * 
+ * @brief same as free
+ *
+ */
 typedef void (*osal_api_free)(void *ptr);
+
+/**
+ * @name osal_calloc
+ * 
+ * @brief same as calloc
+ *
+ */
 typedef void *(*osal_api_calloc)(size_t num, size_t size);
+
+/**
+ * @name osal_realloc
+ * 
+ * @brief same as realloc
+ *
+ */
 typedef void *(*osal_api_realloc)(void *ptr, size_t size);
 
 //////////////////////////////////////////////// task
 typedef void *osal_task_t;
 typedef void *(*osal_task_func_t)(void *arg);
 
+/**
+ * @name osal_task_create
+ * 
+ * @brief create a task
+ *
+ * @param name task name, can be NULL
+ * @param func task entry, see @osal_task_func_t
+ * @param arg task arg
+ * @param stack_start stack base address, refer for RTOS
+ * @param stack_size stack size
+ * @param priority task priority, for RTOS
+ *
+ * @return
+ *      task handle
+ *      NULL, create failed.
+ *
+ */
 typedef osal_task_t (*osal_api_task_create)(const char *name,
                                             osal_task_func_t func,
                                             void *arg,
@@ -32,22 +78,119 @@ typedef osal_task_t (*osal_api_task_create)(const char *name,
                                             int stack_size,
                                             int priority);
 
+/**
+ * @name osal_task_destory
+ * 
+ * @brief destory a task
+ *
+ * @param task task handle
+ *
+ * @return
+ *      see @OSAL_API_RET
+ *
+ */
 typedef int (*osal_api_task_destory)(osal_task_t task);
 
+/**
+ * @name osal_task_self
+ * 
+ * @brief get current task handle
+ *
+ * @return
+ *      task handle
+ *
+ */
 typedef osal_task_t (*osal_api_task_self)(void);
 
+/**
+ * @name osal_task_yield
+ * 
+ * @brief yield, for RTOS
+ * 
+ * @return
+ *      see @OSAL_API_RET
+ * 
+ */
 typedef int (*osal_api_task_yield)(void);
 
+/**
+ * @name osal_task_sleep
+ * 
+ * @brief task sleep second
+ * 
+ * @param s sleep time(s)
+ * 
+ * @return
+ *      see @OSAL_API_RET
+ * 
+ */
 typedef int (*osal_api_task_sleep)(uint32_t s);
 
+/**
+ * @name osal_task_usleep
+ * 
+ * @brief task sleep us
+ * 
+ * @param s sleep time(us)
+ * 
+ * @return
+ *      see @OSAL_API_RET
+ * 
+ */
 typedef int (*osal_api_task_usleep)(uint32_t us);
 
+/**
+ * @name osal_task_suspend
+ * 
+ * @brief task suspend, for RTOS
+ * 
+ * @param task task handle
+ * 
+ * @return
+ *      see @OSAL_API_RET
+ * 
+ */
 typedef int (*osal_api_task_suspend)(osal_task_t task);
 
+/**
+ * @name osal_task_resume
+ * 
+ * @brief task resume, for RTOS
+ * 
+ * @param task task handle
+ * 
+ * @return
+ *      see @OSAL_API_RET
+ * 
+ */
 typedef int (*osal_api_task_resume)(osal_task_t task);
 
+/**
+ * @name osal_task_get_priority
+ * 
+ * @brief get task priority, for RTOS
+ * 
+ * @param task task handle
+ * @param priority [out] task priority
+ * 
+ * @return
+ *      see @OSAL_API_RET
+ * 
+ */
 typedef int (*osal_api_task_get_priority)(osal_task_t task, int *priority);
 
+/**
+ * @name osal_task_set_priority
+ * 
+ * @brief set task priority, for RTOS
+ * 
+ * @param task task handle
+ * @param priority task priority
+ * 
+ * @return
+ *      see @OSAL_API_RET
+ * 
+ */
 typedef int (*osal_api_task_set_priority)(osal_task_t task, int priority);
 
 //////////////////////////////////////////////// mutex
@@ -76,24 +219,18 @@ typedef int (*osal_api_sem_post)(osal_sem_t sem);
 
 ////////////////////////////////////////////////// shm
 
-
 //////////////////////////////////////////////// event
-
 
 //////////////////////////////////////////////// mq
 
-
 //////////////////////////////////////////////// timer
-
 
 //////////////////////////////////////////////// time
 typedef int (*osal_api_calc_timedwait)(struct timespec *tm, uint32_t s);
 
 //////////////////////////////////////////////// signal
 
-
 //////////////////////////////////////////////// file
-
 
 //////////////////////////////////////////////// misc
 // reboot system sysinfo...
