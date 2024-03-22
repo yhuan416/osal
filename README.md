@@ -1,8 +1,8 @@
-# osal
+# OSAL
 
-OS Abstraction Layer.
+Operating System Abstraction Layer.
 
-系统抽象层
+操作系统抽象层
 
 # 构建
 
@@ -10,4 +10,5 @@ OS Abstraction Layer.
 mkdir -p build && cd build
 cmake ..
 make
+ctest --output-on-failure
 ```
