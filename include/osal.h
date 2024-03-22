@@ -1,37 +1,133 @@
 #ifndef _OSAL_H_
 #define _OSAL_H_
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <stdint.h>
-
-#include "osal_common.h"
+#include "osal_posix.h"
 
 // task
-#include "osal_task.h"
+typedef void *osal_task_t;
+typedef void *(osal_task_func_t)(void *arg);
 
-// mem
-#include "osal_mem.h"
+typedef osal_task_t (*osal_api_task_create)(const char *name,
+                                            osal_task_func_t func,
+                                            void *arg,
+                                            void *stack_start,
+                                            int stack_size,
+                                            int priority);
+
+typedef int (*osal_api_task_destory)(osal_task_t task);
+
+typedef osal_task_t (*osal_api_task_self)(void);
+
+typedef int (*osal_api_task_yield)(void);
+
+typedef int (*osal_api_task_sleep)(uint32_t s);
+
+typedef int (*osal_api_task_usleep)(uint32_t us);
+
+typedef int (*osal_api_task_suspend)(osal_task_t task);
+
+typedef int (*osal_api_task_resume)(osal_task_t task);
+
+typedef int (*osal_api_task_get_priority)(osal_task_t task, int *priority);
+
+typedef int (*osal_api_task_set_priority)(osal_task_t task, int priority);
 
 // mutex
-#include "osal_mutex.h"
+typedef void *osal_mutex_t;
+
+typedef osal_mutex_t (*osal_api_mutex_create)(void);
+
+typedef int (*osal_api_mutex_destory)(osal_mutex_t mutex);
+
+typedef int (*osal_api_mutex_lock)(osal_mutex_t mutex, uint32_t timeout);
+
+typedef int (*osal_api_mutex_unlock)(osal_mutex_t mutex, uint32_t timeout);
 
 // sem
-#include "osal_sem.h"
+typedef void *osal_sem_t;
 
-// mq(msg queue)
-#include "osal_mq.h"
+typedef osal_sem_t (*osal_api_sem_create)(int count, uint32_t init);
+
+typedef int (*osal_api_sem_destory)(osal_sem_t sem);
+
+typedef int (*osal_api_sem_wait)(osal_sem_t sem, uint32_t timeout);
+
+typedef int (*osal_api_sem_post)(osal_sem_t sem, uint32_t timeout);
+
+// shm
+
+// event
+
+// mq
+
 
 // timer
 
-// uptime
-uint64_t osal_uptime(void);
+// time
 
-// system
-#include "osal_system.h"
 
-// get_version
-const char *osal_get_version(void);
+// signal
+
+// file
+
+
+// misc
+// reboot system sysinfo...
+
+typedef struct osal_api
+{
+    // task
+    osal_api_task_create task_create;
+    osal_api_task_destory task_destory;
+    osal_api_task_self task_self;
+    osal_api_task_yield task_yield;
+    osal_api_task_sleep task_sleep;
+    osal_api_task_usleep task_usleep;
+    osal_api_task_suspend task_suspend;
+    osal_api_task_resume task_resume;
+    osal_api_task_get_priority task_get_priority;
+    osal_api_task_set_priority task_set_priority;
+
+    // mutex
+    osal_api_mutex_create mutex_create;
+    osal_api_mutex_destory mutex_destory;
+    osal_api_mutex_lock mutex_lock;
+    osal_api_mutex_unlock mutex_unlock;
+
+    // sem
+    osal_api_sem_create sem_create;
+    osal_api_sem_destory sem_destory;
+    osal_api_sem_wait sem_wait;
+    osal_api_sem_post sem_post;
+} osal_api_t;
+
+extern osal_api_t osal_api;
+
+#ifndef osal_task_create
+#define osal_task_create osal_api.task_create
+#define osal_task_self osal_api.task_self
+#define osal_task_sleep osal_api.task_sleep
+#define osal_task_usleep osal_api.task_usleep
+#define osal_task_destory osal_api.task_destory
+#define osal_task_yield osal_api.task_yield
+#define osal_task_suspend osal_api.task_suspend
+#define osal_task_resume osal_api.task_resume
+#define osal_task_get_priority osal_api.task_get_priority
+#define osal_task_set_priority osal_api.task_set_priority
+#endif // !osal_task_create
+
+#ifndef osal_mutex_create
+#define osal_mutex_create osal_api.mutex_create
+#define osal_mutex_destory osal_api.mutex_destory
+#define osal_mutex_lock osal_api.mutex_lock
+#define osal_mutex_unlock osal_api.mutex_unlock
+#endif // !osal_mutex_create
+
+#ifndef osal_sem_create
+#define osal_sem_create osal_api.sem_create
+#define osal_sem_destory osal_api.sem_destory
+#define osal_sem_wait osal_api.sem_wait
+#define osal_sem_post osal_api.sem_post
+#endif // !osal_sem_create
 
 #endif // !_OSAL_H_
