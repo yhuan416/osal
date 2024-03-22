@@ -7,6 +7,8 @@
 #include <stdint.h>
 #include <unistd.h>
 
+#include <pthread.h>
+
 #ifndef osal_malloc
 #define osal_malloc osal_api.malloc
 #define osal_free free

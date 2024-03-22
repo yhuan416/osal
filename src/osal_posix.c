@@ -1,13 +1,12 @@
 #if defined(__linux__)
 
-#include "osal.h"
+#include "osal_api.h"
 #include "osal_posix.h"
-
-#include <pthread.h>
 
 void *osal_posix_malloc(size_t size)
 {
-    if (size == 0) {
+    if (size == 0)
+    {
         return NULL;
     }
 
@@ -16,7 +15,8 @@ void *osal_posix_malloc(size_t size)
 
 void *osal_posix_calloc(size_t num, size_t size)
 {
-    if (size == 0 || num == 0) {
+    if (size == 0 || num == 0)
+    {
         return NULL;
     }
 
@@ -25,11 +25,13 @@ void *osal_posix_calloc(size_t num, size_t size)
 
 void *osal_posix_realloc(void *ptr, size_t size)
 {
-    if (ptr == NULL) {
+    if (ptr == NULL)
+    {
         return osal_malloc(size);
     }
 
-    if (size == 0) {
+    if (size == 0)
+    {
         osal_free(ptr);
         return NULL;
     }
@@ -53,7 +55,6 @@ osal_task_t osal_posix_task_create(const char *name,
 
     if (stack_size && pthread_attr_setstacksize(&attr, stack_size))
     {
-
     }
 
     pthread_create(&tid, &attr, func, arg);
@@ -72,19 +73,110 @@ osal_mutex_t osal_posix_mutex_create(void)
 
 int osal_posix_mutex_destory(osal_mutex_t mutex)
 {
+    if (mutex == NULL)
+    {
+        return OSAL_API_INVALID;
+    }
+
     pthread_mutex_destroy((pthread_mutex_t *)mutex);
     osal_free(mutex);
-    return 0;
+    return OSAL_API_OK;
 }
 
-int osal_posix_mutex_lock(osal_mutex_t mutex, uint32_t timeout)
+int osal_posix_mutex_lock(osal_mutex_t mutex)
 {
+    if (mutex == NULL)
+    {
+        return OSAL_API_INVALID;
+    }
     return pthread_mutex_lock((pthread_mutex_t *)mutex);
 }
 
-int osal_posix_mutex_unlock(osal_mutex_t mutex, uint32_t timeout)
+int osal_posix_mutex_trylock(osal_mutex_t mutex)
 {
+    if (mutex == NULL)
+    {
+        return OSAL_API_INVALID;
+    }
+    return pthread_mutex_trylock((pthread_mutex_t *)mutex);
+}
+
+int osal_posix_mutex_unlock(osal_mutex_t mutex)
+{
+    if (mutex == NULL)
+    {
+        return OSAL_API_INVALID;
+    }
     return pthread_mutex_unlock((pthread_mutex_t *)mutex);
+}
+
+#include <semaphore.h>
+
+osal_sem_t osal_posix_sem_create(int count, uint32_t init)
+{
+    int ret;
+    sem_t *sem = (sem_t *)osal_malloc(sizeof(sem_t));
+    if (sem == NULL)
+    {
+        return NULL;
+    }
+
+    ret = sem_init(sem, 0, init);
+    if (ret != 0)
+    {
+        osal_free(sem);
+        return NULL;
+    }
+
+    return (osal_sem_t)sem;
+}
+
+int osal_posix_sem_destory(osal_sem_t sem)
+{
+    if (sem == NULL)
+    {
+        return OSAL_API_INVALID;
+    }
+
+    sem_destroy((sem_t *)sem);
+    osal_free(sem);
+    return OSAL_API_OK;
+}
+
+int osal_posix_sem_wait(osal_sem_t sem, uint32_t timeout)
+{
+    int ret;
+
+    if (sem == NULL)
+    {
+        return OSAL_API_INVALID;
+    }
+
+    ret = sem_wait((sem_t *)sem);
+    if (ret != 0)
+    {
+        return OSAL_API_FAIL;
+    }
+
+    return OSAL_API_OK;
+}
+
+int osal_posix_sem_post(osal_sem_t sem)
+{
+    int ret;
+
+    if (sem == NULL)
+    {
+        return OSAL_API_INVALID;
+    }
+
+    ret = sem_post((sem_t *)sem);
+    if (ret != 0)
+    {
+        return OSAL_API_FAIL;
+    }
+
+    return OSAL_API_OK;
 }
 
 #include <sys/sysinfo.h>
@@ -106,7 +198,13 @@ osal_api_t osal_api = {
     .mutex_create = osal_posix_mutex_create,
     .mutex_destory = osal_posix_mutex_destory,
     .mutex_lock = osal_posix_mutex_lock,
+    .mutex_trylock = osal_posix_mutex_trylock,
     .mutex_unlock = osal_posix_mutex_unlock,
+
+    .sem_create = osal_posix_sem_create,
+    .sem_destory = osal_posix_sem_destory,
+    .sem_wait = osal_posix_sem_wait,
+    .sem_post = osal_posix_sem_post,
 
     .uptime = osal_posix_uptime,
 };

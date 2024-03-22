@@ -8,6 +8,6 @@
 #include "CUnit/Basic.h"
 #include "CUnit/CUnitCI.h"
 
-#include "osal.h"
+#include "osal_api.h"
 
 #endif // !__COMMON_H__

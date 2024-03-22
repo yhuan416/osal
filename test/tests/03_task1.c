@@ -23,6 +23,7 @@ CU_TEST_TEARDOWN()
 }
 
 int i = 0;
+osal_task_t task;
 
 void *taskEntry(void *arg)
 {
@@ -32,6 +33,8 @@ void *taskEntry(void *arg)
 
     CU_ASSERT_EQUAL(i, 1);
 
+    CU_ASSERT_PTR_EQUAL(task, osal_task_self());
+
     return NULL;
 }
 
@@ -39,7 +42,7 @@ static void task1(void)
 {
     CU_ASSERT_EQUAL(i, 0);
 
-    osal_task_t task = osal_task_create(
+    task = osal_task_create(
         "task1",
         (osal_task_func_t)taskEntry,
         NULL,

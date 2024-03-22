@@ -1,9 +1,18 @@
-#ifndef _OSAL_H_
-#define _OSAL_H_
+#ifndef _OSAL_API_H_
+#define _OSAL_API_H_
 
 #if defined(__linux__)
 #include "osal_posix.h"
 #endif
+
+enum OSAL_API_RET {
+    OSAL_API_OK = 0,
+    OSAL_API_FAIL = -1,
+    OSAL_API_TIMEOUT = -2,
+    OSAL_API_INVALID = -3,
+};
+
+#define OSAL_API_WAITFOREVER (-1)
 
 // mem
 typedef void *(*osal_api_malloc)(size_t size);
@@ -47,9 +56,11 @@ typedef osal_mutex_t (*osal_api_mutex_create)(void);
 
 typedef int (*osal_api_mutex_destory)(osal_mutex_t mutex);
 
-typedef int (*osal_api_mutex_lock)(osal_mutex_t mutex, uint32_t timeout);
+typedef int (*osal_api_mutex_lock)(osal_mutex_t mutex);
 
-typedef int (*osal_api_mutex_unlock)(osal_mutex_t mutex, uint32_t timeout);
+typedef int (*osal_api_mutex_trylock)(osal_mutex_t mutex);
+
+typedef int (*osal_api_mutex_unlock)(osal_mutex_t mutex);
 
 // sem
 typedef void *osal_sem_t;
@@ -60,7 +71,7 @@ typedef int (*osal_api_sem_destory)(osal_sem_t sem);
 
 typedef int (*osal_api_sem_wait)(osal_sem_t sem, uint32_t timeout);
 
-typedef int (*osal_api_sem_post)(osal_sem_t sem, uint32_t timeout);
+typedef int (*osal_api_sem_post)(osal_sem_t sem);
 
 // shm
 
@@ -108,6 +119,7 @@ typedef struct osal_api
     osal_api_mutex_create mutex_create;
     osal_api_mutex_destory mutex_destory;
     osal_api_mutex_lock mutex_lock;
+    osal_api_mutex_trylock mutex_trylock;
     osal_api_mutex_unlock mutex_unlock;
 
     // sem
@@ -147,6 +159,7 @@ extern osal_api_t osal_api;
 #define osal_mutex_create osal_api.mutex_create
 #define osal_mutex_destory osal_api.mutex_destory
 #define osal_mutex_lock osal_api.mutex_lock
+#define osal_mutex_trylock osal_api.mutex_trylock
 #define osal_mutex_unlock osal_api.mutex_unlock
 #endif // !osal_mutex_create
 
@@ -165,4 +178,4 @@ extern osal_api_t osal_api;
 #define osal_get_version osal_api.get_version
 #endif // !osal_get_version
 
-#endif // !_OSAL_H_
+#endif // !_OSAL_API_H_
