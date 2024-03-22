@@ -7,6 +7,8 @@
 #include <stdint.h>
 #include <unistd.h>
 
+#include <sys/time.h>
+
 #include <pthread.h>
 
 #ifndef osal_malloc

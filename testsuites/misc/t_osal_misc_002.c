@@ -9,5 +9,5 @@ static void get_version(void)
 
 void t_osal_misc_002(void)
 {
-    CUNIT_CI_TEST(get_version);
+    CU_add_test(misc_suite, "get_version", get_version);
 }

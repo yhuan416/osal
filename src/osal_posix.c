@@ -11,34 +11,34 @@
 #define print_level 2
 #endif
 
-#define pr_fatal(fmt, ...)        \
-    if (print_level >= 1)         \
-    {                             \
+#define pr_fatal(fmt, ...)          \
+    if (print_level >= 1)           \
+    {                               \
         printf(fmt, ##__VA_ARGS__); \
     }
-#define pr_error(fmt, ...)        \
-    if (print_level >= 2)         \
-    {                             \
+#define pr_error(fmt, ...)          \
+    if (print_level >= 2)           \
+    {                               \
         printf(fmt, ##__VA_ARGS__); \
     }
-#define pr_warn(fmt, ...)         \
-    if (print_level >= 3)         \
-    {                             \
+#define pr_warn(fmt, ...)           \
+    if (print_level >= 3)           \
+    {                               \
         printf(fmt, ##__VA_ARGS__); \
     }
-#define pr_info(fmt, ...)         \
-    if (print_level >= 4)         \
-    {                             \
+#define pr_info(fmt, ...)           \
+    if (print_level >= 4)           \
+    {                               \
         printf(fmt, ##__VA_ARGS__); \
     }
-#define pr_debug(fmt, ...)        \
-    if (print_level >= 5)         \
-    {                             \
+#define pr_debug(fmt, ...)          \
+    if (print_level >= 5)           \
+    {                               \
         printf(fmt, ##__VA_ARGS__); \
     }
-#define pr_trace(fmt, ...)        \
-    if (print_level >= 6)         \
-    {                             \
+#define pr_trace(fmt, ...)          \
+    if (print_level >= 6)           \
+    {                               \
         printf(fmt, ##__VA_ARGS__); \
     }
 #endif
@@ -173,7 +173,7 @@ int osal_posix_mutex_unlock(osal_mutex_t mutex)
 
 #include <semaphore.h>
 
-osal_sem_t osal_posix_sem_create(int count, uint32_t init)
+osal_sem_t osal_posix_sem_create(uint32_t init)
 {
     sem_t *sem = (sem_t *)osal_calloc(1, sizeof(sem_t));
     if (sem == NULL)
@@ -200,6 +200,8 @@ int osal_posix_sem_destory(osal_sem_t sem)
 
 int osal_posix_sem_wait(osal_sem_t sem, uint32_t timeout)
 {
+    struct timespec tm = {0};
+
     if (sem == NULL)
     {
         pr_error("sem is NULL.\n");
@@ -217,6 +219,8 @@ int osal_posix_sem_wait(osal_sem_t sem, uint32_t timeout)
     else
     {
         // TODO: implement timeout
+        osal_calc_timedwait(&tm, timeout);
+        return sem_timedwait((sem_t *)sem, &tm);
     }
 
     return OSAL_API_OK;
@@ -231,6 +235,30 @@ int osal_posix_sem_post(osal_sem_t sem)
     }
 
     return sem_post((sem_t *)sem);
+}
+
+int osal_posix_calc_timedwait(struct timespec *tm, uint32_t s)
+{
+    struct timeval tv;
+
+    if (tm == NULL)
+    {
+        pr_error("tm is NULL.\n");
+        return OSAL_API_INVALID;
+    }
+
+    gettimeofday(&tv, NULL);
+    tv.tv_sec += s / 1000;
+    tv.tv_usec += (s % 1000) * 1000;
+    if (tv.tv_usec >= 1000000)
+    {
+        tv.tv_usec -= 1000000;
+        tv.tv_sec++;
+    }
+    tm->tv_sec = tv.tv_sec;
+    tm->tv_nsec = tv.tv_usec * 1000;
+
+    return OSAL_API_OK;
 }
 
 #include <sys/sysinfo.h>

@@ -30,5 +30,5 @@ static void task_03(void)
 
 void t_osal_task_003(void)
 {
-    CUNIT_CI_TEST(task_03);
+    CU_add_test(task_suite, "task_03", task_03);
 }

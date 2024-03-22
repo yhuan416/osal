@@ -2,6 +2,7 @@
 
 void MemAddTests(void);
 void TaskAddTests(void);
+void SemAddTests(void);
 void MiscAddTests(void);
 
 void AddTests(void)
@@ -15,6 +16,7 @@ void AddTests(void)
     // mutex
 
     // sem
+    SemAddTests();
 
     // event
 

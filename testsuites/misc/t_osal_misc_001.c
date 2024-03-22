@@ -18,5 +18,5 @@ static void uptime(void)
 
 void t_osal_misc_001(void)
 {
-    CUNIT_CI_TEST(uptime);
+    CU_add_test(misc_suite, "uptime", uptime);
 }

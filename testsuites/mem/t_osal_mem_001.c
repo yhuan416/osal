@@ -9,5 +9,5 @@ static void malloc_01(void)
 
 void t_osal_mem_001(void)
 {
-    CUNIT_CI_TEST(malloc_01);
+    CU_add_test(mem_suite, "malloc_01", malloc_01);
 }

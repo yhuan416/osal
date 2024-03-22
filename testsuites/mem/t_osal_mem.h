@@ -3,6 +3,8 @@
 
 #include "common.h"
 
+CU_pSuite mem_suite;
+
 void t_osal_mem_001(void);
 void t_osal_mem_002(void);
 void t_osal_mem_003(void);

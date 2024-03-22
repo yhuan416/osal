@@ -34,7 +34,7 @@ static void realloc_03(void)
 
 void t_osal_mem_003(void)
 {
-    CUNIT_CI_TEST(realloc_01);
-    CUNIT_CI_TEST(realloc_02);
-    CUNIT_CI_TEST(realloc_03);
+    CU_add_test(mem_suite, "realloc_01", realloc_01);
+    CU_add_test(mem_suite, "realloc_02", realloc_02);
+    CU_add_test(mem_suite, "realloc_03", realloc_03);
 }

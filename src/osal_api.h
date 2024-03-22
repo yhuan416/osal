@@ -66,7 +66,7 @@ typedef int (*osal_api_mutex_unlock)(osal_mutex_t mutex);
 // sem
 typedef void *osal_sem_t;
 
-typedef osal_sem_t (*osal_api_sem_create)(int count, uint32_t init);
+typedef osal_sem_t (*osal_api_sem_create)(uint32_t init);
 
 typedef int (*osal_api_sem_destory)(osal_sem_t sem);
 
@@ -84,7 +84,7 @@ typedef int (*osal_api_sem_post)(osal_sem_t sem);
 // timer
 
 // time
-
+typedef int (*osal_api_calc_timedwait)(struct timespec *tm, uint32_t s);
 
 // signal
 
@@ -128,6 +128,9 @@ typedef struct osal_api
     osal_api_sem_destory sem_destory;
     osal_api_sem_wait sem_wait;
     osal_api_sem_post sem_post;
+
+    // time
+    osal_api_calc_timedwait calc_timedwait;
 
     // misc
     osal_api_uptime uptime;
@@ -178,5 +181,9 @@ extern osal_api_t osal_api;
 #ifndef osal_get_version
 #define osal_get_version osal_api.get_version
 #endif // !osal_get_version
+
+#ifndef osal_calc_timedwait
+#define osal_calc_timedwait osal_api.calc_timedwait
+#endif // !osal_calc_timedwait
 
 #endif // !_OSAL_API_H_

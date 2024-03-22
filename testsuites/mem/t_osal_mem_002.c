@@ -16,6 +16,6 @@ static void calloc_02(void)
 
 void t_osal_mem_002(void)
 {
-    CUNIT_CI_TEST(calloc_01);
-    CUNIT_CI_TEST(calloc_02);
+    CU_add_test(mem_suite, "calloc_01", calloc_01);
+    CU_add_test(mem_suite, "calloc_02", calloc_02);
 }

@@ -3,6 +3,8 @@
 
 #include "common.h"
 
+CU_pSuite task_suite;
+
 void t_osal_task_001(void);
 void t_osal_task_002(void);
 void t_osal_task_003(void);
