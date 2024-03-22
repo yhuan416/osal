@@ -110,13 +110,6 @@ osal_task_t osal_posix_task_create(const char *name,
     pthread_attr_init(&attr);
     pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
 
-    // if (stack_size && pthread_attr_setstacksize(&attr, stack_size))
-    // {
-    //     // TODO: log error
-    //     pthread_attr_destroy(&attr);
-    //     return NULL;
-    // }
-
     if ((ret = pthread_create(&tid, &attr, func, arg)))
     {
         pr_error("pthread_create failed, ret = %d.\n", ret);
@@ -182,21 +175,13 @@ int osal_posix_mutex_unlock(osal_mutex_t mutex)
 
 osal_sem_t osal_posix_sem_create(int count, uint32_t init)
 {
-    int ret;
-    sem_t *sem = (sem_t *)osal_malloc(sizeof(sem_t));
+    sem_t *sem = (sem_t *)osal_calloc(1, sizeof(sem_t));
     if (sem == NULL)
     {
         pr_error("sem malloc failed.\n");
         return NULL;
     }
-
-    if ((ret = sem_init(sem, 0, init)))
-    {
-        pr_warn("sem_init failed, ret = %d.\n", ret);
-        osal_free(sem);
-        return NULL;
-    }
-
+    sem_init(sem, 0, init);
     return (osal_sem_t)sem;
 }
 
@@ -215,8 +200,6 @@ int osal_posix_sem_destory(osal_sem_t sem)
 
 int osal_posix_sem_wait(osal_sem_t sem, uint32_t timeout)
 {
-    int ret;
-
     if (sem == NULL)
     {
         pr_error("sem is NULL.\n");
@@ -225,21 +208,15 @@ int osal_posix_sem_wait(osal_sem_t sem, uint32_t timeout)
 
     if (timeout == 0)
     {
-        ret = sem_trywait((sem_t *)sem);
+        return sem_trywait((sem_t *)sem);
     }
     else if (timeout == OSAL_API_WAITFOREVER)
     {
-        ret = sem_wait((sem_t *)sem);
+        return sem_wait((sem_t *)sem);
     }
     else
     {
         // TODO: implement timeout
-    }
-
-    if (ret != 0)
-    {
-        pr_warn("sem_wait failed, ret = %d.\n", ret);
-        return OSAL_API_FAIL;
     }
 
     return OSAL_API_OK;
@@ -247,22 +224,13 @@ int osal_posix_sem_wait(osal_sem_t sem, uint32_t timeout)
 
 int osal_posix_sem_post(osal_sem_t sem)
 {
-    int ret;
-
     if (sem == NULL)
     {
         pr_error("sem is NULL.\n");
         return OSAL_API_INVALID;
     }
 
-    ret = sem_post((sem_t *)sem);
-    if (ret != 0)
-    {
-        pr_warn("sem_post failed, ret = %d.\n", ret);
-        return OSAL_API_FAIL;
-    }
-
-    return OSAL_API_OK;
+    return sem_post((sem_t *)sem);
 }
 
 #include <sys/sysinfo.h>
