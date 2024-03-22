@@ -1,4 +1,7 @@
+#if defined(__linux__)
+
 #include "osal.h"
+#include "osal_posix.h"
 
 #include <pthread.h>
 
@@ -107,3 +110,5 @@ osal_api_t osal_api = {
 
     .uptime = osal_posix_uptime,
 };
+
+#endif

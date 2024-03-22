@@ -1,7 +1,9 @@
 #ifndef _OSAL_H_
 #define _OSAL_H_
 
+#if defined(__linux__)
 #include "osal_posix.h"
+#endif
 
 // mem
 typedef void *(*osal_api_malloc)(size_t size);
