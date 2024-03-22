@@ -1,6 +1,5 @@
 #include "osal.h"
 
-#include <unistd.h>
 #include <pthread.h>
 
 void *osal_posix_malloc(size_t size)
@@ -61,51 +60,6 @@ osal_task_t osal_posix_task_create(const char *name,
     return (osal_task_t)tid;
 }
 
-int osal_posix_task_destory(osal_task_t task)
-{
-    pthread_cancel((pthread_t)task);
-}
-
-osal_task_t osal_posix_task_self(void)
-{
-    return (osal_task_t)pthread_self();
-}
-
-int osal_posix_task_yield(void)
-{
-    return 0;
-}
-
-int osal_posix_task_sleep(uint32_t s)
-{
-    return sleep(s);
-}
-
-int osal_posix_task_usleep(uint32_t us)
-{
-    return usleep(us);
-}
-
-int osal_posix_task_suspend(osal_task_t task)
-{
-    return 0;
-}
-
-int osal_posix_task_resume(osal_task_t task)
-{
-    return 0;
-}
-
-int osal_posix_task_get_priority(osal_task_t task, int *priority)
-{
-    return 0;
-}
-
-int osal_posix_task_set_priority(osal_task_t task, int priority)
-{
-    return 0;
-}
-
 osal_mutex_t osal_posix_mutex_create(void)
 {
     pthread_mutex_t *mutex = osal_malloc(sizeof(pthread_mutex_t));
@@ -145,15 +99,6 @@ osal_api_t osal_api = {
     .realloc = osal_posix_realloc,
 
     .task_create = osal_posix_task_create,
-    .task_destory = osal_posix_task_destory,
-    .task_self = osal_posix_task_self,
-    .task_yield = osal_posix_task_yield,
-    .task_sleep = osal_posix_task_sleep,
-    .task_usleep = osal_posix_task_usleep,
-    .task_suspend = osal_posix_task_suspend,
-    .task_resume = osal_posix_task_resume,
-    .task_get_priority = osal_posix_task_get_priority,
-    .task_set_priority = osal_posix_task_set_priority,
 
     .mutex_create = osal_posix_mutex_create,
     .mutex_destory = osal_posix_mutex_destory,

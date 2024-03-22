@@ -20,7 +20,7 @@ target_include_directories(osal PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include ${CMA
 target_link_libraries(osal PRIVATE pthread)
 
 # cunit
-set(CUNIT_DISABLE_TESTS FALSE)
+set(CUNIT_DISABLE_TESTS ON)
 add_subdirectory(third_party/cunit-3.2.7/CUnit)
 
 # test
