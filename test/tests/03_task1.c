@@ -27,13 +27,13 @@ osal_task_t task;
 
 void *taskEntry(void *arg)
 {
+    CU_ASSERT_PTR_EQUAL(task, osal_task_self());
+
     CU_ASSERT_EQUAL(i, 0);
 
     i++;
 
     CU_ASSERT_EQUAL(i, 1);
-
-    CU_ASSERT_PTR_EQUAL(task, osal_task_self());
 
     return NULL;
 }
