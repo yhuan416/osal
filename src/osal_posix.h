@@ -7,10 +7,10 @@
 #include <stdint.h>
 
 #ifndef osal_malloc
-#define osal_malloc malloc
+#define osal_malloc osal_api.malloc
 #define osal_free free
-#define osal_calloc calloc
-#define osal_realloc realloc
+#define osal_calloc osal_api.calloc
+#define osal_realloc osal_api.realloc
 #endif // !osal_malloc
 
 #ifndef osal_get_version

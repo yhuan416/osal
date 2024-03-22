@@ -3,6 +3,38 @@
 #include <unistd.h>
 #include <pthread.h>
 
+void *osal_posix_malloc(size_t size)
+{
+    if (size == 0) {
+        return NULL;
+    }
+
+    return malloc(size);
+}
+
+void *osal_posix_calloc(size_t num, size_t size)
+{
+    if (size == 0 || num == 0) {
+        return NULL;
+    }
+
+    return calloc(num, size);
+}
+
+void *osal_posix_realloc(void *ptr, size_t size)
+{
+    if (ptr == NULL) {
+        return osal_malloc(size);
+    }
+
+    if (size == 0) {
+        osal_free(ptr);
+        return NULL;
+    }
+
+    return realloc(ptr, size);
+}
+
 osal_task_t osal_posix_task_create(const char *name,
                                    osal_task_func_t func,
                                    void *arg,
@@ -76,7 +108,7 @@ int osal_posix_task_set_priority(osal_task_t task, int priority)
 
 osal_mutex_t osal_posix_mutex_create(void)
 {
-    pthread_mutex_t *mutex = malloc(sizeof(pthread_mutex_t));
+    pthread_mutex_t *mutex = osal_malloc(sizeof(pthread_mutex_t));
     pthread_mutex_init(mutex, NULL);
     return (osal_mutex_t)mutex;
 }
@@ -84,7 +116,7 @@ osal_mutex_t osal_posix_mutex_create(void)
 int osal_posix_mutex_destory(osal_mutex_t mutex)
 {
     pthread_mutex_destroy((pthread_mutex_t *)mutex);
-    free(mutex);
+    osal_free(mutex);
     return 0;
 }
 
@@ -108,6 +140,10 @@ uint64_t osal_posix_uptime(void)
 }
 
 osal_api_t osal_api = {
+    .malloc = osal_posix_malloc,
+    .calloc = osal_posix_calloc,
+    .realloc = osal_posix_realloc,
+
     .task_create = osal_posix_task_create,
     .task_destory = osal_posix_task_destory,
     .task_self = osal_posix_task_self,
