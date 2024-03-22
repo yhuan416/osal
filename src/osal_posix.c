@@ -3,10 +3,51 @@
 #include "osal_api.h"
 #include "osal_posix.h"
 
+#define mmodule_name "osal"
+
+#if !defined(pr_fatal)
+
+#if !defined(print_level)
+#define print_level 2
+#endif
+
+#define pr_fatal(fmt, ...)        \
+    if (print_level >= 1)         \
+    {                             \
+        printf(fmt, ##__VA_ARGS__); \
+    }
+#define pr_error(fmt, ...)        \
+    if (print_level >= 2)         \
+    {                             \
+        printf(fmt, ##__VA_ARGS__); \
+    }
+#define pr_warn(fmt, ...)         \
+    if (print_level >= 3)         \
+    {                             \
+        printf(fmt, ##__VA_ARGS__); \
+    }
+#define pr_info(fmt, ...)         \
+    if (print_level >= 4)         \
+    {                             \
+        printf(fmt, ##__VA_ARGS__); \
+    }
+#define pr_debug(fmt, ...)        \
+    if (print_level >= 5)         \
+    {                             \
+        printf(fmt, ##__VA_ARGS__); \
+    }
+#define pr_trace(fmt, ...)        \
+    if (print_level >= 6)         \
+    {                             \
+        printf(fmt, ##__VA_ARGS__); \
+    }
+#endif
+
 void *osal_posix_malloc(size_t size)
 {
     if (size == 0)
     {
+        pr_warn("size is 0.\n");
         return NULL;
     }
 
@@ -17,6 +58,7 @@ void *osal_posix_calloc(size_t num, size_t size)
 {
     if (size == 0 || num == 0)
     {
+        pr_warn("size or num is 0.\n");
         return NULL;
     }
 
@@ -27,11 +69,13 @@ void *osal_posix_realloc(void *ptr, size_t size)
 {
     if (ptr == NULL)
     {
+        pr_warn("ptr is NULL.\n");
         return osal_malloc(size);
     }
 
     if (size == 0)
     {
+        pr_warn("size is 0.\n");
         osal_free(ptr);
         return NULL;
     }
@@ -39,7 +83,7 @@ void *osal_posix_realloc(void *ptr, size_t size)
     return realloc(ptr, size);
 }
 
-#define DEFAULT_STACK_NAME  "osal_task"
+#define DEFAULT_STACK_NAME "osal_task"
 
 osal_task_t osal_posix_task_create(const char *name,
                                    osal_task_func_t func,
@@ -48,25 +92,39 @@ osal_task_t osal_posix_task_create(const char *name,
                                    int stack_size,
                                    int priority)
 {
+    int ret;
     pthread_t tid;
     pthread_attr_t attr = {0};
 
-    if (func == NULL) {
+    // posix平台不关注这两个参数
+    (void)stack_start;
+    (void)stack_size;
+    (void)priority;
+
+    if (func == NULL)
+    {
+        pr_error("func is NULL.\n");
         return NULL;
     }
 
     pthread_attr_init(&attr);
-
     pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
 
-    if (stack_size && pthread_attr_setstacksize(&attr, stack_size))
+    // if (stack_size && pthread_attr_setstacksize(&attr, stack_size))
+    // {
+    //     // TODO: log error
+    //     pthread_attr_destroy(&attr);
+    //     return NULL;
+    // }
+
+    if ((ret = pthread_create(&tid, &attr, func, arg)))
     {
+        pr_error("pthread_create failed, ret = %d.\n", ret);
+        pthread_attr_destroy(&attr);
+        return NULL;
     }
 
-    pthread_create(&tid, &attr, func, arg);
-
     pthread_attr_destroy(&attr);
-
     return (osal_task_t)tid;
 }
 
@@ -81,6 +139,7 @@ int osal_posix_mutex_destory(osal_mutex_t mutex)
 {
     if (mutex == NULL)
     {
+        pr_error("mutex is NULL.\n");
         return OSAL_API_INVALID;
     }
 
@@ -93,6 +152,7 @@ int osal_posix_mutex_lock(osal_mutex_t mutex)
 {
     if (mutex == NULL)
     {
+        pr_error("mutex is NULL.\n");
         return OSAL_API_INVALID;
     }
     return pthread_mutex_lock((pthread_mutex_t *)mutex);
@@ -102,6 +162,7 @@ int osal_posix_mutex_trylock(osal_mutex_t mutex)
 {
     if (mutex == NULL)
     {
+        pr_error("mutex is NULL.\n");
         return OSAL_API_INVALID;
     }
     return pthread_mutex_trylock((pthread_mutex_t *)mutex);
@@ -111,6 +172,7 @@ int osal_posix_mutex_unlock(osal_mutex_t mutex)
 {
     if (mutex == NULL)
     {
+        pr_error("mutex is NULL.\n");
         return OSAL_API_INVALID;
     }
     return pthread_mutex_unlock((pthread_mutex_t *)mutex);
@@ -124,12 +186,13 @@ osal_sem_t osal_posix_sem_create(int count, uint32_t init)
     sem_t *sem = (sem_t *)osal_malloc(sizeof(sem_t));
     if (sem == NULL)
     {
+        pr_error("sem malloc failed.\n");
         return NULL;
     }
 
-    ret = sem_init(sem, 0, init);
-    if (ret != 0)
+    if ((ret = sem_init(sem, 0, init)))
     {
+        pr_warn("sem_init failed, ret = %d.\n", ret);
         osal_free(sem);
         return NULL;
     }
@@ -141,6 +204,7 @@ int osal_posix_sem_destory(osal_sem_t sem)
 {
     if (sem == NULL)
     {
+        pr_error("sem is NULL.\n");
         return OSAL_API_INVALID;
     }
 
@@ -155,19 +219,26 @@ int osal_posix_sem_wait(osal_sem_t sem, uint32_t timeout)
 
     if (sem == NULL)
     {
+        pr_error("sem is NULL.\n");
         return OSAL_API_INVALID;
     }
 
-    if (timeout == 0) {
+    if (timeout == 0)
+    {
         ret = sem_trywait((sem_t *)sem);
-    } else if (timeout == OSAL_API_WAITFOREVER) {
+    }
+    else if (timeout == OSAL_API_WAITFOREVER)
+    {
         ret = sem_wait((sem_t *)sem);
-    } else {
+    }
+    else
+    {
         // TODO: implement timeout
     }
 
     if (ret != 0)
     {
+        pr_warn("sem_wait failed, ret = %d.\n", ret);
         return OSAL_API_FAIL;
     }
 
@@ -180,12 +251,14 @@ int osal_posix_sem_post(osal_sem_t sem)
 
     if (sem == NULL)
     {
+        pr_error("sem is NULL.\n");
         return OSAL_API_INVALID;
     }
 
     ret = sem_post((sem_t *)sem);
     if (ret != 0)
     {
+        pr_warn("sem_post failed, ret = %d.\n", ret);
         return OSAL_API_FAIL;
     }
 
