@@ -15,13 +15,13 @@ enum OSAL_API_RET {
 
 #define OSAL_API_WAITFOREVER (-1)
 
-// mem
+//////////////////////////////////////////////// mem
 typedef void *(*osal_api_malloc)(size_t size);
 typedef void (*osal_api_free)(void *ptr);
 typedef void *(*osal_api_calloc)(size_t num, size_t size);
 typedef void *(*osal_api_realloc)(void *ptr, size_t size);
 
-// task
+//////////////////////////////////////////////// task
 typedef void *osal_task_t;
 typedef void *(*osal_task_func_t)(void *arg);
 
@@ -50,7 +50,7 @@ typedef int (*osal_api_task_get_priority)(osal_task_t task, int *priority);
 
 typedef int (*osal_api_task_set_priority)(osal_task_t task, int priority);
 
-// mutex
+//////////////////////////////////////////////// mutex
 typedef void *osal_mutex_t;
 
 typedef osal_mutex_t (*osal_api_mutex_create)(void);
@@ -63,7 +63,7 @@ typedef int (*osal_api_mutex_trylock)(osal_mutex_t mutex);
 
 typedef int (*osal_api_mutex_unlock)(osal_mutex_t mutex);
 
-// sem
+//////////////////////////////////////////////// sem
 typedef void *osal_sem_t;
 
 typedef osal_sem_t (*osal_api_sem_create)(uint32_t init);
@@ -74,24 +74,28 @@ typedef int (*osal_api_sem_wait)(osal_sem_t sem, uint32_t timeout);
 
 typedef int (*osal_api_sem_post)(osal_sem_t sem);
 
-// shm
-
-// event
-
-// mq
+////////////////////////////////////////////////// shm
 
 
-// timer
+//////////////////////////////////////////////// event
 
-// time
+
+//////////////////////////////////////////////// mq
+
+
+//////////////////////////////////////////////// timer
+
+
+//////////////////////////////////////////////// time
 typedef int (*osal_api_calc_timedwait)(struct timespec *tm, uint32_t s);
 
-// signal
-
-// file
+//////////////////////////////////////////////// signal
 
 
-// misc
+//////////////////////////////////////////////// file
+
+
+//////////////////////////////////////////////// misc
 // reboot system sysinfo...
 typedef const char *(*osal_api_get_version)(void);
 typedef uint64_t (*osal_api_uptime)(void);
