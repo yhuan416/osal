@@ -10,6 +10,7 @@ enum OSAL_API_RET {
     OSAL_API_FAIL = -1,
     OSAL_API_TIMEOUT = -2,
     OSAL_API_INVALID = -3,
+    OSAL_API_MEM_ALLOC_FAIL = -4,
 };
 
 #define OSAL_API_WAITFOREVER (-1)

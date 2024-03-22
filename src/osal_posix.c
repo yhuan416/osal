@@ -152,7 +152,14 @@ int osal_posix_sem_wait(osal_sem_t sem, uint32_t timeout)
         return OSAL_API_INVALID;
     }
 
-    ret = sem_wait((sem_t *)sem);
+    if (timeout == 0) {
+        ret = sem_trywait((sem_t *)sem);
+    } else if (timeout == OSAL_API_WAITFOREVER) {
+        ret = sem_wait((sem_t *)sem);
+    } else {
+        // TODO: implement timeout
+    }
+
     if (ret != 0)
     {
         return OSAL_API_FAIL;
