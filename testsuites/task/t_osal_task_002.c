@@ -1,7 +1,5 @@
 #include "t_osal_task.h"
 
-#include <unistd.h>
-
 static int i = 0;
 
 static void *taskEntry(void *arg)
@@ -24,7 +22,7 @@ static void task_02(void)
         0);
     CU_ASSERT_PTR_NULL(task1);// 入参为空, 返回NULL
 
-    sleep(1);
+    osal_task_sleep(1);
     CU_ASSERT_EQUAL(i, 0);// task不执行, i不变
 }
 

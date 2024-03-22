@@ -10,4 +10,6 @@ void SemAddTests(void)
     sem_suite = CU_add_suite_with_setup_and_teardown("SEM", suite_init, suite_clean, NULL, NULL);
 
     t_osal_sem_001();
+    t_osal_sem_002();
+    t_osal_sem_003();
 }
