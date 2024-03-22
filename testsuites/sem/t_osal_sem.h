@@ -3,7 +3,7 @@
 
 #include "common.h"
 
-CU_pSuite sem_suite;
+extern CU_pSuite sem_suite;
 
 void t_osal_sem_001(void);
 void t_osal_sem_002(void);
