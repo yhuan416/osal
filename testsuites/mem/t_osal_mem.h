@@ -3,6 +3,8 @@
 
 #include "common.h"
 
-void malloc_01(void);
+void t_osal_mem_001(void);
+void t_osal_mem_002(void);
+void t_osal_mem_003(void);
 
 #endif

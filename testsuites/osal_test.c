@@ -1,14 +1,30 @@
 #include "common.h"
 
 void MemAddTests(void);
+void TaskAddTests(void);
+void MiscAddTests(void);
 
 void AddTests(void)
 {
+    // mem
     MemAddTests();
+
+    // task
+    TaskAddTests();
+
+    // mutex
+
+    // sem
+
+    // event
+
+    // misc
+    MiscAddTests();
 }
 
-void *osal_test_entry(void *arg)
+int osal_test_entry(void *arg)
 {
+    int ret = 0;
     if (CU_initialize_registry())
     {
         printf("\nInitialization of Test Registry failed.");
@@ -18,16 +34,16 @@ void *osal_test_entry(void *arg)
         AddTests();
         CU_basic_set_mode(CU_BRM_VERBOSE);
         CU_set_error_action(CUEA_FAIL);
-        printf("\nTests completed with return value %d.\n", CU_basic_run_tests());
+        ret = CU_basic_run_tests();
+        printf("\nTests completed with return value %d.\n", ret);
         CU_cleanup_registry();
     }
-    return 0;
+    return ret;
 }
 
 #if defined(__linux__)
 int main(int argc, char const *argv[])
 {
-    osal_test_entry(NULL);
-    return 0;
+    return osal_test_entry(NULL);
 }
 #endif

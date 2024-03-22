@@ -39,6 +39,8 @@ void *osal_posix_realloc(void *ptr, size_t size)
     return realloc(ptr, size);
 }
 
+#define DEFAULT_STACK_NAME  "osal_task"
+
 osal_task_t osal_posix_task_create(const char *name,
                                    osal_task_func_t func,
                                    void *arg,
@@ -48,6 +50,10 @@ osal_task_t osal_posix_task_create(const char *name,
 {
     pthread_t tid;
     pthread_attr_t attr = {0};
+
+    if (func == NULL) {
+        return NULL;
+    }
 
     pthread_attr_init(&attr);
 
