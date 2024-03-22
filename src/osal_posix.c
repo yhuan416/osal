@@ -124,6 +124,12 @@ osal_task_t osal_posix_task_create(const char *name,
 osal_mutex_t osal_posix_mutex_create(void)
 {
     pthread_mutex_t *mutex = osal_malloc(sizeof(pthread_mutex_t));
+    if (mutex == NULL)
+    {
+        pr_error("mutex malloc failed.\n");
+        return NULL;
+    }
+
     pthread_mutex_init(mutex, NULL);
     return (osal_mutex_t)mutex;
 }
