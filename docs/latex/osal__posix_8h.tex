@@ -1,0 +1,203 @@
+\hypertarget{osal__posix_8h}{}\doxysection{src/osal\+\_\+posix.h 文件参考}
+\label{osal__posix_8h}\index{src/osal\_posix.h@{src/osal\_posix.h}}
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include $<$stdint.\+h$>$}\newline
+{\ttfamily \#include $<$unistd.\+h$>$}\newline
+{\ttfamily \#include $<$sys/time.\+h$>$}\newline
+{\ttfamily \#include $<$pthread.\+h$>$}\newline
+osal\+\_\+posix.\+h 的引用(Include)关系图\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{osal__posix_8h__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{宏定义}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{osal__posix_8h_a3e7499d1a79c2a98bce3a9ff68535952}{osal\+\_\+malloc}}~\mbox{\hyperlink{structosal__api_a1552e969ec8d37736d995171f76610a5}{osal\+\_\+api.\+malloc}}
+\item 
+\#define \mbox{\hyperlink{osal__posix_8h_a77f348f482b28b689b239b4157cf7a6f}{osal\+\_\+free}}~free
+\item 
+\#define \mbox{\hyperlink{osal__posix_8h_ae5ca66e830ba768f139f4bc2599c39a2}{osal\+\_\+calloc}}~\mbox{\hyperlink{structosal__api_a5df0cf1f9b6738d82de5f2768022178f}{osal\+\_\+api.\+calloc}}
+\item 
+\#define \mbox{\hyperlink{osal__posix_8h_a1fcdcb28bc3753f50c98afbf36614f48}{osal\+\_\+realloc}}~\mbox{\hyperlink{structosal__api_aeb8acca9f490661a073286fadf306097}{osal\+\_\+api.\+realloc}}
+\item 
+\#define \mbox{\hyperlink{osal__posix_8h_a75187de435301e8a01c914f19d2679a6}{osal\+\_\+get\+\_\+version}}()~\char`\"{}1.\+0.\+0\char`\"{}
+\item 
+\#define \mbox{\hyperlink{osal__posix_8h_adf3a3b38bc539cd75aa4a7f5c94d07cd}{osal\+\_\+task\+\_\+create}}~\mbox{\hyperlink{structosal__api_afb41b39a97e12634ed0ebb5bdb2ed741}{osal\+\_\+api.\+task\+\_\+create}}
+\item 
+\#define \mbox{\hyperlink{osal__posix_8h_a2821fc0e60af4ba054a67ecb611503c8}{osal\+\_\+task\+\_\+self}}()~((\mbox{\hyperlink{osal__api_8h_aad3686ac1474c34ee7bced69c3b16180}{osal\+\_\+task\+\_\+t}})pthread\+\_\+self())
+\item 
+\#define \mbox{\hyperlink{osal__posix_8h_a5e7207e8a041c2e2fe1889f4aa75651b}{osal\+\_\+task\+\_\+sleep}}(s)~sleep(s)
+\item 
+\#define \mbox{\hyperlink{osal__posix_8h_ad13eab66aaae3caf9b91af47f9f86ac0}{osal\+\_\+task\+\_\+usleep}}(us)~usleep(us)
+\item 
+\#define \mbox{\hyperlink{osal__posix_8h_a4548741eca01a4df9e702234f42c559e}{osal\+\_\+task\+\_\+destory}}(task)~pthread\+\_\+cancel((pthread\+\_\+t)task)
+\item 
+\#define \mbox{\hyperlink{osal__posix_8h_a9821d9f351d300440bd59d8ee202b44b}{osal\+\_\+task\+\_\+yield}}()~(-\/1)
+\item 
+\#define \mbox{\hyperlink{osal__posix_8h_a3294c0b5e7d571102986b8435327e1a5}{osal\+\_\+task\+\_\+suspend}}(task)~(-\/1)
+\item 
+\#define \mbox{\hyperlink{osal__posix_8h_a2a388af9195c210295c09a4352173c8b}{osal\+\_\+task\+\_\+resume}}(task)~(-\/1)
+\item 
+\#define \mbox{\hyperlink{osal__posix_8h_a07d1e8be4a1efdca5da9bd72cf222bf0}{osal\+\_\+task\+\_\+get\+\_\+priority}}(task,  pri)~(-\/1)
+\item 
+\#define \mbox{\hyperlink{osal__posix_8h_a1ded953c1f7611fc7cec275be92f742b}{osal\+\_\+task\+\_\+set\+\_\+priority}}(task,  pri)~(-\/1)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{宏定义说明}
+\mbox{\Hypertarget{osal__posix_8h_ae5ca66e830ba768f139f4bc2599c39a2}\label{osal__posix_8h_ae5ca66e830ba768f139f4bc2599c39a2}} 
+\index{osal\_posix.h@{osal\_posix.h}!osal\_calloc@{osal\_calloc}}
+\index{osal\_calloc@{osal\_calloc}!osal\_posix.h@{osal\_posix.h}}
+\doxysubsubsection{\texorpdfstring{osal\_calloc}{osal\_calloc}}
+{\footnotesize\ttfamily \#define \mbox{\hyperlink{interfaceosal__calloc}{osal\+\_\+calloc}}~\mbox{\hyperlink{structosal__api_a5df0cf1f9b6738d82de5f2768022178f}{osal\+\_\+api.\+calloc}}}
+
+
+
+在文件 osal\+\_\+posix.\+h 第 17 行定义.
+
+\mbox{\Hypertarget{osal__posix_8h_a77f348f482b28b689b239b4157cf7a6f}\label{osal__posix_8h_a77f348f482b28b689b239b4157cf7a6f}} 
+\index{osal\_posix.h@{osal\_posix.h}!osal\_free@{osal\_free}}
+\index{osal\_free@{osal\_free}!osal\_posix.h@{osal\_posix.h}}
+\doxysubsubsection{\texorpdfstring{osal\_free}{osal\_free}}
+{\footnotesize\ttfamily \#define \mbox{\hyperlink{interfaceosal__free}{osal\+\_\+free}}~free}
+
+
+
+在文件 osal\+\_\+posix.\+h 第 16 行定义.
+
+\mbox{\Hypertarget{osal__posix_8h_a75187de435301e8a01c914f19d2679a6}\label{osal__posix_8h_a75187de435301e8a01c914f19d2679a6}} 
+\index{osal\_posix.h@{osal\_posix.h}!osal\_get\_version@{osal\_get\_version}}
+\index{osal\_get\_version@{osal\_get\_version}!osal\_posix.h@{osal\_posix.h}}
+\doxysubsubsection{\texorpdfstring{osal\_get\_version}{osal\_get\_version}}
+{\footnotesize\ttfamily \#define osal\+\_\+get\+\_\+version(\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})~\char`\"{}1.\+0.\+0\char`\"{}}
+
+
+
+在文件 osal\+\_\+posix.\+h 第 22 行定义.
+
+\mbox{\Hypertarget{osal__posix_8h_a3e7499d1a79c2a98bce3a9ff68535952}\label{osal__posix_8h_a3e7499d1a79c2a98bce3a9ff68535952}} 
+\index{osal\_posix.h@{osal\_posix.h}!osal\_malloc@{osal\_malloc}}
+\index{osal\_malloc@{osal\_malloc}!osal\_posix.h@{osal\_posix.h}}
+\doxysubsubsection{\texorpdfstring{osal\_malloc}{osal\_malloc}}
+{\footnotesize\ttfamily \#define \mbox{\hyperlink{interfaceosal__malloc}{osal\+\_\+malloc}}~\mbox{\hyperlink{structosal__api_a1552e969ec8d37736d995171f76610a5}{osal\+\_\+api.\+malloc}}}
+
+
+
+在文件 osal\+\_\+posix.\+h 第 15 行定义.
+
+\mbox{\Hypertarget{osal__posix_8h_a1fcdcb28bc3753f50c98afbf36614f48}\label{osal__posix_8h_a1fcdcb28bc3753f50c98afbf36614f48}} 
+\index{osal\_posix.h@{osal\_posix.h}!osal\_realloc@{osal\_realloc}}
+\index{osal\_realloc@{osal\_realloc}!osal\_posix.h@{osal\_posix.h}}
+\doxysubsubsection{\texorpdfstring{osal\_realloc}{osal\_realloc}}
+{\footnotesize\ttfamily \#define \mbox{\hyperlink{interfaceosal__realloc}{osal\+\_\+realloc}}~\mbox{\hyperlink{structosal__api_aeb8acca9f490661a073286fadf306097}{osal\+\_\+api.\+realloc}}}
+
+
+
+在文件 osal\+\_\+posix.\+h 第 18 行定义.
+
+\mbox{\Hypertarget{osal__posix_8h_adf3a3b38bc539cd75aa4a7f5c94d07cd}\label{osal__posix_8h_adf3a3b38bc539cd75aa4a7f5c94d07cd}} 
+\index{osal\_posix.h@{osal\_posix.h}!osal\_task\_create@{osal\_task\_create}}
+\index{osal\_task\_create@{osal\_task\_create}!osal\_posix.h@{osal\_posix.h}}
+\doxysubsubsection{\texorpdfstring{osal\_task\_create}{osal\_task\_create}}
+{\footnotesize\ttfamily \#define \mbox{\hyperlink{interfaceosal__task__create}{osal\+\_\+task\+\_\+create}}~\mbox{\hyperlink{structosal__api_afb41b39a97e12634ed0ebb5bdb2ed741}{osal\+\_\+api.\+task\+\_\+create}}}
+
+
+
+在文件 osal\+\_\+posix.\+h 第 26 行定义.
+
+\mbox{\Hypertarget{osal__posix_8h_a4548741eca01a4df9e702234f42c559e}\label{osal__posix_8h_a4548741eca01a4df9e702234f42c559e}} 
+\index{osal\_posix.h@{osal\_posix.h}!osal\_task\_destory@{osal\_task\_destory}}
+\index{osal\_task\_destory@{osal\_task\_destory}!osal\_posix.h@{osal\_posix.h}}
+\doxysubsubsection{\texorpdfstring{osal\_task\_destory}{osal\_task\_destory}}
+{\footnotesize\ttfamily \#define \mbox{\hyperlink{interfaceosal__task__destory}{osal\+\_\+task\+\_\+destory}}(\begin{DoxyParamCaption}\item[{}]{task }\end{DoxyParamCaption})~pthread\+\_\+cancel((pthread\+\_\+t)task)}
+
+
+
+在文件 osal\+\_\+posix.\+h 第 30 行定义.
+
+\mbox{\Hypertarget{osal__posix_8h_a07d1e8be4a1efdca5da9bd72cf222bf0}\label{osal__posix_8h_a07d1e8be4a1efdca5da9bd72cf222bf0}} 
+\index{osal\_posix.h@{osal\_posix.h}!osal\_task\_get\_priority@{osal\_task\_get\_priority}}
+\index{osal\_task\_get\_priority@{osal\_task\_get\_priority}!osal\_posix.h@{osal\_posix.h}}
+\doxysubsubsection{\texorpdfstring{osal\_task\_get\_priority}{osal\_task\_get\_priority}}
+{\footnotesize\ttfamily \#define osal\+\_\+task\+\_\+get\+\_\+priority(\begin{DoxyParamCaption}\item[{}]{task,  }\item[{}]{pri }\end{DoxyParamCaption})~(-\/1)}
+
+
+
+在文件 osal\+\_\+posix.\+h 第 34 行定义.
+
+\mbox{\Hypertarget{osal__posix_8h_a2a388af9195c210295c09a4352173c8b}\label{osal__posix_8h_a2a388af9195c210295c09a4352173c8b}} 
+\index{osal\_posix.h@{osal\_posix.h}!osal\_task\_resume@{osal\_task\_resume}}
+\index{osal\_task\_resume@{osal\_task\_resume}!osal\_posix.h@{osal\_posix.h}}
+\doxysubsubsection{\texorpdfstring{osal\_task\_resume}{osal\_task\_resume}}
+{\footnotesize\ttfamily \#define osal\+\_\+task\+\_\+resume(\begin{DoxyParamCaption}\item[{}]{task }\end{DoxyParamCaption})~(-\/1)}
+
+
+
+在文件 osal\+\_\+posix.\+h 第 33 行定义.
+
+\mbox{\Hypertarget{osal__posix_8h_a2821fc0e60af4ba054a67ecb611503c8}\label{osal__posix_8h_a2821fc0e60af4ba054a67ecb611503c8}} 
+\index{osal\_posix.h@{osal\_posix.h}!osal\_task\_self@{osal\_task\_self}}
+\index{osal\_task\_self@{osal\_task\_self}!osal\_posix.h@{osal\_posix.h}}
+\doxysubsubsection{\texorpdfstring{osal\_task\_self}{osal\_task\_self}}
+{\footnotesize\ttfamily \#define osal\+\_\+task\+\_\+self(\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})~((\mbox{\hyperlink{osal__api_8h_aad3686ac1474c34ee7bced69c3b16180}{osal\+\_\+task\+\_\+t}})pthread\+\_\+self())}
+
+
+
+在文件 osal\+\_\+posix.\+h 第 27 行定义.
+
+\mbox{\Hypertarget{osal__posix_8h_a1ded953c1f7611fc7cec275be92f742b}\label{osal__posix_8h_a1ded953c1f7611fc7cec275be92f742b}} 
+\index{osal\_posix.h@{osal\_posix.h}!osal\_task\_set\_priority@{osal\_task\_set\_priority}}
+\index{osal\_task\_set\_priority@{osal\_task\_set\_priority}!osal\_posix.h@{osal\_posix.h}}
+\doxysubsubsection{\texorpdfstring{osal\_task\_set\_priority}{osal\_task\_set\_priority}}
+{\footnotesize\ttfamily \#define osal\+\_\+task\+\_\+set\+\_\+priority(\begin{DoxyParamCaption}\item[{}]{task,  }\item[{}]{pri }\end{DoxyParamCaption})~(-\/1)}
+
+
+
+在文件 osal\+\_\+posix.\+h 第 35 行定义.
+
+\mbox{\Hypertarget{osal__posix_8h_a5e7207e8a041c2e2fe1889f4aa75651b}\label{osal__posix_8h_a5e7207e8a041c2e2fe1889f4aa75651b}} 
+\index{osal\_posix.h@{osal\_posix.h}!osal\_task\_sleep@{osal\_task\_sleep}}
+\index{osal\_task\_sleep@{osal\_task\_sleep}!osal\_posix.h@{osal\_posix.h}}
+\doxysubsubsection{\texorpdfstring{osal\_task\_sleep}{osal\_task\_sleep}}
+{\footnotesize\ttfamily \#define osal\+\_\+task\+\_\+sleep(\begin{DoxyParamCaption}\item[{}]{s }\end{DoxyParamCaption})~sleep(s)}
+
+
+
+在文件 osal\+\_\+posix.\+h 第 28 行定义.
+
+\mbox{\Hypertarget{osal__posix_8h_a3294c0b5e7d571102986b8435327e1a5}\label{osal__posix_8h_a3294c0b5e7d571102986b8435327e1a5}} 
+\index{osal\_posix.h@{osal\_posix.h}!osal\_task\_suspend@{osal\_task\_suspend}}
+\index{osal\_task\_suspend@{osal\_task\_suspend}!osal\_posix.h@{osal\_posix.h}}
+\doxysubsubsection{\texorpdfstring{osal\_task\_suspend}{osal\_task\_suspend}}
+{\footnotesize\ttfamily \#define \mbox{\hyperlink{interfaceosal__task__suspend}{osal\+\_\+task\+\_\+suspend}}(\begin{DoxyParamCaption}\item[{}]{task }\end{DoxyParamCaption})~(-\/1)}
+
+
+
+在文件 osal\+\_\+posix.\+h 第 32 行定义.
+
+\mbox{\Hypertarget{osal__posix_8h_ad13eab66aaae3caf9b91af47f9f86ac0}\label{osal__posix_8h_ad13eab66aaae3caf9b91af47f9f86ac0}} 
+\index{osal\_posix.h@{osal\_posix.h}!osal\_task\_usleep@{osal\_task\_usleep}}
+\index{osal\_task\_usleep@{osal\_task\_usleep}!osal\_posix.h@{osal\_posix.h}}
+\doxysubsubsection{\texorpdfstring{osal\_task\_usleep}{osal\_task\_usleep}}
+{\footnotesize\ttfamily \#define osal\+\_\+task\+\_\+usleep(\begin{DoxyParamCaption}\item[{}]{us }\end{DoxyParamCaption})~usleep(us)}
+
+
+
+在文件 osal\+\_\+posix.\+h 第 29 行定义.
+
+\mbox{\Hypertarget{osal__posix_8h_a9821d9f351d300440bd59d8ee202b44b}\label{osal__posix_8h_a9821d9f351d300440bd59d8ee202b44b}} 
+\index{osal\_posix.h@{osal\_posix.h}!osal\_task\_yield@{osal\_task\_yield}}
+\index{osal\_task\_yield@{osal\_task\_yield}!osal\_posix.h@{osal\_posix.h}}
+\doxysubsubsection{\texorpdfstring{osal\_task\_yield}{osal\_task\_yield}}
+{\footnotesize\ttfamily \#define osal\+\_\+task\+\_\+yield(\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})~(-\/1)}
+
+
+
+在文件 osal\+\_\+posix.\+h 第 31 行定义.
+

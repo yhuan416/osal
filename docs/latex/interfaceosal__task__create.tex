@@ -1,0 +1,37 @@
+\hypertarget{interfaceosal__task__create}{}\doxysection{osal\+\_\+task\+\_\+create接口 参考}
+\label{interfaceosal__task__create}\index{osal\_task\_create@{osal\_task\_create}}
+
+
+创建一个线程  
+
+
+
+
+{\ttfamily \#include $<$osal\+\_\+api.\+h$>$}
+
+
+
+\doxysubsection{详细描述}
+创建一个线程 
+
+
+\begin{DoxyParams}{参数}
+{\em name} & 线程名, 可以填\+N\+U\+LL \\
+\hline
+{\em func} & 线程入口 \\
+\hline
+{\em arg} & 线程参数 \\
+\hline
+{\em stack\+\_\+start} & 线程栈地址, 为\+R\+T\+O\+S预留 \\
+\hline
+{\em stack\+\_\+size} & 线程栈大小 \\
+\hline
+{\em priority} & 线程优先级, 为\+R\+T\+O\+S预留\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{返回}
+线程句柄 N\+U\+LL, 创建失败
+\end{DoxyReturn}
+\begin{DoxySeeAlso}{参见}
+\mbox{\hyperlink{interfaceosal__task__func__t}{osal\+\_\+task\+\_\+func\+\_\+t}} 
+\end{DoxySeeAlso}

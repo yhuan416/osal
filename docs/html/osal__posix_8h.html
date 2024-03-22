@@ -1,0 +1,468 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.8.17"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>osal: src/osal_posix.h 文件参考</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+  $(document).ready(function() { init_search(); });
+/* @license-end */
+</script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">osal
+   </div>
+  </td>
+   <td>        <div id="MSearchBox" class="MSearchBoxInactive">
+        <span class="left">
+          <img id="MSearchSelect" src="search/mag_sel.png"
+               onmouseover="return searchBox.OnSearchSelectShow()"
+               onmouseout="return searchBox.OnSearchSelectHide()"
+               alt=""/>
+          <input type="text" id="MSearchField" value="搜索" accesskey="S"
+               onfocus="searchBox.OnSearchFieldFocus(true)" 
+               onblur="searchBox.OnSearchFieldFocus(false)" 
+               onkeyup="searchBox.OnSearchFieldChange(event)"/>
+          </span><span class="right">
+            <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><img id="MSearchCloseImg" border="0" src="search/close.png" alt=""/></a>
+          </span>
+        </div>
+</td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 制作者 Doxygen 1.8.17 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+var searchBox = new SearchBox("searchBox", "search",false,'搜索');
+/* @license-end */
+</script>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(document).ready(function(){initNavTree('osal__posix_8h.html',''); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div class="header">
+  <div class="summary">
+<a href="#define-members">宏定义</a>  </div>
+  <div class="headertitle">
+<div class="title">osal_posix.h 文件参考</div>  </div>
+</div><!--header-->
+<div class="contents">
+<div class="textblock"><code>#include &lt;stdio.h&gt;</code><br />
+<code>#include &lt;stdlib.h&gt;</code><br />
+<code>#include &lt;string.h&gt;</code><br />
+<code>#include &lt;stdint.h&gt;</code><br />
+<code>#include &lt;unistd.h&gt;</code><br />
+<code>#include &lt;sys/time.h&gt;</code><br />
+<code>#include &lt;pthread.h&gt;</code><br />
+</div><div class="textblock"><div class="dynheader">
+osal_posix.h 的引用(Include)关系图:</div>
+<div class="dyncontent">
+<div class="center"><img src="osal__posix_8h__incl.png" border="0" usemap="#src_2osal__posix_8h" alt=""/></div>
+<map name="src_2osal__posix_8h" id="src_2osal__posix_8h">
+<area shape="rect" title=" " alt="" coords="258,5,385,32"/>
+<area shape="rect" title=" " alt="" coords="5,80,72,107"/>
+<area shape="rect" title=" " alt="" coords="97,80,167,107"/>
+<area shape="rect" title=" " alt="" coords="191,80,262,107"/>
+<area shape="rect" title=" " alt="" coords="286,80,357,107"/>
+<area shape="rect" title=" " alt="" coords="381,80,456,107"/>
+<area shape="rect" title=" " alt="" coords="480,80,571,107"/>
+<area shape="rect" title=" " alt="" coords="595,80,679,107"/>
+</map>
+</div>
+</div>
+<p><a href="osal__posix_8h_source.html">浏览源代码.</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
+宏定义</h2></td></tr>
+<tr class="memitem:a3e7499d1a79c2a98bce3a9ff68535952"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="osal__posix_8h.html#a3e7499d1a79c2a98bce3a9ff68535952">osal_malloc</a>&#160;&#160;&#160;<a class="el" href="structosal__api.html#a1552e969ec8d37736d995171f76610a5">osal_api.malloc</a></td></tr>
+<tr class="separator:a3e7499d1a79c2a98bce3a9ff68535952"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a77f348f482b28b689b239b4157cf7a6f"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="osal__posix_8h.html#a77f348f482b28b689b239b4157cf7a6f">osal_free</a>&#160;&#160;&#160;free</td></tr>
+<tr class="separator:a77f348f482b28b689b239b4157cf7a6f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae5ca66e830ba768f139f4bc2599c39a2"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="osal__posix_8h.html#ae5ca66e830ba768f139f4bc2599c39a2">osal_calloc</a>&#160;&#160;&#160;<a class="el" href="structosal__api.html#a5df0cf1f9b6738d82de5f2768022178f">osal_api.calloc</a></td></tr>
+<tr class="separator:ae5ca66e830ba768f139f4bc2599c39a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1fcdcb28bc3753f50c98afbf36614f48"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="osal__posix_8h.html#a1fcdcb28bc3753f50c98afbf36614f48">osal_realloc</a>&#160;&#160;&#160;<a class="el" href="structosal__api.html#aeb8acca9f490661a073286fadf306097">osal_api.realloc</a></td></tr>
+<tr class="separator:a1fcdcb28bc3753f50c98afbf36614f48"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a75187de435301e8a01c914f19d2679a6"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="osal__posix_8h.html#a75187de435301e8a01c914f19d2679a6">osal_get_version</a>()&#160;&#160;&#160;&quot;1.0.0&quot;</td></tr>
+<tr class="separator:a75187de435301e8a01c914f19d2679a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adf3a3b38bc539cd75aa4a7f5c94d07cd"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="osal__posix_8h.html#adf3a3b38bc539cd75aa4a7f5c94d07cd">osal_task_create</a>&#160;&#160;&#160;<a class="el" href="structosal__api.html#afb41b39a97e12634ed0ebb5bdb2ed741">osal_api.task_create</a></td></tr>
+<tr class="separator:adf3a3b38bc539cd75aa4a7f5c94d07cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2821fc0e60af4ba054a67ecb611503c8"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="osal__posix_8h.html#a2821fc0e60af4ba054a67ecb611503c8">osal_task_self</a>()&#160;&#160;&#160;((<a class="el" href="osal__api_8h.html#aad3686ac1474c34ee7bced69c3b16180">osal_task_t</a>)pthread_self())</td></tr>
+<tr class="separator:a2821fc0e60af4ba054a67ecb611503c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5e7207e8a041c2e2fe1889f4aa75651b"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="osal__posix_8h.html#a5e7207e8a041c2e2fe1889f4aa75651b">osal_task_sleep</a>(s)&#160;&#160;&#160;sleep(s)</td></tr>
+<tr class="separator:a5e7207e8a041c2e2fe1889f4aa75651b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad13eab66aaae3caf9b91af47f9f86ac0"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="osal__posix_8h.html#ad13eab66aaae3caf9b91af47f9f86ac0">osal_task_usleep</a>(us)&#160;&#160;&#160;usleep(us)</td></tr>
+<tr class="separator:ad13eab66aaae3caf9b91af47f9f86ac0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4548741eca01a4df9e702234f42c559e"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="osal__posix_8h.html#a4548741eca01a4df9e702234f42c559e">osal_task_destory</a>(task)&#160;&#160;&#160;pthread_cancel((pthread_t)task)</td></tr>
+<tr class="separator:a4548741eca01a4df9e702234f42c559e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9821d9f351d300440bd59d8ee202b44b"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="osal__posix_8h.html#a9821d9f351d300440bd59d8ee202b44b">osal_task_yield</a>()&#160;&#160;&#160;(-1)</td></tr>
+<tr class="separator:a9821d9f351d300440bd59d8ee202b44b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3294c0b5e7d571102986b8435327e1a5"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="osal__posix_8h.html#a3294c0b5e7d571102986b8435327e1a5">osal_task_suspend</a>(task)&#160;&#160;&#160;(-1)</td></tr>
+<tr class="separator:a3294c0b5e7d571102986b8435327e1a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2a388af9195c210295c09a4352173c8b"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="osal__posix_8h.html#a2a388af9195c210295c09a4352173c8b">osal_task_resume</a>(task)&#160;&#160;&#160;(-1)</td></tr>
+<tr class="separator:a2a388af9195c210295c09a4352173c8b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a07d1e8be4a1efdca5da9bd72cf222bf0"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="osal__posix_8h.html#a07d1e8be4a1efdca5da9bd72cf222bf0">osal_task_get_priority</a>(task,  pri)&#160;&#160;&#160;(-1)</td></tr>
+<tr class="separator:a07d1e8be4a1efdca5da9bd72cf222bf0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1ded953c1f7611fc7cec275be92f742b"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="osal__posix_8h.html#a1ded953c1f7611fc7cec275be92f742b">osal_task_set_priority</a>(task,  pri)&#160;&#160;&#160;(-1)</td></tr>
+<tr class="separator:a1ded953c1f7611fc7cec275be92f742b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<h2 class="groupheader">宏定义说明</h2>
+<a id="ae5ca66e830ba768f139f4bc2599c39a2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae5ca66e830ba768f139f4bc2599c39a2">&#9670;&nbsp;</a></span>osal_calloc</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define <a class="el" href="interfaceosal__calloc.html">osal_calloc</a>&#160;&#160;&#160;<a class="el" href="structosal__api.html#a5df0cf1f9b6738d82de5f2768022178f">osal_api.calloc</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">在文件 <a class="el" href="osal__posix_8h_source.html">osal_posix.h</a> 第 <a class="el" href="osal__posix_8h_source.html#l00017">17</a> 行定义.</p>
+
+</div>
+</div>
+<a id="a77f348f482b28b689b239b4157cf7a6f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a77f348f482b28b689b239b4157cf7a6f">&#9670;&nbsp;</a></span>osal_free</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define <a class="el" href="interfaceosal__free.html">osal_free</a>&#160;&#160;&#160;free</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">在文件 <a class="el" href="osal__posix_8h_source.html">osal_posix.h</a> 第 <a class="el" href="osal__posix_8h_source.html#l00016">16</a> 行定义.</p>
+
+</div>
+</div>
+<a id="a75187de435301e8a01c914f19d2679a6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a75187de435301e8a01c914f19d2679a6">&#9670;&nbsp;</a></span>osal_get_version</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define osal_get_version</td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td>&#160;&#160;&#160;&quot;1.0.0&quot;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">在文件 <a class="el" href="osal__posix_8h_source.html">osal_posix.h</a> 第 <a class="el" href="osal__posix_8h_source.html#l00022">22</a> 行定义.</p>
+
+</div>
+</div>
+<a id="a3e7499d1a79c2a98bce3a9ff68535952"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3e7499d1a79c2a98bce3a9ff68535952">&#9670;&nbsp;</a></span>osal_malloc</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define <a class="el" href="interfaceosal__malloc.html">osal_malloc</a>&#160;&#160;&#160;<a class="el" href="structosal__api.html#a1552e969ec8d37736d995171f76610a5">osal_api.malloc</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">在文件 <a class="el" href="osal__posix_8h_source.html">osal_posix.h</a> 第 <a class="el" href="osal__posix_8h_source.html#l00015">15</a> 行定义.</p>
+
+</div>
+</div>
+<a id="a1fcdcb28bc3753f50c98afbf36614f48"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1fcdcb28bc3753f50c98afbf36614f48">&#9670;&nbsp;</a></span>osal_realloc</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define <a class="el" href="interfaceosal__realloc.html">osal_realloc</a>&#160;&#160;&#160;<a class="el" href="structosal__api.html#aeb8acca9f490661a073286fadf306097">osal_api.realloc</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">在文件 <a class="el" href="osal__posix_8h_source.html">osal_posix.h</a> 第 <a class="el" href="osal__posix_8h_source.html#l00018">18</a> 行定义.</p>
+
+</div>
+</div>
+<a id="adf3a3b38bc539cd75aa4a7f5c94d07cd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adf3a3b38bc539cd75aa4a7f5c94d07cd">&#9670;&nbsp;</a></span>osal_task_create</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define <a class="el" href="interfaceosal__task__create.html">osal_task_create</a>&#160;&#160;&#160;<a class="el" href="structosal__api.html#afb41b39a97e12634ed0ebb5bdb2ed741">osal_api.task_create</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">在文件 <a class="el" href="osal__posix_8h_source.html">osal_posix.h</a> 第 <a class="el" href="osal__posix_8h_source.html#l00026">26</a> 行定义.</p>
+
+</div>
+</div>
+<a id="a4548741eca01a4df9e702234f42c559e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4548741eca01a4df9e702234f42c559e">&#9670;&nbsp;</a></span>osal_task_destory</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define <a class="el" href="interfaceosal__task__destory.html">osal_task_destory</a></td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">task</td><td>)</td>
+          <td>&#160;&#160;&#160;pthread_cancel((pthread_t)task)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">在文件 <a class="el" href="osal__posix_8h_source.html">osal_posix.h</a> 第 <a class="el" href="osal__posix_8h_source.html#l00030">30</a> 行定义.</p>
+
+</div>
+</div>
+<a id="a07d1e8be4a1efdca5da9bd72cf222bf0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a07d1e8be4a1efdca5da9bd72cf222bf0">&#9670;&nbsp;</a></span>osal_task_get_priority</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define osal_task_get_priority</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">task, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">pri&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td>&#160;&#160;&#160;(-1)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">在文件 <a class="el" href="osal__posix_8h_source.html">osal_posix.h</a> 第 <a class="el" href="osal__posix_8h_source.html#l00034">34</a> 行定义.</p>
+
+</div>
+</div>
+<a id="a2a388af9195c210295c09a4352173c8b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2a388af9195c210295c09a4352173c8b">&#9670;&nbsp;</a></span>osal_task_resume</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define osal_task_resume</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">task</td><td>)</td>
+          <td>&#160;&#160;&#160;(-1)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">在文件 <a class="el" href="osal__posix_8h_source.html">osal_posix.h</a> 第 <a class="el" href="osal__posix_8h_source.html#l00033">33</a> 行定义.</p>
+
+</div>
+</div>
+<a id="a2821fc0e60af4ba054a67ecb611503c8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2821fc0e60af4ba054a67ecb611503c8">&#9670;&nbsp;</a></span>osal_task_self</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define osal_task_self</td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td>&#160;&#160;&#160;((<a class="el" href="osal__api_8h.html#aad3686ac1474c34ee7bced69c3b16180">osal_task_t</a>)pthread_self())</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">在文件 <a class="el" href="osal__posix_8h_source.html">osal_posix.h</a> 第 <a class="el" href="osal__posix_8h_source.html#l00027">27</a> 行定义.</p>
+
+</div>
+</div>
+<a id="a1ded953c1f7611fc7cec275be92f742b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1ded953c1f7611fc7cec275be92f742b">&#9670;&nbsp;</a></span>osal_task_set_priority</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define osal_task_set_priority</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">task, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">pri&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td>&#160;&#160;&#160;(-1)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">在文件 <a class="el" href="osal__posix_8h_source.html">osal_posix.h</a> 第 <a class="el" href="osal__posix_8h_source.html#l00035">35</a> 行定义.</p>
+
+</div>
+</div>
+<a id="a5e7207e8a041c2e2fe1889f4aa75651b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5e7207e8a041c2e2fe1889f4aa75651b">&#9670;&nbsp;</a></span>osal_task_sleep</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define osal_task_sleep</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">s</td><td>)</td>
+          <td>&#160;&#160;&#160;sleep(s)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">在文件 <a class="el" href="osal__posix_8h_source.html">osal_posix.h</a> 第 <a class="el" href="osal__posix_8h_source.html#l00028">28</a> 行定义.</p>
+
+</div>
+</div>
+<a id="a3294c0b5e7d571102986b8435327e1a5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3294c0b5e7d571102986b8435327e1a5">&#9670;&nbsp;</a></span>osal_task_suspend</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define <a class="el" href="interfaceosal__task__suspend.html">osal_task_suspend</a></td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">task</td><td>)</td>
+          <td>&#160;&#160;&#160;(-1)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">在文件 <a class="el" href="osal__posix_8h_source.html">osal_posix.h</a> 第 <a class="el" href="osal__posix_8h_source.html#l00032">32</a> 行定义.</p>
+
+</div>
+</div>
+<a id="ad13eab66aaae3caf9b91af47f9f86ac0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad13eab66aaae3caf9b91af47f9f86ac0">&#9670;&nbsp;</a></span>osal_task_usleep</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define osal_task_usleep</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">us</td><td>)</td>
+          <td>&#160;&#160;&#160;usleep(us)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">在文件 <a class="el" href="osal__posix_8h_source.html">osal_posix.h</a> 第 <a class="el" href="osal__posix_8h_source.html#l00029">29</a> 行定义.</p>
+
+</div>
+</div>
+<a id="a9821d9f351d300440bd59d8ee202b44b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9821d9f351d300440bd59d8ee202b44b">&#9670;&nbsp;</a></span>osal_task_yield</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define osal_task_yield</td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td>&#160;&#160;&#160;(-1)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">在文件 <a class="el" href="osal__posix_8h_source.html">osal_posix.h</a> 第 <a class="el" href="osal__posix_8h_source.html#l00031">31</a> 行定义.</p>
+
+</div>
+</div>
+</div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="osal__posix_8h.html">osal_posix.h</a></li>
+    <li class="footer">制作者
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
+  </ul>
+</div>
+</body>
+</html>

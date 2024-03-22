@@ -1,0 +1,476 @@
+\hypertarget{structosal__api}{}\doxysection{osal\+\_\+api结构体 参考}
+\label{structosal__api}\index{osal\_api@{osal\_api}}
+
+
+{\ttfamily \#include $<$osal\+\_\+api.\+h$>$}
+
+
+
+osal\+\_\+api 的协作图\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=190pt]{structosal__api__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{成员变量}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{osal__api_8h_a04985ae7f265cd942091132b2ba0f6f9}{osal\+\_\+api\+\_\+malloc}} \mbox{\hyperlink{structosal__api_a1552e969ec8d37736d995171f76610a5}{malloc}}
+\begin{DoxyCompactList}\small\item\em same as malloc \end{DoxyCompactList}\item 
+\mbox{\hyperlink{osal__api_8h_aaf5843366b08fedce8ae3686eda8d479}{osal\+\_\+api\+\_\+free}} \mbox{\hyperlink{structosal__api_ab3799b6a4c4afb97de469bf181b932eb}{free}}
+\begin{DoxyCompactList}\small\item\em same as free \end{DoxyCompactList}\item 
+\mbox{\hyperlink{osal__api_8h_aa9a65cb08093fc5fffdfef68f7855ec8}{osal\+\_\+api\+\_\+calloc}} \mbox{\hyperlink{structosal__api_a5df0cf1f9b6738d82de5f2768022178f}{calloc}}
+\begin{DoxyCompactList}\small\item\em same as calloc \end{DoxyCompactList}\item 
+\mbox{\hyperlink{osal__api_8h_a35785a9cc43b453a080e2b23f54f77df}{osal\+\_\+api\+\_\+realloc}} \mbox{\hyperlink{structosal__api_aeb8acca9f490661a073286fadf306097}{realloc}}
+\begin{DoxyCompactList}\small\item\em same as realloc \end{DoxyCompactList}\end{DoxyCompactItemize}
+\textbf{ }\par
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{osal__api_8h_a77536c5a92ab9201307652c2b2384e87}{osal\+\_\+api\+\_\+task\+\_\+create}} \mbox{\hyperlink{structosal__api_afb41b39a97e12634ed0ebb5bdb2ed741}{task\+\_\+create}}
+\begin{DoxyCompactList}\small\item\em 创建一个线程 \end{DoxyCompactList}\item 
+\mbox{\hyperlink{osal__api_8h_a6741a6cd257a350c487d607187c054c2}{osal\+\_\+api\+\_\+task\+\_\+destory}} \mbox{\hyperlink{structosal__api_a4dc10be85f445ffa68e982045425cf0a}{task\+\_\+destory}}
+\begin{DoxyCompactList}\small\item\em 销毁一个线程 \end{DoxyCompactList}\item 
+\mbox{\hyperlink{osal__api_8h_aca19fbb44d3d5740f8a4a8906d5c74eb}{osal\+\_\+api\+\_\+task\+\_\+self}} \mbox{\hyperlink{structosal__api_a43c7108a047f2b40aae20717c742d66c}{task\+\_\+self}}
+\begin{DoxyCompactList}\small\item\em 获取当前线程句柄 \end{DoxyCompactList}\item 
+\mbox{\hyperlink{osal__api_8h_aa2415e6bac0ed52bf9b9317f8de9985c}{osal\+\_\+api\+\_\+task\+\_\+yield}} \mbox{\hyperlink{structosal__api_abd719a20d364bf443d9be553e11e0b42}{task\+\_\+yield}}
+\begin{DoxyCompactList}\small\item\em 主动触发线程调度, 为\+R\+T\+O\+S预留 \end{DoxyCompactList}\item 
+\mbox{\hyperlink{osal__api_8h_afe2aba1308804dc636645406eb268bfe}{osal\+\_\+api\+\_\+task\+\_\+sleep}} \mbox{\hyperlink{structosal__api_a77e4ec404b6cdbc770cc5216eab9dbcc}{task\+\_\+sleep}}
+\begin{DoxyCompactList}\small\item\em 线程秒级睡眠 \end{DoxyCompactList}\item 
+\mbox{\hyperlink{osal__api_8h_afaad484aa1a82908b859f8ac0667e0c7}{osal\+\_\+api\+\_\+task\+\_\+usleep}} \mbox{\hyperlink{structosal__api_ae38fe4736441ae84f6af0b4adf6a5014}{task\+\_\+usleep}}
+\begin{DoxyCompactList}\small\item\em 线程微秒级睡眠 \end{DoxyCompactList}\item 
+\mbox{\hyperlink{osal__api_8h_a2cecdee6eea06c1cbd7a34554c45a6ae}{osal\+\_\+api\+\_\+task\+\_\+suspend}} \mbox{\hyperlink{structosal__api_af00749d4f94255ed49ff1cf52fdbb15b}{task\+\_\+suspend}}
+\begin{DoxyCompactList}\small\item\em 线程挂起, 为\+R\+T\+O\+S预留 \end{DoxyCompactList}\item 
+\mbox{\hyperlink{osal__api_8h_a6bb066bb70ece486a53729810a29757f}{osal\+\_\+api\+\_\+task\+\_\+resume}} \mbox{\hyperlink{structosal__api_a9b19b5239fefa11f6d2b9894422516b1}{task\+\_\+resume}}
+\item 
+\mbox{\hyperlink{osal__api_8h_a3c0651c82544f9db0784c29627aeafdf}{osal\+\_\+api\+\_\+task\+\_\+get\+\_\+priority}} \mbox{\hyperlink{structosal__api_a6623843b5bc96646aa183eb801c1a4c8}{task\+\_\+get\+\_\+priority}}
+\item 
+\mbox{\hyperlink{osal__api_8h_ad4f704c4094301cd5e1d85d326b28dad}{osal\+\_\+api\+\_\+task\+\_\+set\+\_\+priority}} \mbox{\hyperlink{structosal__api_a393c7330b128c583c699108b233b549d}{task\+\_\+set\+\_\+priority}}
+\item 
+\mbox{\hyperlink{osal__api_8h_a7854af44fc00e67615ed7ec035c56990}{osal\+\_\+api\+\_\+mutex\+\_\+create}} \mbox{\hyperlink{structosal__api_a927bda32b22e17729b8b235cd1db775f}{mutex\+\_\+create}}
+\item 
+\mbox{\hyperlink{osal__api_8h_a04e3d45c5964a2543d41e686ef847fd7}{osal\+\_\+api\+\_\+mutex\+\_\+destory}} \mbox{\hyperlink{structosal__api_af635592cb313cdcc8d76d349e46f7790}{mutex\+\_\+destory}}
+\item 
+\mbox{\hyperlink{osal__api_8h_aed33f14bf9345618eef8ebf60b4e8fa5}{osal\+\_\+api\+\_\+mutex\+\_\+lock}} \mbox{\hyperlink{structosal__api_af9cdb0e305b4cfc02d9e12ef2d757bf3}{mutex\+\_\+lock}}
+\item 
+\mbox{\hyperlink{osal__api_8h_a5c6232b9f1097cad4f297f345d3f5907}{osal\+\_\+api\+\_\+mutex\+\_\+trylock}} \mbox{\hyperlink{structosal__api_afa6419df5bea8b3c6c403bdc8394c784}{mutex\+\_\+trylock}}
+\item 
+\mbox{\hyperlink{osal__api_8h_a38486da9564400b18ebbd289a555e398}{osal\+\_\+api\+\_\+mutex\+\_\+unlock}} \mbox{\hyperlink{structosal__api_ae9b5360e8404d16ffecadae7deaf14d0}{mutex\+\_\+unlock}}
+\item 
+\mbox{\hyperlink{osal__api_8h_a6b4b66aa52de5a511d1c72476d50676c}{osal\+\_\+api\+\_\+sem\+\_\+create}} \mbox{\hyperlink{structosal__api_adbfa8f07a1de7bf8ff3f8a9c4ac80269}{sem\+\_\+create}}
+\item 
+\mbox{\hyperlink{osal__api_8h_a5cc21246e489dd12a613bda41202b04a}{osal\+\_\+api\+\_\+sem\+\_\+destory}} \mbox{\hyperlink{structosal__api_a50766885d6359831547420dbc8d88b36}{sem\+\_\+destory}}
+\item 
+\mbox{\hyperlink{osal__api_8h_aab3512655093d5a0838e0b0b902329ed}{osal\+\_\+api\+\_\+sem\+\_\+wait}} \mbox{\hyperlink{structosal__api_ac355062acf36678023c2a10c6a64ec82}{sem\+\_\+wait}}
+\item 
+\mbox{\hyperlink{osal__api_8h_a58ec2e9308dc70ebfb6cbbcf8bce97cb}{osal\+\_\+api\+\_\+sem\+\_\+post}} \mbox{\hyperlink{structosal__api_a9e8f43d989bc7918625cf54218f49af6}{sem\+\_\+post}}
+\item 
+\mbox{\hyperlink{osal__api_8h_a749579815aa3a0936e4cbb99d341bcb6}{osal\+\_\+api\+\_\+calc\+\_\+timedwait}} \mbox{\hyperlink{structosal__api_a2eb6f01ed84feb1c56be293c9f13f60f}{calc\+\_\+timedwait}}
+\item 
+\mbox{\hyperlink{osal__api_8h_ae64b65e6c60685dc659aba930ab9d04a}{osal\+\_\+api\+\_\+uptime}} \mbox{\hyperlink{structosal__api_ab8283da51ab61beaf4c213d9bddef8cc}{uptime}}
+\item 
+\mbox{\hyperlink{osal__api_8h_a3fcb9820be9439b0a4cb946de2b21bad}{osal\+\_\+api\+\_\+get\+\_\+version}} \mbox{\hyperlink{structosal__api_ad834c879ea24c563939b3aa5089dd3db}{get\+\_\+version}}
+\end{DoxyCompactItemize}
+
+
+
+\doxysubsection{详细描述}
+
+
+在文件 osal\+\_\+api.\+h 第 220 行定义.
+
+
+
+\doxysubsection{结构体成员变量说明}
+\mbox{\Hypertarget{structosal__api_a2eb6f01ed84feb1c56be293c9f13f60f}\label{structosal__api_a2eb6f01ed84feb1c56be293c9f13f60f}} 
+\index{osal\_api@{osal\_api}!calc\_timedwait@{calc\_timedwait}}
+\index{calc\_timedwait@{calc\_timedwait}!osal\_api@{osal\_api}}
+\doxysubsubsection{\texorpdfstring{calc\_timedwait}{calc\_timedwait}}
+{\footnotesize\ttfamily \mbox{\hyperlink{osal__api_8h_a749579815aa3a0936e4cbb99d341bcb6}{osal\+\_\+api\+\_\+calc\+\_\+timedwait}} calc\+\_\+timedwait}
+
+
+
+在文件 osal\+\_\+api.\+h 第 358 行定义.
+
+\mbox{\Hypertarget{structosal__api_a5df0cf1f9b6738d82de5f2768022178f}\label{structosal__api_a5df0cf1f9b6738d82de5f2768022178f}} 
+\index{osal\_api@{osal\_api}!calloc@{calloc}}
+\index{calloc@{calloc}!osal\_api@{osal\_api}}
+\doxysubsubsection{\texorpdfstring{calloc}{calloc}}
+{\footnotesize\ttfamily \mbox{\hyperlink{osal__api_8h_aa9a65cb08093fc5fffdfef68f7855ec8}{osal\+\_\+api\+\_\+calloc}} calloc}
+
+
+
+same as calloc 
+
+\begin{DoxySeeAlso}{参见}
+\mbox{\hyperlink{interfaceosal__calloc}{osal\+\_\+calloc}} 
+\end{DoxySeeAlso}
+
+
+在文件 osal\+\_\+api.\+h 第 241 行定义.
+
+\mbox{\Hypertarget{structosal__api_ab3799b6a4c4afb97de469bf181b932eb}\label{structosal__api_ab3799b6a4c4afb97de469bf181b932eb}} 
+\index{osal\_api@{osal\_api}!free@{free}}
+\index{free@{free}!osal\_api@{osal\_api}}
+\doxysubsubsection{\texorpdfstring{free}{free}}
+{\footnotesize\ttfamily \mbox{\hyperlink{osal__api_8h_aaf5843366b08fedce8ae3686eda8d479}{osal\+\_\+api\+\_\+free}} free}
+
+
+
+same as free 
+
+\begin{DoxySeeAlso}{参见}
+\mbox{\hyperlink{interfaceosal__free}{osal\+\_\+free}} 
+\end{DoxySeeAlso}
+
+
+在文件 osal\+\_\+api.\+h 第 234 行定义.
+
+\mbox{\Hypertarget{structosal__api_ad834c879ea24c563939b3aa5089dd3db}\label{structosal__api_ad834c879ea24c563939b3aa5089dd3db}} 
+\index{osal\_api@{osal\_api}!get\_version@{get\_version}}
+\index{get\_version@{get\_version}!osal\_api@{osal\_api}}
+\doxysubsubsection{\texorpdfstring{get\_version}{get\_version}}
+{\footnotesize\ttfamily \mbox{\hyperlink{osal__api_8h_a3fcb9820be9439b0a4cb946de2b21bad}{osal\+\_\+api\+\_\+get\+\_\+version}} get\+\_\+version}
+
+
+
+在文件 osal\+\_\+api.\+h 第 362 行定义.
+
+\mbox{\Hypertarget{structosal__api_a1552e969ec8d37736d995171f76610a5}\label{structosal__api_a1552e969ec8d37736d995171f76610a5}} 
+\index{osal\_api@{osal\_api}!malloc@{malloc}}
+\index{malloc@{malloc}!osal\_api@{osal\_api}}
+\doxysubsubsection{\texorpdfstring{malloc}{malloc}}
+{\footnotesize\ttfamily \mbox{\hyperlink{osal__api_8h_a04985ae7f265cd942091132b2ba0f6f9}{osal\+\_\+api\+\_\+malloc}} malloc}
+
+
+
+same as malloc 
+
+\begin{DoxySeeAlso}{参见}
+\mbox{\hyperlink{interfaceosal__malloc}{osal\+\_\+malloc}} 
+\end{DoxySeeAlso}
+
+
+在文件 osal\+\_\+api.\+h 第 227 行定义.
+
+\mbox{\Hypertarget{structosal__api_a927bda32b22e17729b8b235cd1db775f}\label{structosal__api_a927bda32b22e17729b8b235cd1db775f}} 
+\index{osal\_api@{osal\_api}!mutex\_create@{mutex\_create}}
+\index{mutex\_create@{mutex\_create}!osal\_api@{osal\_api}}
+\doxysubsubsection{\texorpdfstring{mutex\_create}{mutex\_create}}
+{\footnotesize\ttfamily \mbox{\hyperlink{osal__api_8h_a7854af44fc00e67615ed7ec035c56990}{osal\+\_\+api\+\_\+mutex\+\_\+create}} mutex\+\_\+create}
+
+
+
+在文件 osal\+\_\+api.\+h 第 345 行定义.
+
+\mbox{\Hypertarget{structosal__api_af635592cb313cdcc8d76d349e46f7790}\label{structosal__api_af635592cb313cdcc8d76d349e46f7790}} 
+\index{osal\_api@{osal\_api}!mutex\_destory@{mutex\_destory}}
+\index{mutex\_destory@{mutex\_destory}!osal\_api@{osal\_api}}
+\doxysubsubsection{\texorpdfstring{mutex\_destory}{mutex\_destory}}
+{\footnotesize\ttfamily \mbox{\hyperlink{osal__api_8h_a04e3d45c5964a2543d41e686ef847fd7}{osal\+\_\+api\+\_\+mutex\+\_\+destory}} mutex\+\_\+destory}
+
+
+
+在文件 osal\+\_\+api.\+h 第 346 行定义.
+
+\mbox{\Hypertarget{structosal__api_af9cdb0e305b4cfc02d9e12ef2d757bf3}\label{structosal__api_af9cdb0e305b4cfc02d9e12ef2d757bf3}} 
+\index{osal\_api@{osal\_api}!mutex\_lock@{mutex\_lock}}
+\index{mutex\_lock@{mutex\_lock}!osal\_api@{osal\_api}}
+\doxysubsubsection{\texorpdfstring{mutex\_lock}{mutex\_lock}}
+{\footnotesize\ttfamily \mbox{\hyperlink{osal__api_8h_aed33f14bf9345618eef8ebf60b4e8fa5}{osal\+\_\+api\+\_\+mutex\+\_\+lock}} mutex\+\_\+lock}
+
+
+
+在文件 osal\+\_\+api.\+h 第 347 行定义.
+
+\mbox{\Hypertarget{structosal__api_afa6419df5bea8b3c6c403bdc8394c784}\label{structosal__api_afa6419df5bea8b3c6c403bdc8394c784}} 
+\index{osal\_api@{osal\_api}!mutex\_trylock@{mutex\_trylock}}
+\index{mutex\_trylock@{mutex\_trylock}!osal\_api@{osal\_api}}
+\doxysubsubsection{\texorpdfstring{mutex\_trylock}{mutex\_trylock}}
+{\footnotesize\ttfamily \mbox{\hyperlink{osal__api_8h_a5c6232b9f1097cad4f297f345d3f5907}{osal\+\_\+api\+\_\+mutex\+\_\+trylock}} mutex\+\_\+trylock}
+
+
+
+在文件 osal\+\_\+api.\+h 第 348 行定义.
+
+\mbox{\Hypertarget{structosal__api_ae9b5360e8404d16ffecadae7deaf14d0}\label{structosal__api_ae9b5360e8404d16ffecadae7deaf14d0}} 
+\index{osal\_api@{osal\_api}!mutex\_unlock@{mutex\_unlock}}
+\index{mutex\_unlock@{mutex\_unlock}!osal\_api@{osal\_api}}
+\doxysubsubsection{\texorpdfstring{mutex\_unlock}{mutex\_unlock}}
+{\footnotesize\ttfamily \mbox{\hyperlink{osal__api_8h_a38486da9564400b18ebbd289a555e398}{osal\+\_\+api\+\_\+mutex\+\_\+unlock}} mutex\+\_\+unlock}
+
+
+
+在文件 osal\+\_\+api.\+h 第 349 行定义.
+
+\mbox{\Hypertarget{structosal__api_aeb8acca9f490661a073286fadf306097}\label{structosal__api_aeb8acca9f490661a073286fadf306097}} 
+\index{osal\_api@{osal\_api}!realloc@{realloc}}
+\index{realloc@{realloc}!osal\_api@{osal\_api}}
+\doxysubsubsection{\texorpdfstring{realloc}{realloc}}
+{\footnotesize\ttfamily \mbox{\hyperlink{osal__api_8h_a35785a9cc43b453a080e2b23f54f77df}{osal\+\_\+api\+\_\+realloc}} realloc}
+
+
+
+same as realloc 
+
+\begin{DoxySeeAlso}{参见}
+\mbox{\hyperlink{interfaceosal__realloc}{osal\+\_\+realloc}} 
+\end{DoxySeeAlso}
+
+
+在文件 osal\+\_\+api.\+h 第 248 行定义.
+
+\mbox{\Hypertarget{structosal__api_adbfa8f07a1de7bf8ff3f8a9c4ac80269}\label{structosal__api_adbfa8f07a1de7bf8ff3f8a9c4ac80269}} 
+\index{osal\_api@{osal\_api}!sem\_create@{sem\_create}}
+\index{sem\_create@{sem\_create}!osal\_api@{osal\_api}}
+\doxysubsubsection{\texorpdfstring{sem\_create}{sem\_create}}
+{\footnotesize\ttfamily \mbox{\hyperlink{osal__api_8h_a6b4b66aa52de5a511d1c72476d50676c}{osal\+\_\+api\+\_\+sem\+\_\+create}} sem\+\_\+create}
+
+
+
+在文件 osal\+\_\+api.\+h 第 352 行定义.
+
+\mbox{\Hypertarget{structosal__api_a50766885d6359831547420dbc8d88b36}\label{structosal__api_a50766885d6359831547420dbc8d88b36}} 
+\index{osal\_api@{osal\_api}!sem\_destory@{sem\_destory}}
+\index{sem\_destory@{sem\_destory}!osal\_api@{osal\_api}}
+\doxysubsubsection{\texorpdfstring{sem\_destory}{sem\_destory}}
+{\footnotesize\ttfamily \mbox{\hyperlink{osal__api_8h_a5cc21246e489dd12a613bda41202b04a}{osal\+\_\+api\+\_\+sem\+\_\+destory}} sem\+\_\+destory}
+
+
+
+在文件 osal\+\_\+api.\+h 第 353 行定义.
+
+\mbox{\Hypertarget{structosal__api_a9e8f43d989bc7918625cf54218f49af6}\label{structosal__api_a9e8f43d989bc7918625cf54218f49af6}} 
+\index{osal\_api@{osal\_api}!sem\_post@{sem\_post}}
+\index{sem\_post@{sem\_post}!osal\_api@{osal\_api}}
+\doxysubsubsection{\texorpdfstring{sem\_post}{sem\_post}}
+{\footnotesize\ttfamily \mbox{\hyperlink{osal__api_8h_a58ec2e9308dc70ebfb6cbbcf8bce97cb}{osal\+\_\+api\+\_\+sem\+\_\+post}} sem\+\_\+post}
+
+
+
+在文件 osal\+\_\+api.\+h 第 355 行定义.
+
+\mbox{\Hypertarget{structosal__api_ac355062acf36678023c2a10c6a64ec82}\label{structosal__api_ac355062acf36678023c2a10c6a64ec82}} 
+\index{osal\_api@{osal\_api}!sem\_wait@{sem\_wait}}
+\index{sem\_wait@{sem\_wait}!osal\_api@{osal\_api}}
+\doxysubsubsection{\texorpdfstring{sem\_wait}{sem\_wait}}
+{\footnotesize\ttfamily \mbox{\hyperlink{osal__api_8h_aab3512655093d5a0838e0b0b902329ed}{osal\+\_\+api\+\_\+sem\+\_\+wait}} sem\+\_\+wait}
+
+
+
+在文件 osal\+\_\+api.\+h 第 354 行定义.
+
+\mbox{\Hypertarget{structosal__api_afb41b39a97e12634ed0ebb5bdb2ed741}\label{structosal__api_afb41b39a97e12634ed0ebb5bdb2ed741}} 
+\index{osal\_api@{osal\_api}!task\_create@{task\_create}}
+\index{task\_create@{task\_create}!osal\_api@{osal\_api}}
+\doxysubsubsection{\texorpdfstring{task\_create}{task\_create}}
+{\footnotesize\ttfamily \mbox{\hyperlink{osal__api_8h_a77536c5a92ab9201307652c2b2384e87}{osal\+\_\+api\+\_\+task\+\_\+create}} task\+\_\+create}
+
+
+
+创建一个线程 
+
+
+\begin{DoxyParams}{参数}
+{\em name} & 线程名, 可以填\+N\+U\+LL \\
+\hline
+{\em func} & 线程入口, seeosal\+\_\+task\+\_\+func\+\_\+t\} \\
+\hline
+{\em arg} & 线程参数 \\
+\hline
+{\em stack\+\_\+start} & 线程栈地址, 为\+R\+T\+O\+S预留 \\
+\hline
+{\em stack\+\_\+size} & 线程栈大小 \\
+\hline
+{\em priority} & 线程优先级, 为\+R\+T\+O\+S预留\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{返回}
+线程句柄 N\+U\+LL, 创建失败
+\end{DoxyReturn}
+\begin{DoxySeeAlso}{参见}
+\mbox{\hyperlink{interfaceosal__task__create}{osal\+\_\+task\+\_\+create}} 
+\end{DoxySeeAlso}
+
+
+在文件 osal\+\_\+api.\+h 第 266 行定义.
+
+\mbox{\Hypertarget{structosal__api_a4dc10be85f445ffa68e982045425cf0a}\label{structosal__api_a4dc10be85f445ffa68e982045425cf0a}} 
+\index{osal\_api@{osal\_api}!task\_destory@{task\_destory}}
+\index{task\_destory@{task\_destory}!osal\_api@{osal\_api}}
+\doxysubsubsection{\texorpdfstring{task\_destory}{task\_destory}}
+{\footnotesize\ttfamily \mbox{\hyperlink{osal__api_8h_a6741a6cd257a350c487d607187c054c2}{osal\+\_\+api\+\_\+task\+\_\+destory}} task\+\_\+destory}
+
+
+
+销毁一个线程 
+
+
+\begin{DoxyParams}{参数}
+{\em task} & 线程句柄\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{返回}
+O\+S\+A\+L\+\_\+\+A\+P\+I\+\_\+\+OK\+: 成功, 其他\+: 失败
+\end{DoxyReturn}
+\begin{DoxySeeAlso}{参见}
+\mbox{\hyperlink{osal__api_8h_a2bbe2dbad23f922c4a1fb6bf040fac28}{O\+S\+A\+L\+\_\+\+A\+P\+I\+\_\+\+R\+ET}} 
+
+\mbox{\hyperlink{interfaceosal__task__destory}{osal\+\_\+task\+\_\+destory}} 
+\end{DoxySeeAlso}
+
+
+在文件 osal\+\_\+api.\+h 第 280 行定义.
+
+\mbox{\Hypertarget{structosal__api_a6623843b5bc96646aa183eb801c1a4c8}\label{structosal__api_a6623843b5bc96646aa183eb801c1a4c8}} 
+\index{osal\_api@{osal\_api}!task\_get\_priority@{task\_get\_priority}}
+\index{task\_get\_priority@{task\_get\_priority}!osal\_api@{osal\_api}}
+\doxysubsubsection{\texorpdfstring{task\_get\_priority}{task\_get\_priority}}
+{\footnotesize\ttfamily \mbox{\hyperlink{osal__api_8h_a3c0651c82544f9db0784c29627aeafdf}{osal\+\_\+api\+\_\+task\+\_\+get\+\_\+priority}} task\+\_\+get\+\_\+priority}
+
+
+
+在文件 osal\+\_\+api.\+h 第 341 行定义.
+
+\mbox{\Hypertarget{structosal__api_a9b19b5239fefa11f6d2b9894422516b1}\label{structosal__api_a9b19b5239fefa11f6d2b9894422516b1}} 
+\index{osal\_api@{osal\_api}!task\_resume@{task\_resume}}
+\index{task\_resume@{task\_resume}!osal\_api@{osal\_api}}
+\doxysubsubsection{\texorpdfstring{task\_resume}{task\_resume}}
+{\footnotesize\ttfamily \mbox{\hyperlink{osal__api_8h_a6bb066bb70ece486a53729810a29757f}{osal\+\_\+api\+\_\+task\+\_\+resume}} task\+\_\+resume}
+
+
+
+在文件 osal\+\_\+api.\+h 第 340 行定义.
+
+\mbox{\Hypertarget{structosal__api_a43c7108a047f2b40aae20717c742d66c}\label{structosal__api_a43c7108a047f2b40aae20717c742d66c}} 
+\index{osal\_api@{osal\_api}!task\_self@{task\_self}}
+\index{task\_self@{task\_self}!osal\_api@{osal\_api}}
+\doxysubsubsection{\texorpdfstring{task\_self}{task\_self}}
+{\footnotesize\ttfamily \mbox{\hyperlink{osal__api_8h_aca19fbb44d3d5740f8a4a8906d5c74eb}{osal\+\_\+api\+\_\+task\+\_\+self}} task\+\_\+self}
+
+
+
+获取当前线程句柄 
+
+\begin{DoxyReturn}{返回}
+线程句柄 
+\end{DoxyReturn}
+
+
+在文件 osal\+\_\+api.\+h 第 289 行定义.
+
+\mbox{\Hypertarget{structosal__api_a393c7330b128c583c699108b233b549d}\label{structosal__api_a393c7330b128c583c699108b233b549d}} 
+\index{osal\_api@{osal\_api}!task\_set\_priority@{task\_set\_priority}}
+\index{task\_set\_priority@{task\_set\_priority}!osal\_api@{osal\_api}}
+\doxysubsubsection{\texorpdfstring{task\_set\_priority}{task\_set\_priority}}
+{\footnotesize\ttfamily \mbox{\hyperlink{osal__api_8h_ad4f704c4094301cd5e1d85d326b28dad}{osal\+\_\+api\+\_\+task\+\_\+set\+\_\+priority}} task\+\_\+set\+\_\+priority}
+
+
+
+在文件 osal\+\_\+api.\+h 第 342 行定义.
+
+\mbox{\Hypertarget{structosal__api_a77e4ec404b6cdbc770cc5216eab9dbcc}\label{structosal__api_a77e4ec404b6cdbc770cc5216eab9dbcc}} 
+\index{osal\_api@{osal\_api}!task\_sleep@{task\_sleep}}
+\index{task\_sleep@{task\_sleep}!osal\_api@{osal\_api}}
+\doxysubsubsection{\texorpdfstring{task\_sleep}{task\_sleep}}
+{\footnotesize\ttfamily \mbox{\hyperlink{osal__api_8h_afe2aba1308804dc636645406eb268bfe}{osal\+\_\+api\+\_\+task\+\_\+sleep}} task\+\_\+sleep}
+
+
+
+线程秒级睡眠 
+
+
+\begin{DoxyParams}{参数}
+{\em s} & sleep time(s)\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{返回}
+O\+S\+A\+L\+\_\+\+A\+P\+I\+\_\+\+OK\+: 成功, 其他\+: 失败
+\end{DoxyReturn}
+\begin{DoxySeeAlso}{参见}
+\mbox{\hyperlink{osal__api_8h_a2bbe2dbad23f922c4a1fb6bf040fac28}{O\+S\+A\+L\+\_\+\+A\+P\+I\+\_\+\+R\+ET}} 
+\end{DoxySeeAlso}
+
+
+在文件 osal\+\_\+api.\+h 第 313 行定义.
+
+\mbox{\Hypertarget{structosal__api_af00749d4f94255ed49ff1cf52fdbb15b}\label{structosal__api_af00749d4f94255ed49ff1cf52fdbb15b}} 
+\index{osal\_api@{osal\_api}!task\_suspend@{task\_suspend}}
+\index{task\_suspend@{task\_suspend}!osal\_api@{osal\_api}}
+\doxysubsubsection{\texorpdfstring{task\_suspend}{task\_suspend}}
+{\footnotesize\ttfamily \mbox{\hyperlink{osal__api_8h_a2cecdee6eea06c1cbd7a34554c45a6ae}{osal\+\_\+api\+\_\+task\+\_\+suspend}} task\+\_\+suspend}
+
+
+
+线程挂起, 为\+R\+T\+O\+S预留 
+
+
+\begin{DoxyParams}{参数}
+{\em task} & 线程句柄\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{返回}
+O\+S\+A\+L\+\_\+\+A\+P\+I\+\_\+\+OK\+: 成功, 其他\+: 失败
+\end{DoxyReturn}
+\begin{DoxySeeAlso}{参见}
+\mbox{\hyperlink{interfaceosal__task__suspend}{osal\+\_\+task\+\_\+suspend}} 
+\end{DoxySeeAlso}
+
+
+在文件 osal\+\_\+api.\+h 第 339 行定义.
+
+\mbox{\Hypertarget{structosal__api_ae38fe4736441ae84f6af0b4adf6a5014}\label{structosal__api_ae38fe4736441ae84f6af0b4adf6a5014}} 
+\index{osal\_api@{osal\_api}!task\_usleep@{task\_usleep}}
+\index{task\_usleep@{task\_usleep}!osal\_api@{osal\_api}}
+\doxysubsubsection{\texorpdfstring{task\_usleep}{task\_usleep}}
+{\footnotesize\ttfamily \mbox{\hyperlink{osal__api_8h_afaad484aa1a82908b859f8ac0667e0c7}{osal\+\_\+api\+\_\+task\+\_\+usleep}} task\+\_\+usleep}
+
+
+
+线程微秒级睡眠 
+
+
+\begin{DoxyParams}{参数}
+{\em s} & sleep time(us)\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{返回}
+O\+S\+A\+L\+\_\+\+A\+P\+I\+\_\+\+OK\+: 成功, 其他\+: 失败
+\end{DoxyReturn}
+\begin{DoxySeeAlso}{参见}
+\mbox{\hyperlink{osal__api_8h_a2bbe2dbad23f922c4a1fb6bf040fac28}{O\+S\+A\+L\+\_\+\+A\+P\+I\+\_\+\+R\+ET}} 
+\end{DoxySeeAlso}
+
+
+在文件 osal\+\_\+api.\+h 第 326 行定义.
+
+\mbox{\Hypertarget{structosal__api_abd719a20d364bf443d9be553e11e0b42}\label{structosal__api_abd719a20d364bf443d9be553e11e0b42}} 
+\index{osal\_api@{osal\_api}!task\_yield@{task\_yield}}
+\index{task\_yield@{task\_yield}!osal\_api@{osal\_api}}
+\doxysubsubsection{\texorpdfstring{task\_yield}{task\_yield}}
+{\footnotesize\ttfamily \mbox{\hyperlink{osal__api_8h_aa2415e6bac0ed52bf9b9317f8de9985c}{osal\+\_\+api\+\_\+task\+\_\+yield}} task\+\_\+yield}
+
+
+
+主动触发线程调度, 为\+R\+T\+O\+S预留 
+
+\begin{DoxyReturn}{返回}
+O\+S\+A\+L\+\_\+\+A\+P\+I\+\_\+\+OK\+: 成功, 其他\+: 失败
+\end{DoxyReturn}
+\begin{DoxySeeAlso}{参见}
+\mbox{\hyperlink{osal__api_8h_a2bbe2dbad23f922c4a1fb6bf040fac28}{O\+S\+A\+L\+\_\+\+A\+P\+I\+\_\+\+R\+ET}} 
+\end{DoxySeeAlso}
+
+
+在文件 osal\+\_\+api.\+h 第 300 行定义.
+
+\mbox{\Hypertarget{structosal__api_ab8283da51ab61beaf4c213d9bddef8cc}\label{structosal__api_ab8283da51ab61beaf4c213d9bddef8cc}} 
+\index{osal\_api@{osal\_api}!uptime@{uptime}}
+\index{uptime@{uptime}!osal\_api@{osal\_api}}
+\doxysubsubsection{\texorpdfstring{uptime}{uptime}}
+{\footnotesize\ttfamily \mbox{\hyperlink{osal__api_8h_ae64b65e6c60685dc659aba930ab9d04a}{osal\+\_\+api\+\_\+uptime}} uptime}
+
+
+
+在文件 osal\+\_\+api.\+h 第 361 行定义.
+
