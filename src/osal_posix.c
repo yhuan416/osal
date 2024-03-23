@@ -147,7 +147,7 @@ int osal_posix_mutex_destory(osal_mutex_t mutex)
     return OSAL_API_OK;
 }
 
-int osal_posix_mutex_lock(osal_mutex_t mutex)
+int osal_posix_mutex_lock(osal_mutex_t mutex, uint32_t timeout_ms)
 {
     if (mutex == NULL)
     {
@@ -204,7 +204,7 @@ int osal_posix_sem_destory(osal_sem_t sem)
     return OSAL_API_OK;
 }
 
-int osal_posix_sem_wait(osal_sem_t sem, uint32_t timeout)
+int osal_posix_sem_wait(osal_sem_t sem, uint32_t timeout_ms)
 {
     struct timespec tm = {0};
 
@@ -214,18 +214,17 @@ int osal_posix_sem_wait(osal_sem_t sem, uint32_t timeout)
         return OSAL_API_INVALID;
     }
 
-    if (timeout == 0)
+    if (timeout_ms == 0)
     {
         return sem_trywait((sem_t *)sem);
     }
-    else if (timeout == OSAL_API_WAITFOREVER)
+    else if (timeout_ms == OSAL_API_WAITFOREVER)
     {
         return sem_wait((sem_t *)sem);
     }
     else
     {
-        // TODO: implement timeout
-        osal_calc_timedwait(&tm, timeout);
+        osal_calc_timedwait(&tm, timeout_ms);
         return sem_timedwait((sem_t *)sem, &tm);
     }
 
@@ -243,7 +242,7 @@ int osal_posix_sem_post(osal_sem_t sem)
     return sem_post((sem_t *)sem);
 }
 
-int osal_posix_calc_timedwait(struct timespec *tm, uint32_t s)
+int osal_posix_calc_timedwait(struct timespec *tm, uint32_t ms)
 {
     struct timeval tv;
 
@@ -254,8 +253,8 @@ int osal_posix_calc_timedwait(struct timespec *tm, uint32_t s)
     }
 
     gettimeofday(&tv, NULL);
-    tv.tv_sec += s / 1000;
-    tv.tv_usec += (s % 1000) * 1000;
+    tv.tv_sec += ms / 1000;
+    tv.tv_usec += (ms % 1000) * 1000;
     if (tv.tv_usec >= 1000000)
     {
         tv.tv_usec -= 1000000;
@@ -295,6 +294,7 @@ osal_api_t osal_api = {
     .sem_post = osal_posix_sem_post,
 
     .uptime = osal_posix_uptime,
+    .calc_timedwait = osal_posix_calc_timedwait,
 };
 
 #endif

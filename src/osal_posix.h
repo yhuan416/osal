@@ -24,15 +24,16 @@
 
 #ifndef osal_task_create
 #define osal_task_create osal_api.task_create
+#define osal_task_create_pin_to_core(a, b, c, d, e, f, g) osal_task_create(a, b, c, d, e, f)
 #define osal_task_self() ((osal_task_t)pthread_self())
 #define osal_task_sleep(s) sleep(s)
 #define osal_task_usleep(us) usleep(us)
 #define osal_task_destory(task) pthread_cancel((pthread_t)task)
-#define osal_task_yield() (-1)
-#define osal_task_suspend(task) (-1)
-#define osal_task_resume(task) (-1)
-#define osal_task_get_priority(task, pri) (-1)
-#define osal_task_set_priority(task, pri) (-1)
+#define osal_task_yield()
+#define osal_task_suspend(task)
+#define osal_task_resume(task)
+#define osal_task_get_priority(task, pri)
+#define osal_task_set_priority(task, pri)
 #endif // !osal_task_create
 
 #endif

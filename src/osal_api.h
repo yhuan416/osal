@@ -5,11 +5,6 @@
 #include "osal_posix.h"
 #endif
 
-/**
- * @brief osal_api 返回值
- *
- * @enum osal_api_ret
- */
 enum osal_api_ret
 {
     OSAL_API_OK = 0,              /*!< ok */
@@ -19,99 +14,74 @@ enum osal_api_ret
     OSAL_API_MEM_ALLOC_FAIL = -4, /*!< no mem */
 };
 
-/**
- * @brief wait forever
- * 
- */
 #define OSAL_API_WAITFOREVER (-1)
 
 //////////////////////////////////////////////// mem
 
-/// \addtogroup osal_api
-/// @{
-
 /**
- * @brief same as malloc
- *
- * @interface osal_malloc
- *
- * @param[in] size 申请的内存大小
- *
- * @note void *osal_malloc(size_t size);
+ * @brief malloc
+ * 
+ * @name osal_malloc
+ * 
+ * @param[in] size 内存大小
+ * 
+ * @retval NULL 申请失败
+ * @retval other 内存基地址
  */
 typedef void *(*osal_api_malloc)(size_t size);
 
 /**
- * @brief same as free
- *
- * @interface osal_free
- *
- * @param[in] ptr 内存地址
- *
- * @note void osal_free(void *ptr);
- *
+ * @brief free
+ * 
+ * @name osal_free
+ * 
+ * @param[in] ptr 要释放的内存地址
  */
 typedef void (*osal_api_free)(void *ptr);
 
 /**
- * @brief same as calloc
- *
- * @interface osal_calloc
- *
- * @param[in] num 分配的内存块数
- * @param[in] size 单块内存的大小
- *
- * @note void *osal_calloc(size_t num, size_t size);
- *
+ * @brief calloc
+ * 
+ * @name osal_calloc
+ * 
+ * @param[in] num 数量
+ * @param[in] size 单块内存大小
+ * 
+ * @retval NULL 申请失败
+ * @retval other 内存基地址
  */
 typedef void *(*osal_api_calloc)(size_t num, size_t size);
 
 /**
- * @brief same as realloc
- *
- * @interface osal_realloc
- *
- * @param[in] ptr 内存地址
- * @param[in] size 新的大小
- *
- * @note void *osal_realloc(void *ptr, size_t size);
+ * @brief realloc
+ * 
+ * @name osal_realloc
+ * 
+ * @param[in] ptr 内存基地址, 为 NULL 时, 该函数等同calloc
+ * @param[in] size 内存大小, 为 0 时, 该函数等同free
+ * 
+ * @retval 新申请到的地址
  */
 typedef void *(*osal_api_realloc)(void *ptr, size_t size);
 
-/// @}
-
 //////////////////////////////////////////////// task
 typedef void *osal_task_t;
-
-/**
- * @brief 线程入口
- *
- * @interface osal_task_func_t
- *
- * @param[in] arg 线程参数
- */
 typedef void *(*osal_task_func_t)(void *arg);
 
 /**
- * @brief 创建一个线程
- *
- * @interface osal_task_create
- *
- * @param[in] name 线程名, 可以填NULL
- * @param[in] func 线程入口
- * @param[in] arg 线程参数
- * @param[in] stack_start 线程栈地址, 为RTOS预留
- * @param[in] stack_size 线程栈大小
- * @param[in] priority 线程优先级, 为RTOS预留
- *
- * @return 线程句柄 or NULL
- *
- * @note osal_task_t osal_task_create(const char *name,
-                                            osal_task_func_t func,
-                                            void *arg,
-                                            void *stack_start,
-                                            int stack_size,
-                                            int priority);
+ * @brief task_create
+ * 
+ * @name osal_task_create
+ * 
+ * @param[in] name 任务名
+ * @param[in] func 任务入口
+ * @param[in] arg 传递给任务的参数
+ * @param[in] stack_start 任务栈起始地址, 为rtos预留
+ * @param[in] stack_size 任务栈大小
+ * @param[in] priority 任务优先级, 为rtos预留
+ * 
+ * @retval NULL 任务创建失败
+ * @retval other 任务句柄
  */
 typedef osal_task_t (*osal_api_task_create)(const char *name,
                                             osal_task_func_t func,
@@ -121,18 +91,38 @@ typedef osal_task_t (*osal_api_task_create)(const char *name,
                                             int priority);
 
 /**
- * @brief 销毁一个线程
- *
- * @interface osal_task_destory
- *
- * @param[in] task 线程句柄
- *
- * @return OSAL_API_OK: 成功, 其他: 失败
- *
- * @see osal_api_ret
+ * @brief task_create_pin_to_core
  * 
- * @note int osal_task_destory(osal_task_t task);
- *
+ * @name osal_task_create_pin_to_core
+ * 
+ * @param[in] name 任务名
+ * @param[in] func 任务入口
+ * @param[in] arg 传递给任务的参数
+ * @param[in] stack_start 任务栈起始地址, 为rtos预留
+ * @param[in] stack_size 任务栈大小
+ * @param[in] priority 任务优先级, 为rtos预留
+ * @param[in] core_id 任务核心亲和性
+ * 
+ * @retval NULL 任务创建失败
+ * @retval other 任务句柄
+ */
+typedef osal_task_t (*osal_api_task_create_pin_to_core)(const char *name,
+                                                        osal_task_func_t func,
+                                                        void *arg,
+                                                        void *stack_start,
+                                                        int stack_size,
+                                                        int priority,
+                                                        int core_id);
+
+/**
+ * @brief task_destory
+ * 
+ * @name osal_task_destory
+ * 
+ * @param[in] task 任务句柄
+ * 
+ * @retval OSAL_API_OK 成功
+ * @retval other 失败
  */
 typedef int (*osal_api_task_destory)(osal_task_t task);
 
@@ -144,63 +134,12 @@ typedef int (*osal_api_task_sleep)(uint32_t s);
 
 typedef int (*osal_api_task_usleep)(uint32_t us);
 
-/**
- * @brief 线程挂起, 为RTOS预留.
- *
- * @interface osal_task_suspend
- *
- * @param[in] task 线程句柄
- *
- * @return OSAL_API_OK: 成功, 其他: 失败
- *
- * @see osal_api_ret
- *
- */
 typedef int (*osal_api_task_suspend)(osal_task_t task);
 
-/**
- * @name osal_task_resume
- *
- * @interface osal_task_suspend
- * @brief 线程恢复, 为RTOS预留
- *
- * @param[in] task 线程句柄
- *
- * @return OSAL_API_OK: 成功, 其他: 失败
- * 
- * @see osal_api_ret
- *
- */
 typedef int (*osal_api_task_resume)(osal_task_t task);
 
-/**
- * @name osal_task_get_priority
- *
- * @brief 获取线程优先级, 为RTOS预留
- *
- * @param task 线程句柄
- * @param priority [out] 线程优先级
- *
- * @return OSAL_API_OK: 成功, 其他: 失败
- * 
- * @see osal_api_ret
- *
- */
 typedef int (*osal_api_task_get_priority)(osal_task_t task, int *priority);
 
-/**
- * @name osal_task_set_priority
- *
- * @brief 设置线程优先级, 为RTOS预留
- *
- * @param task 线程句柄
- * @param priority 线程优先级
- *
- * @return OSAL_API_OK: 成功, 其他: 失败
- * 
- * @see osal_api_ret
- *
- */
 typedef int (*osal_api_task_set_priority)(osal_task_t task, int priority);
 
 //////////////////////////////////////////////// mutex
@@ -210,7 +149,7 @@ typedef osal_mutex_t (*osal_api_mutex_create)(void);
 
 typedef int (*osal_api_mutex_destory)(osal_mutex_t mutex);
 
-typedef int (*osal_api_mutex_lock)(osal_mutex_t mutex);
+typedef int (*osal_api_mutex_lock)(osal_mutex_t mutex, uint32_t timeout_ms);
 
 typedef int (*osal_api_mutex_trylock)(osal_mutex_t mutex);
 
@@ -223,149 +162,63 @@ typedef osal_sem_t (*osal_api_sem_create)(uint32_t init);
 
 typedef int (*osal_api_sem_destory)(osal_sem_t sem);
 
-typedef int (*osal_api_sem_wait)(osal_sem_t sem, uint32_t timeout);
+typedef int (*osal_api_sem_wait)(osal_sem_t sem, uint32_t timeout_ms);
 
 typedef int (*osal_api_sem_post)(osal_sem_t sem);
 
 ////////////////////////////////////////////////// shm
+typedef void *(*osal_api_shm_create)(const char *key, int size);
+
+typedef int (*osal_api_shm_destory)(void *shm);
 
 //////////////////////////////////////////////// event
+typedef void *osal_event_t;
+
+typedef osal_event_t (*osal_api_event_create)(void);
+
+typedef void (*osal_api_event_destory)(osal_event_t event);
+
+typedef int (*osal_api_event_wait)(osal_event_t event, uint32_t set, uint32_t option, uint32_t timeout_ms);
+
+typedef int (*osal_api_event_set)(osal_event_t event, uint32_t set);
 
 //////////////////////////////////////////////// mq
 
 //////////////////////////////////////////////// timer
 
 //////////////////////////////////////////////// time
-typedef int (*osal_api_calc_timedwait)(struct timespec *tm, uint32_t s);
+typedef int (*osal_api_calc_timedwait)(struct timespec *tm, uint32_t ms);
 
 //////////////////////////////////////////////// signal
 
 //////////////////////////////////////////////// file
 
 //////////////////////////////////////////////// misc
-// reboot system sysinfo...
+// reboot system sysinfo random env...
+typedef void (*osal_api_reboot)(void);
+
 typedef const char *(*osal_api_get_version)(void);
+
 typedef uint64_t (*osal_api_uptime)(void);
+
+typedef unsigned long (*osal_api_random)(void);
 
 typedef struct osal_api
 {
-    /**
-     * @brief same as malloc
-     *
-     * @see osal_malloc
-     */
+    // mem
     osal_api_malloc malloc;
-
-    /**
-     * @brief same as free
-     *
-     * @see osal_free
-     */
     osal_api_free free;
-
-    /**
-     * @brief same as calloc
-     *
-     * @see osal_calloc
-     */
     osal_api_calloc calloc;
-
-    /**
-     * @brief same as realloc
-     *
-     * @see osal_realloc
-     */
     osal_api_realloc realloc;
 
-    /**
-     * @brief 创建一个线程
-     *
-     * @param name 线程名, 可以填NULL
-     * @param func 线程入口, see @{osal_task_func_t}
-     * @param arg 线程参数
-     * @param stack_start 线程栈地址, 为RTOS预留
-     * @param stack_size 线程栈大小
-     * @param priority 线程优先级, 为RTOS预留
-     *
-     * @return
-     *      线程句柄
-     *      NULL, 创建失败
-     *
-     * @see osal_task_create
-     */
+    // task
     osal_api_task_create task_create;
-
-    /**
-     * @brief 销毁一个线程
-     *
-     * @param task 线程句柄
-     *
-     * @return
-     *      OSAL_API_OK: 成功, 其他: 失败
-     *
-     * @see OSAL_API_RET
-     * @see osal_task_destory
-     *
-     */
+    osal_api_task_create_pin_to_core task_create_pin_to_core;
     osal_api_task_destory task_destory;
-
-    /**
-     * @brief 获取当前线程句柄
-     *
-     * @return
-     *      线程句柄
-     *
-     */
     osal_api_task_self task_self;
-
-    /**
-     * @brief 主动触发线程调度, 为RTOS预留
-     *
-     * @return
-     *      OSAL_API_OK: 成功, 其他: 失败
-     *
-     * @see OSAL_API_RET
-     *
-     */
     osal_api_task_yield task_yield;
-
-    /**
-     * @brief 线程秒级睡眠
-     *
-     * @param s sleep time(s)
-     *
-     * @return
-     *      OSAL_API_OK: 成功, 其他: 失败
-     *
-     * @see OSAL_API_RET
-     *
-     */
     osal_api_task_sleep task_sleep;
-
-    /**
-     * @brief 线程微秒级睡眠
-     *
-     * @param s sleep time(us)
-     *
-     * @return
-     *      OSAL_API_OK: 成功, 其他: 失败
-     *
-     * @see OSAL_API_RET
-     *
-     */
     osal_api_task_usleep task_usleep;
-
-    /**
-     * @brief 线程挂起, 为RTOS预留
-     *
-     * @param task 线程句柄
-     *
-     * @return
-     *      OSAL_API_OK: 成功, 其他: 失败
-     *
-     * @see osal_task_suspend
-     *
-     */
     osal_api_task_suspend task_suspend;
     osal_api_task_resume task_resume;
     osal_api_task_get_priority task_get_priority;
@@ -384,12 +237,24 @@ typedef struct osal_api
     osal_api_sem_wait sem_wait;
     osal_api_sem_post sem_post;
 
+    // shm
+    osal_api_shm_create shm_create;
+    osal_api_shm_destory shm_destory;
+
+    // event
+    osal_api_event_create event_create;
+    osal_api_event_destory event_destory;
+    osal_api_event_wait event_wait;
+    osal_api_event_set event_set;
+
     // time
     osal_api_calc_timedwait calc_timedwait;
 
     // misc
+    osal_api_reboot reboot;
     osal_api_uptime uptime;
     osal_api_get_version get_version;
+    osal_api_random random;
 } osal_api_t;
 
 extern osal_api_t osal_api;
@@ -403,6 +268,7 @@ extern osal_api_t osal_api;
 
 #ifndef osal_task_create
 #define osal_task_create osal_api.task_create
+#define osal_task_create_pin_to_core osal_api.task_create_pin_to_core
 #define osal_task_self osal_api.task_self
 #define osal_task_sleep osal_api.task_sleep
 #define osal_task_usleep osal_api.task_usleep
@@ -429,6 +295,18 @@ extern osal_api_t osal_api;
 #define osal_sem_post osal_api.sem_post
 #endif // !osal_sem_create
 
+#ifndef osal_shm_create
+#define osal_shm_create osal_api.shm_create
+#define osal_shm_destory osal_api.shm_destory
+#endif // !osal_shm_create
+
+#ifndef osal_event_create
+#define osal_event_create osal_api.event_create
+#define osal_event_destory osal_api.event_destory
+#define osal_event_wait osal_api.event_wait
+#define osal_event_set osal_api.event_set
+#endif // !osal_event_create
+
 #ifndef osal_uptime
 #define osal_uptime osal_api.uptime
 #endif // !osal_uptime
@@ -440,5 +318,13 @@ extern osal_api_t osal_api;
 #ifndef osal_calc_timedwait
 #define osal_calc_timedwait osal_api.calc_timedwait
 #endif // !osal_calc_timedwait
+
+#ifndef osal_random
+#define osal_random osal_api.random
+#endif // !osal_random
+
+#ifndef osal_reboot
+#define osal_reboot osal_api.reboot
+#endif // !osal_reboot
 
 #endif // !_OSAL_API_H_

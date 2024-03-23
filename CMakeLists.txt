@@ -16,5 +16,4 @@ set(CUNIT_DISABLE_TESTS ON)
 add_subdirectory(third_party/cunit-3.2.7/CUnit)
 
 # test
-# add_subdirectory(test)
 add_subdirectory(testsuites)
