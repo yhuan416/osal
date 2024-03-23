@@ -1,3 +1,14 @@
+/**
+ * @file osal_api.h
+ * @author yhuan (yhuan416@foxmail.com)
+ * @brief 
+ * @version 0.1
+ * @date 2024-03-23
+ * 
+ * @copyright Copyright (c) 2024
+ * 
+ */
+
 #ifndef _OSAL_API_H_
 #define _OSAL_API_H_
 
@@ -69,7 +80,7 @@ typedef void *osal_task_t;
 typedef void *(*osal_task_func_t)(void *arg);
 
 /**
- * @brief task_create
+ * @brief 创建一个任务
  * 
  * @name osal_task_create
  * 
@@ -91,7 +102,7 @@ typedef osal_task_t (*osal_api_task_create)(const char *name,
                                             int priority);
 
 /**
- * @brief task_create_pin_to_core
+ * @brief 创建一个任务并制定其亲核性, 一般用于rtos
  * 
  * @name osal_task_create_pin_to_core
  * 
@@ -101,7 +112,7 @@ typedef osal_task_t (*osal_api_task_create)(const char *name,
  * @param[in] stack_start 任务栈起始地址, 为rtos预留
  * @param[in] stack_size 任务栈大小
  * @param[in] priority 任务优先级, 为rtos预留
- * @param[in] core_id 任务核心亲和性
+ * @param[in] core_id 任务核心亲核性
  * 
  * @retval NULL 任务创建失败
  * @retval other 任务句柄
@@ -115,7 +126,7 @@ typedef osal_task_t (*osal_api_task_create_pin_to_core)(const char *name,
                                                         int core_id);
 
 /**
- * @brief task_destory
+ * @brief 销毁一个任务
  * 
  * @name osal_task_destory
  * 
@@ -126,60 +137,288 @@ typedef osal_task_t (*osal_api_task_create_pin_to_core)(const char *name,
  */
 typedef int (*osal_api_task_destory)(osal_task_t task);
 
+/**
+ * @brief 获取当前任务句柄
+ * 
+ * @name osal_task_self
+ * 
+ * @retval 任务句柄
+ */
 typedef osal_task_t (*osal_api_task_self)(void);
 
+/**
+ * @brief 任务调度, 一般用于rtos
+ * 
+ * @name osal_task_tield
+ * 
+ * @retval OSAL_API_OK 成功
+ * @retval other 失败
+ */
 typedef int (*osal_api_task_yield)(void);
 
+/**
+ * @brief 任务睡眠
+ * 
+ * @name osal_task_sleep
+ * 
+ * @param[in] s 秒数
+ * 
+ * @retval OSAL_API_OK 成功
+ * @retval other 失败
+ */
 typedef int (*osal_api_task_sleep)(uint32_t s);
 
+/**
+ * @brief 任务微秒级睡眠
+ * 
+ * @name osal_task_usleep
+ * 
+ * @param[in] us 微秒秒数
+ * 
+ * @retval OSAL_API_OK 成功
+ * @retval other 失败
+ */
 typedef int (*osal_api_task_usleep)(uint32_t us);
 
+/**
+ * @brief 任务挂起, 一般用于rtos
+ * 
+ * @name osal_task_suspend
+ * 
+ * @param[in] task 任务句柄
+ * 
+ * @retval OSAL_API_OK 成功
+ * @retval other 失败
+ */
 typedef int (*osal_api_task_suspend)(osal_task_t task);
 
+/**
+ * @brief 任务恢复, 一般用于rtos
+ * 
+ * @name osal_task_resume
+ * 
+ * @param[in] task 任务句柄
+ * 
+ * @retval OSAL_API_OK 成功
+ * @retval other 失败
+ */
 typedef int (*osal_api_task_resume)(osal_task_t task);
 
+/**
+ * @brief 获取任务优先级, 一般用于rtos
+ * 
+ * @name osal_task_get_priority
+ * 
+ * @param[in] task 任务句柄
+ * @param[out] priority 任务优先级
+ * 
+ * @retval OSAL_API_OK 成功
+ * @retval other 失败
+ */
 typedef int (*osal_api_task_get_priority)(osal_task_t task, int *priority);
 
+/**
+ * @brief 设置任务优先级, 一般用于rtos
+ * 
+ * @name osal_task_set_priority
+ * 
+ * @param[in] task 任务句柄
+ * @param[in] priority 任务优先级
+ * 
+ * @retval OSAL_API_OK 成功
+ * @retval other 失败
+ */
 typedef int (*osal_api_task_set_priority)(osal_task_t task, int priority);
 
 //////////////////////////////////////////////// mutex
 typedef void *osal_mutex_t;
 
+/**
+ * @brief 创建一个互斥锁
+ * 
+ * @name osal_mutex_create
+ * 
+ * @retval NULL 失败
+ * @retval other mutex句柄
+ */
 typedef osal_mutex_t (*osal_api_mutex_create)(void);
 
+/**
+ * @brief 销毁互斥锁
+ * 
+ * @name osal_mutex_destory
+ * 
+ * @param[in] mutex mutex句柄
+ * 
+ * @retval OSAL_API_OK 成功
+ * @retval other 失败
+ */
 typedef int (*osal_api_mutex_destory)(osal_mutex_t mutex);
 
+/**
+ * @brief 持有互斥锁
+ * 
+ * @name osal_mutex_lock
+ * 
+ * @param[in] mutex mutex句柄
+ * @param[in] timeout_ms 超时时间 ms
+ * 
+ * @retval OSAL_API_OK 成功
+ * @retval other 失败
+ */
 typedef int (*osal_api_mutex_lock)(osal_mutex_t mutex, uint32_t timeout_ms);
 
+/**
+ * @brief 尝试持有互斥锁
+ * 
+ * @name osal_mutex_trylock
+ * 
+ * @param[in] mutex mutex句柄
+ * 
+ * @retval OSAL_API_OK 成功
+ * @retval other 失败
+ */
 typedef int (*osal_api_mutex_trylock)(osal_mutex_t mutex);
 
+/**
+ * @brief 释放互斥锁
+ * 
+ * @name osal_mutex_unlock
+ * 
+ * @param[in] mutex mutex句柄
+ * 
+ * @retval OSAL_API_OK 成功
+ * @retval other 失败
+ */
 typedef int (*osal_api_mutex_unlock)(osal_mutex_t mutex);
 
 //////////////////////////////////////////////// sem
 typedef void *osal_sem_t;
 
+/**
+ * @brief 创建一个信号量
+ * 
+ * @name osal_sem_create
+ * 
+ * @param[in] init 信号量初始值
+ * 
+ * @retval NULL 创建失败
+ * @retval other 信号量句柄
+ */
 typedef osal_sem_t (*osal_api_sem_create)(uint32_t init);
 
+/**
+ * @brief 销毁信号量
+ * 
+ * @name osal_sem_destory
+ * 
+ * @param[in] sem 信号量句柄
+ * 
+ * @retval OSAL_API_OK 成功
+ * @retval other 失败
+ */
 typedef int (*osal_api_sem_destory)(osal_sem_t sem);
 
+/**
+ * @brief 等待信号量
+ * 
+ * @name osal_sem_wait
+ * 
+ * @param[in] sem 信号量句柄
+ * @param[in] timeout_ms 等待超时时间 ms
+ * 
+ * @retval OSAL_API_OK 成功
+ * @retval other 失败
+ */
 typedef int (*osal_api_sem_wait)(osal_sem_t sem, uint32_t timeout_ms);
 
+/**
+ * @brief 释放信号量
+ * 
+ * @name osal_sem_post
+ * 
+ * @param[in] sem 信号量句柄
+ * 
+ * @retval OSAL_API_OK 成功
+ * @retval other 失败
+ */
 typedef int (*osal_api_sem_post)(osal_sem_t sem);
 
 ////////////////////////////////////////////////// shm
+
+/**
+ * @brief 创建一个共享内存
+ * 
+ * @name osal_shm_create
+ * 
+ * @param[in] key key, 用于创建共享内存
+ * @param[in] size 共享内存大小
+ * 
+ * @retval NULL 创建失败
+ * @retval other 共享内存地址
+ */
 typedef void *(*osal_api_shm_create)(const char *key, int size);
 
+/**
+ * @brief 销毁一个共享内存
+ * 
+ * @name osal_shm_destory
+ * 
+ * @param[in] shm 共享内存地址
+ * 
+ * @retval OSAL_API_OK 成功
+ * @retval other 失败
+ */
 typedef int (*osal_api_shm_destory)(void *shm);
 
 //////////////////////////////////////////////// event
 typedef void *osal_event_t;
 
+/**
+ * @brief 创建一个事件
+ * 
+ * @name osal_event_create
+ * 
+ * @retval NULL 创建失败
+ * @retval other 事件句柄
+ */
 typedef osal_event_t (*osal_api_event_create)(void);
 
+/**
+ * @brief 销毁事件
+ * 
+ * @name osal_event_destory
+ * 
+ * @param[in] event 事件句柄
+ */
 typedef void (*osal_api_event_destory)(osal_event_t event);
 
+/**
+ * @brief 等待对应的事件
+ * 
+ * @name osal_event_wait
+ * 
+ * @param[in] event 事件句柄
+ * @param[in] set 等待的标记位
+ * @param[in] option 选项 [ and | or | clear ]
+ * @param[in] timeout_ms 超时时间 ms
+ * 
+ * @retval OSAL_API_OK 成功
+ * @retval other 失败
+ */
 typedef int (*osal_api_event_wait)(osal_event_t event, uint32_t set, uint32_t option, uint32_t timeout_ms);
 
+/**
+ * @brief 触发对应的事件
+ * 
+ * @name osal_event_set
+ * 
+ * @param[in] event 事件句柄
+ * @param[in] set 触发的标记位
+ * 
+ * @retval OSAL_API_OK 成功
+ * @retval other 失败
+ */
 typedef int (*osal_api_event_set)(osal_event_t event, uint32_t set);
 
 //////////////////////////////////////////////// mq
@@ -187,6 +426,18 @@ typedef int (*osal_api_event_set)(osal_event_t event, uint32_t set);
 //////////////////////////////////////////////// timer
 
 //////////////////////////////////////////////// time
+
+/**
+ * @brief 计算超时时间
+ * 
+ * @name osal_calc_timedwait
+ * 
+ * @param[out] tm 返回的结构体
+ * @param[in] ms 超时时间
+ * 
+ * @retval OSAL_API_OK 成功
+ * @retval other 失败
+ */
 typedef int (*osal_api_calc_timedwait)(struct timespec *tm, uint32_t ms);
 
 //////////////////////////////////////////////// signal
@@ -194,13 +445,40 @@ typedef int (*osal_api_calc_timedwait)(struct timespec *tm, uint32_t ms);
 //////////////////////////////////////////////// file
 
 //////////////////////////////////////////////// misc
-// reboot system sysinfo random env...
+// system sysinfo env...
+
+/**
+ * @brief 设备重启
+ * 
+ * @name osal_reboot
+ */
 typedef void (*osal_api_reboot)(void);
 
+/**
+ * @brief 获取osal版本
+ * 
+ * @name osal_get_version
+ * 
+ * @retval 版本号字符串
+ */
 typedef const char *(*osal_api_get_version)(void);
 
+/**
+ * @brief 获取设备启动时间
+ * 
+ * @name osal_uptime
+ * 
+ * @retval 启动时间
+ */
 typedef uint64_t (*osal_api_uptime)(void);
 
+/**
+ * @brief 获取一个随机数
+ * 
+ * @name osal_random
+ * 
+ * @retval 生成的随机数
+ */
 typedef unsigned long (*osal_api_random)(void);
 
 typedef struct osal_api
