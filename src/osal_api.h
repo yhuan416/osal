@@ -21,9 +21,10 @@ enum osal_api_ret
     OSAL_API_OK = 0,   /*!< ok */
     OSAL_API_FAIL,     /*!< fail */
     OSAL_API_TIMEDOUT, /*!< time out */
-    OSAL_API_INVAL,  /*!< invalid args */
+    OSAL_API_INVAL,    /*!< invalid args */
     OSAL_API_NOMEM,    /*!< no mem */
     OSAL_API_OVERFLOW, /*!< overflow */
+    OSAL_API_PERM,     /*!< perm */
 
     OSAL_API_RET_MAX,
 };
@@ -101,8 +102,8 @@ typedef osal_task_t (*osal_api_task_create)(const char *name,
                                             osal_task_func_t func,
                                             void *arg,
                                             void *stack_start,
-                                            int stack_size,
-                                            int priority);
+                                            unsigned int stack_size,
+                                            unsigned int priority);
 
 /**
  * @brief 创建一个任务并制定其亲核性, 一般用于rtos
@@ -124,8 +125,8 @@ typedef osal_task_t (*osal_api_task_create_pin_to_core)(const char *name,
                                                         osal_task_func_t func,
                                                         void *arg,
                                                         void *stack_start,
-                                                        int stack_size,
-                                                        int priority,
+                                                        unsigned int stack_size,
+                                                        unsigned int priority,
                                                         int core_id);
 
 /**

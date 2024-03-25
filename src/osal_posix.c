@@ -45,6 +45,8 @@
     }
 #endif
 
+#define ALIGN_SIZE(size, align) (((size + align - 1) / align) * align)
+
 void *osal_posix_malloc(size_t size)
 {
     if (size == 0)
@@ -91,8 +93,8 @@ osal_task_t osal_posix_task_create(const char *name,
                                    osal_task_func_t func,
                                    void *arg,
                                    void *stack_start,
-                                   int stack_size,
-                                   int priority)
+                                   unsigned int stack_size,
+                                   unsigned int priority)
 {
     int ret;
     pthread_t tid = (pthread_t)NULL;
@@ -100,7 +102,6 @@ osal_task_t osal_posix_task_create(const char *name,
 
     // posix平台不关注这两个参数
     (void)stack_start;
-    (void)stack_size;
     (void)priority;
 
     if (func == NULL)
@@ -118,17 +119,17 @@ osal_task_t osal_posix_task_create(const char *name,
     if (ret = pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED))
     {
         pr_error("pthread_attr_setdetachstate fail, ret %d.\n", ret);
-        tid = (pthread_t)NULL;
         goto osal_posix_task_create_out;
     }
 
-    // align to 4096
-    // if (stack_size && (ret = pthread_attr_setstacksize(&attr, stack_size)))
-    // {
-    //     pr_error("pthread_attr_setstacksize fail, ret %d.\n", ret);
-    //     tid = (pthread_t)NULL;
-    //     goto osal_posix_task_create_out;
-    // }
+// align to STACK_SIZE_ALIGNED(4096)
+#define STACK_SIZE_ALIGNED (4096)
+    unsigned int stack_size_aligned = ALIGN_SIZE(stack_size, STACK_SIZE_ALIGNED);
+    if (stack_size && (ret = pthread_attr_setstacksize(&attr, stack_size_aligned)))
+    {
+        pr_error("pthread_attr_setstacksize fail, stack_size_aligned %d, ret %d.\n", stack_size_aligned, ret);
+        goto osal_posix_task_create_out;
+    }
 
     if ((ret = pthread_create(&tid, &attr, func, arg)))
     {
@@ -197,10 +198,7 @@ int osal_posix_mutex_lock(osal_mutex_t mutex, uint32_t timeout_ms)
         {
             return OSAL_API_INVAL;
         }
-        else
-        {
-            return OSAL_API_FAIL;
-        }
+        return OSAL_API_FAIL;
     }
 
     return OSAL_API_OK;
@@ -227,10 +225,7 @@ int osal_posix_mutex_trylock(osal_mutex_t mutex)
         {
             return OSAL_API_INVAL;
         }
-        else
-        {
-            return OSAL_API_FAIL;
-        }
+        return OSAL_API_FAIL;
     }
 
     return OSAL_API_OK;
@@ -253,10 +248,7 @@ int osal_posix_mutex_unlock(osal_mutex_t mutex)
         {
             return OSAL_API_INVAL;
         }
-        else
-        {
-            return OSAL_API_FAIL;
-        }
+        return OSAL_API_FAIL;
     }
 
     return OSAL_API_OK;
@@ -329,6 +321,7 @@ int osal_posix_sem_post(osal_sem_t sem)
 
 int osal_posix_calc_timedwait(struct timespec *tm, uint32_t ms)
 {
+    int ret;
     struct timeval tv;
 
     if (tm == NULL)
@@ -337,7 +330,20 @@ int osal_posix_calc_timedwait(struct timespec *tm, uint32_t ms)
         return OSAL_API_INVAL;
     }
 
-    gettimeofday(&tv, NULL);
+    if (ret = gettimeofday(&tv, NULL))
+    {
+        pr_error("gettimeofday failed, ret = %d.\n", ret);
+        if (ret == EINVAL)
+        {
+            return OSAL_API_INVAL;
+        }
+        else if (ret == EPERM)
+        {
+            return OSAL_API_PERM;
+        }
+        return OSAL_API_FAIL;
+    }
+
     tv.tv_sec += ms / 1000;
     tv.tv_usec += (ms % 1000) * 1000;
     if (tv.tv_usec >= 1000000)
@@ -356,7 +362,12 @@ int osal_posix_calc_timedwait(struct timespec *tm, uint32_t ms)
 uint64_t osal_posix_uptime(void)
 {
     struct sysinfo info;
-    sysinfo(&info);
+    if (sysinfo(&info))
+        ;
+    {
+        pr_error("sysinfo failed.\n");
+        return 0;
+    }
     return info.uptime;
 }
 
