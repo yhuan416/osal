@@ -3,6 +3,8 @@
 #include "osal_api.h"
 #include "osal_posix.h"
 
+#include <sys/prctl.h>
+
 #include <errno.h>
 
 #define mmodule_name "osal"
@@ -88,6 +90,40 @@ void *osal_posix_realloc(void *ptr, size_t size)
 }
 
 #define DEFAULT_STACK_NAME "osal_task"
+#define OSAL_STACK_NAME_SIZE (16)
+
+struct task_wrapper_t
+{
+    osal_task_func_t func;
+    void *arg;
+    char name[OSAL_STACK_NAME_SIZE];
+};
+
+static void *osal_task_wrapper(void *arg)
+{
+    struct task_wrapper_t *wrap = (struct task_wrapper_t *)arg;
+
+    if (!wrap || !wrap->func)
+    {
+        pr_error("wrapper or wrapper->func is NULL.\n");
+        return NULL;
+    }
+
+    osal_task_func_t func = wrap->func;
+    void *args = wrap->arg;
+
+    // set task name
+    prctl(PR_SET_NAME, wrap->name, 0, 0, 0);
+
+    // free wrap
+    osal_free(wrap);
+    wrap = NULL;
+
+    // run task
+    func(args);
+
+    return NULL;
+}
 
 osal_task_t osal_posix_task_create(const char *name,
                                    osal_task_func_t func,
@@ -99,6 +135,7 @@ osal_task_t osal_posix_task_create(const char *name,
     int ret;
     pthread_t tid = (pthread_t)NULL;
     pthread_attr_t attr = {0};
+    struct task_wrapper_t *wrap = NULL;
 
     // posix平台不关注这两个参数
     (void)stack_start;
@@ -131,11 +168,57 @@ osal_task_t osal_posix_task_create(const char *name,
         goto osal_posix_task_create_out;
     }
 
-    if ((ret = pthread_create(&tid, &attr, func, arg)))
+    // use default stack name
+    if (name == NULL)
     {
-        pr_error("pthread_create failed, ret = %d.\n", ret);
-        tid = (pthread_t)NULL;
-        goto osal_posix_task_create_out;
+        name = DEFAULT_STACK_NAME;
+    }
+
+    if (wrap = osal_calloc(1, sizeof(struct task_wrapper_t)))
+    {
+        const char *p;
+        p = strrchr(name, '&'); // (xxx)&routine
+        if (!p)
+        {
+            p = strrchr(name, ')'); // (xxx)routine
+            if (!p)
+            {
+                p = name; // routine
+            }
+            else
+            {
+                p++;
+            }
+        }
+        else
+        {
+            p++;
+        }
+
+        snprintf(wrap->name, sizeof(wrap->name), "%s", p);
+        wrap->func = func;
+        wrap->arg = arg;
+
+        if (ret = pthread_create(&tid, &attr, osal_task_wrapper, (void *)wrap))
+        {
+            pr_error("pthread_create(wrap) failed, ret = %d.\n", ret);
+            tid = (pthread_t)NULL;
+
+            // free wrap
+            free(wrap);
+            wrap = NULL;
+
+            goto osal_posix_task_create_out;
+        }
+    }
+    else
+    {
+        if ((ret = pthread_create(&tid, &attr, func, arg)))
+        {
+            pr_error("pthread_create failed, ret = %d.\n", ret);
+            tid = (pthread_t)NULL;
+            goto osal_posix_task_create_out;
+        }
     }
 
 osal_posix_task_create_out:
@@ -273,7 +356,7 @@ osal_sem_t osal_posix_sem_create(uint32_t init)
         osal_free(sem);
         return NULL;
     }
-    
+
     return (osal_sem_t)sem;
 }
 
