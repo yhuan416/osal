@@ -49,6 +49,31 @@
 
 #define ALIGN_SIZE(size, align) (((size + align - 1) / align) * align)
 
+static inline int errno_2_ret(int err)
+{
+    switch (err)
+    {
+    case ETIMEDOUT:
+        return OSAL_API_TIMEDOUT;
+        break;
+    case EINVAL:
+        return OSAL_API_INVAL;
+        break;
+    case EOVERFLOW:
+        return OSAL_API_OVERFLOW;
+        break;
+    case ENOMEM:
+        return OSAL_API_NOMEM;
+        break;
+    case EPERM:
+        return OSAL_API_PERM;
+        break;
+    default:
+        return OSAL_API_FAIL;
+        break;
+    }
+}
+
 void *osal_posix_malloc(size_t size)
 {
     if (size == 0)
@@ -273,15 +298,7 @@ int osal_posix_mutex_lock(osal_mutex_t mutex, uint32_t timeout_ms)
     if (ret = pthread_mutex_lock((pthread_mutex_t *)mutex))
     {
         pr_error("pthread_mutex_lock fail, ret = %d.\n", ret);
-        if (ret == ETIMEDOUT)
-        {
-            return OSAL_API_TIMEDOUT;
-        }
-        else if (ret == EINVAL)
-        {
-            return OSAL_API_INVAL;
-        }
-        return OSAL_API_FAIL;
+        return errno_2_ret(ret);
     }
 
     return OSAL_API_OK;
@@ -300,15 +317,7 @@ int osal_posix_mutex_trylock(osal_mutex_t mutex)
     if (ret = pthread_mutex_trylock((pthread_mutex_t *)mutex))
     {
         pr_error("pthread_mutex_trylock fail, ret = %d.\n", ret);
-        if (ret == ETIMEDOUT)
-        {
-            return OSAL_API_TIMEDOUT;
-        }
-        else if (ret == EINVAL)
-        {
-            return OSAL_API_INVAL;
-        }
-        return OSAL_API_FAIL;
+        return errno_2_ret(ret);
     }
 
     return OSAL_API_OK;
@@ -327,11 +336,7 @@ int osal_posix_mutex_unlock(osal_mutex_t mutex)
     if (ret = pthread_mutex_unlock((pthread_mutex_t *)mutex))
     {
         pr_error("pthread_mutex_unlock fail, ret = %d.\n", ret);
-        if (ret == EINVAL)
-        {
-            return OSAL_API_INVAL;
-        }
-        return OSAL_API_FAIL;
+        return errno_2_ret(ret);
     }
 
     return OSAL_API_OK;
@@ -400,15 +405,7 @@ int osal_posix_sem_wait(osal_sem_t sem, uint32_t timeout_ms)
 
     if (ret)
     {
-        if (errno == ETIMEDOUT)
-        {
-            return OSAL_API_TIMEDOUT;
-        }
-        else if (errno == EINVAL)
-        {
-            return OSAL_API_INVAL;
-        }
-        return OSAL_API_FAIL;
+        return errno_2_ret(errno);
     }
 
     return OSAL_API_OK;
@@ -424,15 +421,138 @@ int osal_posix_sem_post(osal_sem_t sem)
 
     if (sem_post((sem_t *)sem))
     {
-        if (errno == EOVERFLOW)
-        {
-            return OSAL_API_OVERFLOW;
-        }
-        else if (errno == EINVAL)
-        {
-            return OSAL_API_INVAL;
-        }
-        return OSAL_API_FAIL;
+        return errno_2_ret(errno);
+    }
+
+    return OSAL_API_OK;
+}
+
+#include <fcntl.h>    /* For O_* constants */
+#include <sys/stat.h> /* For mode constants */
+#include <mqueue.h>
+
+typedef struct osal_posix_mq_s
+{
+    mqd_t id;
+    uint32_t msg_size;
+    char name[0];
+} osal_posix_mq_t;
+
+#define str_start_with(str, c) ((str[0] == c) ? (1) : (0))
+
+osal_mq_t osal_posix_mq_create(const char *name, long msg_size, long msg_max, int flag)
+{
+    mqd_t id;
+    struct mq_attr attr = {0};
+
+    if (name == NULL)
+    {
+        pr_error("osal_posix_mq_create, name is NULL.");
+        return NULL;
+    }
+
+    osal_posix_mq_t *mq = (osal_posix_mq_t *)osal_calloc(1, sizeof(osal_posix_mq_t) + strlen(name) + 1);
+    if (mq == NULL)
+    {
+        pr_error("osal_calloc failed.");
+        return NULL;
+    }
+
+    if (str_start_with(name, '/'))
+    {
+        snprintf(mq->name, strlen(name), "%s", name);
+    }
+    else
+    {
+        snprintf(mq->name, strlen(name) + 1, "/%s", name);
+    }
+
+    // Set the queue attributes
+    attr.mq_flags = 0;
+    attr.mq_maxmsg = msg_max;
+    attr.mq_msgsize = msg_size;
+    attr.mq_curmsgs = 0;
+
+    id = mq_open(mq->name, O_CREAT | O_RDWR | O_EXCL, 0644, &attr);
+    if (id == -1)
+    {
+        pr_error("mq_open failed, ret : %d.", id);
+        osal_free(mq);
+        return NULL;
+    }
+
+    mq->id = id;
+    mq->msg_size = msg_size;
+
+    return mq;
+}
+
+int osal_posix_mq_destory(osal_mq_t mq)
+{
+    if (mq == NULL)
+    {
+        pr_error("osal_posix_mq_destory, mq is NULL.");
+        return OSAL_API_INVAL;
+    }
+
+    osal_posix_mq_t *q = (osal_posix_mq_t *)mq;
+
+    if (mq_close(q->id))
+    {
+        pr_error("mq_close, errno : %d.", errno);
+    }
+
+    if (mq_unlink(q->name))
+    {
+        pr_error("mq_unlink, errno : %d.", errno);
+    }
+
+    osal_free(q);
+
+    return OSAL_API_OK;
+}
+
+int osal_posix_mq_send(osal_mq_t mq, const void *msg, int msg_size, int timeout_ms)
+{
+    int ret = 0;
+    mqd_t id;
+    struct timespec tm = {0};
+
+    if (mq == NULL)
+    {
+        pr_error("osal_posix_mq_send, mq is NULL.");
+        return OSAL_API_INVAL;
+    }
+
+    id = ((osal_posix_mq_t *)mq)->id;
+
+    osal_calc_timedwait(&tm, timeout_ms);
+    if (ret = mq_timedsend(id, msg, msg_size, 0, &tm))
+    {
+        return errno_2_ret(errno);
+    }
+
+    return OSAL_API_OK;
+}
+
+int osal_posix_mq_recv(osal_mq_t mq, void *msg, int msg_size, int timeout_ms)
+{
+    int ret = 0;
+    mqd_t id;
+    struct timespec tm = {0};
+
+    if (mq == NULL)
+    {
+        pr_error("osal_posix_mq_send, mq is NULL.");
+        return OSAL_API_INVAL;
+    }
+
+    id = ((osal_posix_mq_t *)mq)->id;
+
+    osal_calc_timedwait(&tm, timeout_ms);
+    if (mq_timedreceive(id, msg, msg_size, NULL, &tm) == -1)
+    {
+        return errno_2_ret(errno);
     }
 
     return OSAL_API_OK;
@@ -452,15 +572,7 @@ int osal_posix_calc_timedwait(struct timespec *tm, uint32_t ms)
     if (ret = gettimeofday(&tv, NULL))
     {
         pr_error("gettimeofday failed, ret = %d.\n", ret);
-        if (ret == EINVAL)
-        {
-            return OSAL_API_INVAL;
-        }
-        else if (ret == EPERM)
-        {
-            return OSAL_API_PERM;
-        }
-        return OSAL_API_FAIL;
+        return errno_2_ret(errno);
     }
 
     tv.tv_sec += ms / 1000;
@@ -506,6 +618,11 @@ osal_api_t osal_api = {
     .sem_destory = osal_posix_sem_destory,
     .sem_wait = osal_posix_sem_wait,
     .sem_post = osal_posix_sem_post,
+
+    .mq_create = osal_posix_mq_create,
+    .mq_destory = osal_posix_mq_destory,
+    .mq_recv = osal_posix_mq_recv,
+    .mq_send = osal_posix_mq_send,
 
     .uptime = osal_posix_uptime,
     .calc_timedwait = osal_posix_calc_timedwait,

@@ -441,7 +441,7 @@ typedef void *osal_mq_t;
  * @retval NULL 创建失败
  * @retval other 消息队列句柄
  */
-typedef osal_mq_t (*osal_api_mq_create)(const char *name, int msg_size, int msg_max, int flag);
+typedef osal_mq_t (*osal_api_mq_create)(const char *name, long msg_size, long msg_max, int flag);
 
 /**
  * @brief 销毁消息队列

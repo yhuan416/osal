@@ -9,7 +9,7 @@ enable_testing()
 file(GLOB_RECURSE srcs_posix src/*.c)
 add_library(osal STATIC ${srcs_posix})
 target_include_directories(osal PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src)
-target_link_libraries(osal PRIVATE pthread)
+target_link_libraries(osal PRIVATE pthread rt)
 
 # cunit
 set(CUNIT_DISABLE_TESTS ON)
