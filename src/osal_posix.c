@@ -258,13 +258,22 @@ int osal_posix_mutex_unlock(osal_mutex_t mutex)
 
 osal_sem_t osal_posix_sem_create(uint32_t init)
 {
+    int ret;
     sem_t *sem = (sem_t *)osal_calloc(1, sizeof(sem_t));
+
     if (sem == NULL)
     {
         pr_error("sem malloc failed.\n");
         return NULL;
     }
-    sem_init(sem, 0, init);
+
+    if (ret = sem_init(sem, 0, init))
+    {
+        pr_error("sem_init failed, ret = %d.\n", ret);
+        osal_free(sem);
+        return NULL;
+    }
+    
     return (osal_sem_t)sem;
 }
 
@@ -283,6 +292,7 @@ int osal_posix_sem_destory(osal_sem_t sem)
 
 int osal_posix_sem_wait(osal_sem_t sem, uint32_t timeout_ms)
 {
+    int ret;
     struct timespec tm = {0};
 
     if (sem == NULL)
@@ -293,16 +303,29 @@ int osal_posix_sem_wait(osal_sem_t sem, uint32_t timeout_ms)
 
     if (timeout_ms == 0)
     {
-        return sem_trywait((sem_t *)sem);
+        ret = sem_trywait((sem_t *)sem);
     }
     else if (timeout_ms == OSAL_API_WAITFOREVER)
     {
-        return sem_wait((sem_t *)sem);
+        ret = sem_wait((sem_t *)sem);
     }
     else
     {
         osal_calc_timedwait(&tm, timeout_ms);
-        return sem_timedwait((sem_t *)sem, &tm);
+        ret = sem_timedwait((sem_t *)sem, &tm);
+    }
+
+    if (ret)
+    {
+        if (errno == ETIMEDOUT)
+        {
+            return OSAL_API_TIMEDOUT;
+        }
+        else if (errno == EINVAL)
+        {
+            return OSAL_API_INVAL;
+        }
+        return OSAL_API_FAIL;
     }
 
     return OSAL_API_OK;
@@ -316,7 +339,20 @@ int osal_posix_sem_post(osal_sem_t sem)
         return OSAL_API_INVAL;
     }
 
-    return sem_post((sem_t *)sem);
+    if (sem_post((sem_t *)sem))
+    {
+        if (errno == EOVERFLOW)
+        {
+            return OSAL_API_OVERFLOW;
+        }
+        else if (errno == EINVAL)
+        {
+            return OSAL_API_INVAL;
+        }
+        return OSAL_API_FAIL;
+    }
+
+    return OSAL_API_OK;
 }
 
 int osal_posix_calc_timedwait(struct timespec *tm, uint32_t ms)
@@ -363,7 +399,6 @@ uint64_t osal_posix_uptime(void)
 {
     struct sysinfo info;
     if (sysinfo(&info))
-        ;
     {
         pr_error("sysinfo failed.\n");
         return 0;
