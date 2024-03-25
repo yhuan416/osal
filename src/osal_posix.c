@@ -3,6 +3,8 @@
 #include "osal_api.h"
 #include "osal_posix.h"
 
+#include <errno.h>
+
 #define mmodule_name "osal"
 
 #if !defined(pr_fatal)
@@ -93,7 +95,7 @@ osal_task_t osal_posix_task_create(const char *name,
                                    int priority)
 {
     int ret;
-    pthread_t tid;
+    pthread_t tid = (pthread_t)NULL;
     pthread_attr_t attr = {0};
 
     // posix平台不关注这两个参数
@@ -107,15 +109,35 @@ osal_task_t osal_posix_task_create(const char *name,
         return NULL;
     }
 
-    pthread_attr_init(&attr);
-    pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
+    if (ret = pthread_attr_init(&attr))
+    {
+        pr_error("pthread_attr_init fail, ret %d.\n", ret);
+        return NULL;
+    }
+
+    if (ret = pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED))
+    {
+        pr_error("pthread_attr_setdetachstate fail, ret %d.\n", ret);
+        tid = (pthread_t)NULL;
+        goto osal_posix_task_create_out;
+    }
+
+    // align to 4096
+    // if (stack_size && (ret = pthread_attr_setstacksize(&attr, stack_size)))
+    // {
+    //     pr_error("pthread_attr_setstacksize fail, ret %d.\n", ret);
+    //     tid = (pthread_t)NULL;
+    //     goto osal_posix_task_create_out;
+    // }
 
     if ((ret = pthread_create(&tid, &attr, func, arg)))
     {
         pr_error("pthread_create failed, ret = %d.\n", ret);
-        pthread_attr_destroy(&attr);
-        return NULL;
+        tid = (pthread_t)NULL;
+        goto osal_posix_task_create_out;
     }
+
+osal_posix_task_create_out:
 
     pthread_attr_destroy(&attr);
     return (osal_task_t)tid;
@@ -123,6 +145,7 @@ osal_task_t osal_posix_task_create(const char *name,
 
 osal_mutex_t osal_posix_mutex_create(void)
 {
+    int ret;
     pthread_mutex_t *mutex = osal_malloc(sizeof(pthread_mutex_t));
     if (mutex == NULL)
     {
@@ -130,7 +153,13 @@ osal_mutex_t osal_posix_mutex_create(void)
         return NULL;
     }
 
-    pthread_mutex_init(mutex, NULL);
+    if (ret = pthread_mutex_init(mutex, NULL))
+    {
+        pr_error("pthread_mutex_init failed, ret = %d.\n", ret);
+        osal_free(mutex);
+        return NULL;
+    }
+
     return (osal_mutex_t)mutex;
 }
 
@@ -139,7 +168,7 @@ int osal_posix_mutex_destory(osal_mutex_t mutex)
     if (mutex == NULL)
     {
         pr_error("mutex is NULL.\n");
-        return OSAL_API_INVALID;
+        return OSAL_API_INVAL;
     }
 
     pthread_mutex_destroy((pthread_mutex_t *)mutex);
@@ -149,32 +178,88 @@ int osal_posix_mutex_destory(osal_mutex_t mutex)
 
 int osal_posix_mutex_lock(osal_mutex_t mutex, uint32_t timeout_ms)
 {
+    int ret;
+
     if (mutex == NULL)
     {
         pr_error("mutex is NULL.\n");
-        return OSAL_API_INVALID;
+        return OSAL_API_INVAL;
     }
-    return pthread_mutex_lock((pthread_mutex_t *)mutex);
+
+    if (ret = pthread_mutex_lock((pthread_mutex_t *)mutex))
+    {
+        pr_error("pthread_mutex_lock fail, ret = %d.\n", ret);
+        if (ret == ETIMEDOUT)
+        {
+            return OSAL_API_TIMEDOUT;
+        }
+        else if (ret == EINVAL)
+        {
+            return OSAL_API_INVAL;
+        }
+        else
+        {
+            return OSAL_API_FAIL;
+        }
+    }
+
+    return OSAL_API_OK;
 }
 
 int osal_posix_mutex_trylock(osal_mutex_t mutex)
 {
+    int ret;
+
     if (mutex == NULL)
     {
         pr_error("mutex is NULL.\n");
-        return OSAL_API_INVALID;
+        return OSAL_API_INVAL;
     }
-    return pthread_mutex_trylock((pthread_mutex_t *)mutex);
+
+    if (ret = pthread_mutex_trylock((pthread_mutex_t *)mutex))
+    {
+        pr_error("pthread_mutex_trylock fail, ret = %d.\n", ret);
+        if (ret == ETIMEDOUT)
+        {
+            return OSAL_API_TIMEDOUT;
+        }
+        else if (ret == EINVAL)
+        {
+            return OSAL_API_INVAL;
+        }
+        else
+        {
+            return OSAL_API_FAIL;
+        }
+    }
+
+    return OSAL_API_OK;
 }
 
 int osal_posix_mutex_unlock(osal_mutex_t mutex)
 {
+    int ret;
+
     if (mutex == NULL)
     {
         pr_error("mutex is NULL.\n");
-        return OSAL_API_INVALID;
+        return OSAL_API_INVAL;
     }
-    return pthread_mutex_unlock((pthread_mutex_t *)mutex);
+
+    if (ret = pthread_mutex_unlock((pthread_mutex_t *)mutex))
+    {
+        pr_error("pthread_mutex_unlock fail, ret = %d.\n", ret);
+        if (ret == EINVAL)
+        {
+            return OSAL_API_INVAL;
+        }
+        else
+        {
+            return OSAL_API_FAIL;
+        }
+    }
+
+    return OSAL_API_OK;
 }
 
 #include <semaphore.h>
@@ -196,7 +281,7 @@ int osal_posix_sem_destory(osal_sem_t sem)
     if (sem == NULL)
     {
         pr_error("sem is NULL.\n");
-        return OSAL_API_INVALID;
+        return OSAL_API_INVAL;
     }
 
     sem_destroy((sem_t *)sem);
@@ -211,7 +296,7 @@ int osal_posix_sem_wait(osal_sem_t sem, uint32_t timeout_ms)
     if (sem == NULL)
     {
         pr_error("sem is NULL.\n");
-        return OSAL_API_INVALID;
+        return OSAL_API_INVAL;
     }
 
     if (timeout_ms == 0)
@@ -236,7 +321,7 @@ int osal_posix_sem_post(osal_sem_t sem)
     if (sem == NULL)
     {
         pr_error("sem is NULL.\n");
-        return OSAL_API_INVALID;
+        return OSAL_API_INVAL;
     }
 
     return sem_post((sem_t *)sem);
@@ -249,7 +334,7 @@ int osal_posix_calc_timedwait(struct timespec *tm, uint32_t ms)
     if (tm == NULL)
     {
         pr_error("tm is NULL.\n");
-        return OSAL_API_INVALID;
+        return OSAL_API_INVAL;
     }
 
     gettimeofday(&tv, NULL);
