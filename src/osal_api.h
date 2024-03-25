@@ -426,6 +426,64 @@ typedef int (*osal_api_event_wait)(osal_event_t event, uint32_t set, uint32_t op
 typedef int (*osal_api_event_set)(osal_event_t event, uint32_t set);
 
 //////////////////////////////////////////////// mq
+typedef void *osal_mq_t;
+
+/**
+ * @brief 创建消息队列
+ *
+ * @name osal_mq_create
+ *
+ * @param[in] name 消息队列名
+ * @param[in] msg_size 消息大小
+ * @param[in] msg_max 最大消息数
+ * @param[in] flag 标志位
+ *
+ * @retval NULL 创建失败
+ * @retval other 消息队列句柄
+ */
+typedef osal_mq_t (*osal_api_mq_create)(const char *name, int msg_size, int msg_max, int flag);
+
+/**
+ * @brief 销毁消息队列
+ *
+ * @name osal_mq_destory
+ *
+ * @param[in] mq 消息队列句柄
+ *
+ * @retval OSAL_API_OK 成功
+ * @retval other 失败
+ */
+typedef int (*osal_api_mq_destory)(osal_mq_t mq);
+
+/**
+ * @brief 发送消息
+ *
+ * @name osal_mq_send
+ *
+ * @param[in] mq 消息队列句柄
+ * @param[in] msg 消息
+ * @param[in] msg_size 消息大小
+ * @param[in] timeout_ms 超时时间 ms
+ *
+ * @retval OSAL_API_OK 成功
+ * @retval other 失败
+ */
+typedef int (*osal_api_mq_send)(osal_mq_t mq, const void *msg, int msg_size, int timeout_ms);
+
+/**
+ * @brief 接受消息
+ *
+ * @name osal_mq_recv
+ *
+ * @param[in] mq 消息队列句柄
+ * @param[out] msg 消息
+ * @param[in] msg_size 消息大小
+ * @param[in] timeout_ms 超时时间 ms
+ *
+ * @retval OSAL_API_OK 成功
+ * @retval other 失败
+ */
+typedef int (*osal_api_mq_recv)(osal_mq_t mq, void *msg, int msg_size, int timeout_ms);
 
 //////////////////////////////////////////////// timer
 
@@ -529,6 +587,12 @@ typedef struct osal_api
     osal_api_event_wait event_wait;
     osal_api_event_set event_set;
 
+    // mq
+    osal_api_mq_create mq_create;
+    osal_api_mq_destory mq_destory;
+    osal_api_mq_send mq_send;
+    osal_api_mq_recv mq_recv;
+
     // time
     osal_api_calc_timedwait calc_timedwait;
 
@@ -588,6 +652,13 @@ extern osal_api_t osal_api;
 #define osal_event_wait osal_api.event_wait
 #define osal_event_set osal_api.event_set
 #endif // !osal_event_create
+
+#ifndef osal_mq_create
+#define osal_mq_create osal_api.mq_create
+#define osal_mq_destory osal_api.mq_destory
+#define osal_mq_send osal_api.mq_send
+#define osal_mq_recv osal_api.mq_recv
+#endif // !osal_mq_create
 
 #ifndef osal_uptime
 #define osal_uptime osal_api.uptime
