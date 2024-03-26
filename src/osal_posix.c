@@ -566,6 +566,7 @@ int osal_posix_mq_recv(osal_mq_t mq, void *msg, int msg_size, int timeout_ms)
 
 typedef struct osal_posix_mq_s
 {
+    int exit_flag;
     pthread_mutex_t w_mutex;
     pthread_mutex_t r_mutex;
     pthread_cond_t cond;
@@ -636,10 +637,17 @@ int osal_posix_mq_destroy(osal_mq_t mq)
         return OSAL_API_INVAL;
     }
 
+    mq_posix->exit_flag = 1;
+    pthread_cond_broadcast(&mq_posix->cond);
+
+    pthread_mutex_lock(&mq_posix->r_mutex);
+    osal_lock_free_queue_deinit(mq_posix->raw_queue);
+    pthread_mutex_unlock(&mq_posix->r_mutex);
+
     pthread_mutex_destroy(&mq_posix->w_mutex);
     pthread_mutex_destroy(&mq_posix->r_mutex);
     pthread_cond_destroy(&mq_posix->cond);
-    osal_lock_free_queue_deinit(mq_posix->raw_queue);
+
     osal_free(mq_posix);
 
     return OSAL_API_OK;
@@ -723,8 +731,16 @@ int osal_posix_mq_recv(osal_mq_t mq, void *msg, int msg_size, int timeout_ms)
             break;
         }
 
-        osal_calc_timedwait(&tm, timeout_ms);
-        ret = pthread_cond_timedwait(&mq_posix->cond, &mq_posix->r_mutex, &tm);
+        if (timeout_ms == OSAL_API_WAITFOREVER)
+        {
+            ret = pthread_cond_wait(&mq_posix->cond, &mq_posix->r_mutex);
+        }
+        else
+        {
+            osal_calc_timedwait(&tm, timeout_ms);
+            ret = pthread_cond_timedwait(&mq_posix->cond, &mq_posix->r_mutex, &tm);
+        }
+
         if (ret == ETIMEDOUT)
         {
             ret = OSAL_API_TIMEDOUT;
@@ -736,12 +752,17 @@ int osal_posix_mq_recv(osal_mq_t mq, void *msg, int msg_size, int timeout_ms)
             ret = errno_2_ret(ret);
             break;
         }
+
+        if (mq_posix->exit_flag)
+        {
+            ret = OSAL_API_FAIL;
+            break;
+        }
     }
 
-    if (ret = pthread_mutex_unlock(&mq_posix->r_mutex))
+    if (pthread_mutex_unlock(&mq_posix->r_mutex))
     {
-        pr_error("pthread_mutex_unlock(r_mutex) failed, ret = %d.\n", ret);
-        return errno_2_ret(ret);
+        pr_error("pthread_mutex_unlock(r_mutex) failed.\n");
     }
 
     return ret;
