@@ -10,6 +10,7 @@ file(GLOB TEST_FILES
     misc/*.c
     task/*.c
     sem/*.c
+    mq/*.c
 )
 
 add_executable(${PROJECT_NAME} ${TEST_FILES} osal_test.c)

@@ -28,7 +28,7 @@
 #define osal_task_self() ((osal_task_t)pthread_self())
 #define osal_task_sleep(s) sleep(s)
 #define osal_task_usleep(us) usleep(us)
-#define osal_task_destory(task) pthread_cancel((pthread_t)task)
+#define osal_task_destroy(task) pthread_cancel((pthread_t)task)
 #define osal_task_yield()
 #define osal_task_suspend(task)
 #define osal_task_resume(task)

@@ -13,8 +13,8 @@ static void sem_01(void)
     sem2 = osal_sem_create(1);
     CU_ASSERT_PTR_NOT_NULL(sem2);
 
-    CU_ASSERT_EQUAL(osal_sem_destory(sem1), OSAL_API_OK);
-    CU_ASSERT_EQUAL(osal_sem_destory(sem2), OSAL_API_OK);
+    CU_ASSERT_EQUAL(osal_sem_destroy(sem1), OSAL_API_OK);
+    CU_ASSERT_EQUAL(osal_sem_destroy(sem2), OSAL_API_OK);
 }
 
 void t_osal_sem_001(void)

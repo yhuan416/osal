@@ -4,6 +4,7 @@ void MemAddTests(void);
 void TaskAddTests(void);
 void SemAddTests(void);
 void MiscAddTests(void);
+void MqAddTests(void);
 
 void AddTests(void)
 {
@@ -17,6 +18,9 @@ void AddTests(void)
 
     // sem
     SemAddTests();
+
+    // mq
+    MqAddTests();
 
     // event
 

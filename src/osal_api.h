@@ -132,14 +132,14 @@ typedef osal_task_t (*osal_api_task_create_pin_to_core)(const char *name,
 /**
  * @brief 销毁一个任务
  *
- * @name osal_task_destory
+ * @name osal_task_destroy
  *
  * @param[in] task 任务句柄
  *
  * @retval OSAL_API_OK 成功
  * @retval other 失败
  */
-typedef int (*osal_api_task_destory)(osal_task_t task);
+typedef int (*osal_api_task_destroy)(osal_task_t task);
 
 /**
  * @brief 获取当前任务句柄
@@ -250,14 +250,14 @@ typedef osal_mutex_t (*osal_api_mutex_create)(void);
 /**
  * @brief 销毁互斥锁
  *
- * @name osal_mutex_destory
+ * @name osal_mutex_destroy
  *
  * @param[in] mutex mutex句柄
  *
  * @retval OSAL_API_OK 成功
  * @retval other 失败
  */
-typedef int (*osal_api_mutex_destory)(osal_mutex_t mutex);
+typedef int (*osal_api_mutex_destroy)(osal_mutex_t mutex);
 
 /**
  * @brief 持有互斥锁
@@ -314,14 +314,14 @@ typedef osal_sem_t (*osal_api_sem_create)(uint32_t init);
 /**
  * @brief 销毁信号量
  *
- * @name osal_sem_destory
+ * @name osal_sem_destroy
  *
  * @param[in] sem 信号量句柄
  *
  * @retval OSAL_API_OK 成功
  * @retval other 失败
  */
-typedef int (*osal_api_sem_destory)(osal_sem_t sem);
+typedef int (*osal_api_sem_destroy)(osal_sem_t sem);
 
 /**
  * @brief 等待信号量
@@ -366,14 +366,14 @@ typedef void *(*osal_api_shm_create)(const char *key, int size);
 /**
  * @brief 销毁一个共享内存
  *
- * @name osal_shm_destory
+ * @name osal_shm_destroy
  *
  * @param[in] shm 共享内存地址
  *
  * @retval OSAL_API_OK 成功
  * @retval other 失败
  */
-typedef int (*osal_api_shm_destory)(void *shm);
+typedef int (*osal_api_shm_destroy)(void *shm);
 
 //////////////////////////////////////////////// event
 typedef void *osal_event_t;
@@ -391,11 +391,11 @@ typedef osal_event_t (*osal_api_event_create)(void);
 /**
  * @brief 销毁事件
  *
- * @name osal_event_destory
+ * @name osal_event_destroy
  *
  * @param[in] event 事件句柄
  */
-typedef void (*osal_api_event_destory)(osal_event_t event);
+typedef void (*osal_api_event_destroy)(osal_event_t event);
 
 /**
  * @brief 等待对应的事件
@@ -446,14 +446,14 @@ typedef osal_mq_t (*osal_api_mq_create)(const char *name, long msg_size, long ms
 /**
  * @brief 销毁消息队列
  *
- * @name osal_mq_destory
+ * @name osal_mq_destroy
  *
  * @param[in] mq 消息队列句柄
  *
  * @retval OSAL_API_OK 成功
  * @retval other 失败
  */
-typedef int (*osal_api_mq_destory)(osal_mq_t mq);
+typedef int (*osal_api_mq_destroy)(osal_mq_t mq);
 
 /**
  * @brief 发送消息
@@ -554,7 +554,7 @@ typedef struct osal_api
     // task
     osal_api_task_create task_create;
     osal_api_task_create_pin_to_core task_create_pin_to_core;
-    osal_api_task_destory task_destory;
+    osal_api_task_destroy task_destroy;
     osal_api_task_self task_self;
     osal_api_task_yield task_yield;
     osal_api_task_sleep task_sleep;
@@ -566,30 +566,30 @@ typedef struct osal_api
 
     // mutex
     osal_api_mutex_create mutex_create;
-    osal_api_mutex_destory mutex_destory;
+    osal_api_mutex_destroy mutex_destroy;
     osal_api_mutex_lock mutex_lock;
     osal_api_mutex_trylock mutex_trylock;
     osal_api_mutex_unlock mutex_unlock;
 
     // sem
     osal_api_sem_create sem_create;
-    osal_api_sem_destory sem_destory;
+    osal_api_sem_destroy sem_destroy;
     osal_api_sem_wait sem_wait;
     osal_api_sem_post sem_post;
 
     // shm
     osal_api_shm_create shm_create;
-    osal_api_shm_destory shm_destory;
+    osal_api_shm_destroy shm_destroy;
 
     // event
     osal_api_event_create event_create;
-    osal_api_event_destory event_destory;
+    osal_api_event_destroy event_destroy;
     osal_api_event_wait event_wait;
     osal_api_event_set event_set;
 
     // mq
     osal_api_mq_create mq_create;
-    osal_api_mq_destory mq_destory;
+    osal_api_mq_destroy mq_destroy;
     osal_api_mq_send mq_send;
     osal_api_mq_recv mq_recv;
 
@@ -618,7 +618,7 @@ extern osal_api_t osal_api;
 #define osal_task_self osal_api.task_self
 #define osal_task_sleep osal_api.task_sleep
 #define osal_task_usleep osal_api.task_usleep
-#define osal_task_destory osal_api.task_destory
+#define osal_task_destroy osal_api.task_destroy
 #define osal_task_yield osal_api.task_yield
 #define osal_task_suspend osal_api.task_suspend
 #define osal_task_resume osal_api.task_resume
@@ -628,7 +628,7 @@ extern osal_api_t osal_api;
 
 #ifndef osal_mutex_create
 #define osal_mutex_create osal_api.mutex_create
-#define osal_mutex_destory osal_api.mutex_destory
+#define osal_mutex_destroy osal_api.mutex_destroy
 #define osal_mutex_lock osal_api.mutex_lock
 #define osal_mutex_trylock osal_api.mutex_trylock
 #define osal_mutex_unlock osal_api.mutex_unlock
@@ -636,26 +636,26 @@ extern osal_api_t osal_api;
 
 #ifndef osal_sem_create
 #define osal_sem_create osal_api.sem_create
-#define osal_sem_destory osal_api.sem_destory
+#define osal_sem_destroy osal_api.sem_destroy
 #define osal_sem_wait osal_api.sem_wait
 #define osal_sem_post osal_api.sem_post
 #endif // !osal_sem_create
 
 #ifndef osal_shm_create
 #define osal_shm_create osal_api.shm_create
-#define osal_shm_destory osal_api.shm_destory
+#define osal_shm_destroy osal_api.shm_destroy
 #endif // !osal_shm_create
 
 #ifndef osal_event_create
 #define osal_event_create osal_api.event_create
-#define osal_event_destory osal_api.event_destory
+#define osal_event_destroy osal_api.event_destroy
 #define osal_event_wait osal_api.event_wait
 #define osal_event_set osal_api.event_set
 #endif // !osal_event_create
 
 #ifndef osal_mq_create
 #define osal_mq_create osal_api.mq_create
-#define osal_mq_destory osal_api.mq_destory
+#define osal_mq_destroy osal_api.mq_destroy
 #define osal_mq_send osal_api.mq_send
 #define osal_mq_recv osal_api.mq_recv
 #endif // !osal_mq_create

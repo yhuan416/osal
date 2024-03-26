@@ -272,7 +272,7 @@ osal_mutex_t osal_posix_mutex_create(void)
     return (osal_mutex_t)mutex;
 }
 
-int osal_posix_mutex_destory(osal_mutex_t mutex)
+int osal_posix_mutex_destroy(osal_mutex_t mutex)
 {
     if (mutex == NULL)
     {
@@ -365,7 +365,7 @@ osal_sem_t osal_posix_sem_create(uint32_t init)
     return (osal_sem_t)sem;
 }
 
-int osal_posix_sem_destory(osal_sem_t sem)
+int osal_posix_sem_destroy(osal_sem_t sem)
 {
     if (sem == NULL)
     {
@@ -427,6 +427,8 @@ int osal_posix_sem_post(osal_sem_t sem)
     return OSAL_API_OK;
 }
 
+#if 0
+
 #include <fcntl.h>    /* For O_* constants */
 #include <sys/stat.h> /* For mode constants */
 #include <mqueue.h>
@@ -487,11 +489,11 @@ osal_mq_t osal_posix_mq_create(const char *name, long msg_size, long msg_max, in
     return mq;
 }
 
-int osal_posix_mq_destory(osal_mq_t mq)
+int osal_posix_mq_destroy(osal_mq_t mq)
 {
     if (mq == NULL)
     {
-        pr_error("osal_posix_mq_destory, mq is NULL.");
+        pr_error("osal_posix_mq_destroy, mq is NULL.");
         return OSAL_API_INVAL;
     }
 
@@ -558,6 +560,195 @@ int osal_posix_mq_recv(osal_mq_t mq, void *msg, int msg_size, int timeout_ms)
     return OSAL_API_OK;
 }
 
+#else
+
+#include "osal_lock_free_queue.h"
+
+typedef struct osal_posix_mq_s
+{
+    pthread_mutex_t w_mutex;
+    pthread_mutex_t r_mutex;
+    pthread_cond_t cond;
+    osal_lock_free_queue_t *raw_queue;
+} osal_posix_mq_t;
+
+osal_mq_t osal_posix_mq_create(const char *name, long msg_size, long msg_max, int flag)
+{
+    osal_posix_mq_t *mq = NULL;
+    int ret;
+
+    if (msg_size <= 0 || msg_max <= 0)
+    {
+        pr_error("msg_size or msg_max is invalid.\n");
+        return NULL;
+    }
+
+    mq = (osal_posix_mq_t *)osal_calloc(1, sizeof(struct osal_posix_mq_s));
+    if (mq == NULL)
+    {
+        pr_error("mq malloc failed.\n");
+        return NULL;
+    }
+
+    if (ret = pthread_mutex_init(&mq->w_mutex, NULL))
+    {
+        pr_error("pthread_mutex_init(w_mutex) failed, ret = %d.\n", ret);
+        osal_free(mq);
+        return NULL;
+    }
+
+    if (ret = pthread_mutex_init(&mq->r_mutex, NULL))
+    {
+        pr_error("pthread_mutex_init(r_mutex) failed, ret = %d.\n", ret);
+        pthread_mutex_destroy(&mq->w_mutex);
+        osal_free(mq);
+        return NULL;
+    }
+
+    if (ret = pthread_cond_init(&mq->cond, NULL))
+    {
+        pr_error("pthread_cond_init failed, ret = %d.\n", ret);
+        pthread_mutex_destroy(&mq->w_mutex);
+        pthread_mutex_destroy(&mq->r_mutex);
+        osal_free(mq);
+    }
+
+    mq->raw_queue = osal_lock_free_queue_init(msg_size, msg_max);
+    if (mq->raw_queue == NULL)
+    {
+        pr_error("osal_lock_free_queue_init failed.\n");
+        pthread_mutex_destroy(&mq->w_mutex);
+        pthread_mutex_destroy(&mq->r_mutex);
+        pthread_cond_destroy(&mq->cond);
+        osal_free(mq);
+    }
+
+    return mq;
+}
+
+int osal_posix_mq_destroy(osal_mq_t mq)
+{
+    osal_posix_mq_t *mq_posix = (osal_posix_mq_t *)mq;
+
+    if (mq_posix == NULL)
+    {
+        pr_error("mq is NULL.\n");
+        return OSAL_API_INVAL;
+    }
+
+    pthread_mutex_destroy(&mq_posix->w_mutex);
+    pthread_mutex_destroy(&mq_posix->r_mutex);
+    pthread_cond_destroy(&mq_posix->cond);
+    osal_lock_free_queue_deinit(mq_posix->raw_queue);
+    osal_free(mq_posix);
+
+    return OSAL_API_OK;
+}
+
+int osal_posix_mq_send(osal_mq_t mq, const void *msg, int msg_size, int timeout_ms)
+{
+    osal_posix_mq_t *mq_posix = (osal_posix_mq_t *)mq;
+    int ret;
+
+    if (mq_posix == NULL || msg == NULL || msg_size <= 0)
+    {
+        pr_error("mq or msg is NULL, or msg_size is invalid.\n");
+        return OSAL_API_INVAL;
+    }
+
+    if (ret = pthread_mutex_lock(&mq_posix->w_mutex))
+    {
+        pr_error("pthread_mutex_lock(w_mutex) failed, ret = %d.\n", ret);
+        return errno_2_ret(ret);
+    }
+
+    if (osal_lock_free_queue_push(mq_posix->raw_queue, msg))
+    {
+        pr_error("osal_lock_free_queue_push failed.\n");
+        pthread_mutex_unlock(&mq_posix->w_mutex);
+        return OSAL_API_FAIL;
+    }
+
+    if (ret = pthread_mutex_unlock(&mq_posix->w_mutex))
+    {
+        pr_error("pthread_mutex_unlock(w_mutex) failed, ret = %d.\n", ret);
+        return errno_2_ret(ret);
+    }
+
+    if (ret = pthread_mutex_lock(&mq_posix->r_mutex))
+    {
+        pr_error("pthread_mutex_lock(r_mutex) failed, ret = %d.\n", ret);
+        return errno_2_ret(ret);
+    }
+
+    if (ret = pthread_cond_signal(&mq_posix->cond))
+    {
+        pr_error("pthread_cond_signal failed, ret = %d.\n", ret);
+        pthread_mutex_unlock(&mq_posix->r_mutex);
+        return errno_2_ret(ret);
+    }
+
+    if (ret = pthread_mutex_unlock(&mq_posix->r_mutex))
+    {
+        pr_error("pthread_mutex_unlock(r_mutex) failed, ret = %d.\n", ret);
+        return errno_2_ret(ret);
+    }
+
+    return OSAL_API_OK;
+}
+
+int osal_posix_mq_recv(osal_mq_t mq, void *msg, int msg_size, int timeout_ms)
+{
+    struct timespec tm = {0};
+    osal_posix_mq_t *mq_posix = (osal_posix_mq_t *)mq;
+    int ret;
+
+    if (mq_posix == NULL || msg == NULL || msg_size <= 0)
+    {
+        pr_error("mq or msg is NULL, or msg_size is invalid.\n");
+        return OSAL_API_INVAL;
+    }
+
+    if (ret = pthread_mutex_lock(&mq_posix->r_mutex))
+    {
+        pr_error("pthread_mutex_lock(r_mutex) failed, ret = %d.\n", ret);
+        return errno_2_ret(ret);
+    }
+
+    while (osal_lock_free_queue_pop(mq_posix->raw_queue, msg, msg_size))
+    {
+        if (timeout_ms == 0)
+        {
+            ret = OSAL_API_TIMEDOUT;
+            break;
+        }
+
+        osal_calc_timedwait(&tm, timeout_ms);
+        ret = pthread_cond_timedwait(&mq_posix->cond, &mq_posix->r_mutex, &tm);
+        if (ret == ETIMEDOUT)
+        {
+            ret = OSAL_API_TIMEDOUT;
+            break;
+        }
+        else if (ret)
+        {
+            pr_error("pthread_cond_timedwait failed, ret = %d.\n", ret);
+            ret = errno_2_ret(ret);
+            break;
+        }
+    }
+
+    if (ret = pthread_mutex_unlock(&mq_posix->r_mutex))
+    {
+        pr_error("pthread_mutex_unlock(r_mutex) failed, ret = %d.\n", ret);
+        return errno_2_ret(ret);
+    }
+
+    return ret;
+}
+
+#endif
+
 int osal_posix_calc_timedwait(struct timespec *tm, uint32_t ms)
 {
     int ret;
@@ -609,18 +800,18 @@ osal_api_t osal_api = {
     .task_create = osal_posix_task_create,
 
     .mutex_create = osal_posix_mutex_create,
-    .mutex_destory = osal_posix_mutex_destory,
+    .mutex_destroy = osal_posix_mutex_destroy,
     .mutex_lock = osal_posix_mutex_lock,
     .mutex_trylock = osal_posix_mutex_trylock,
     .mutex_unlock = osal_posix_mutex_unlock,
 
     .sem_create = osal_posix_sem_create,
-    .sem_destory = osal_posix_sem_destory,
+    .sem_destroy = osal_posix_sem_destroy,
     .sem_wait = osal_posix_sem_wait,
     .sem_post = osal_posix_sem_post,
 
     .mq_create = osal_posix_mq_create,
-    .mq_destory = osal_posix_mq_destory,
+    .mq_destroy = osal_posix_mq_destroy,
     .mq_recv = osal_posix_mq_recv,
     .mq_send = osal_posix_mq_send,
 

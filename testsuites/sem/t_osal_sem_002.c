@@ -13,7 +13,7 @@ static void sem_02(void)
     CU_ASSERT_NOT_EQUAL(osal_sem_wait(sem1, 1000), OSAL_API_OK);
 
     // 销毁
-    CU_ASSERT_EQUAL(osal_sem_destory(sem1), OSAL_API_OK);
+    CU_ASSERT_EQUAL(osal_sem_destroy(sem1), OSAL_API_OK);
     sem1 = NULL;
 
     // 创建sem2
@@ -25,7 +25,7 @@ static void sem_02(void)
     CU_ASSERT_NOT_EQUAL(osal_sem_wait(sem2, 1000), OSAL_API_OK);
 
     // 销毁
-    CU_ASSERT_EQUAL(osal_sem_destory(sem2), OSAL_API_OK);
+    CU_ASSERT_EQUAL(osal_sem_destroy(sem2), OSAL_API_OK);
     sem2 = NULL;
 }
 
