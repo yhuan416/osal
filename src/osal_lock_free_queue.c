@@ -4,19 +4,12 @@
 
 osal_lock_free_queue_t *osal_lock_free_queue_init(uint32_t msg_size, uint32_t msg_max)
 {
-
     if (msg_size <= 0 || msg_max <= 0)
     {
         return NULL;
     }
 
-    int total_size = msg_size * msg_max + 1;
-    if (total_size <= 0)
-    {
-        return NULL;
-    }
-
-    osal_lock_free_queue_t *queue = (osal_lock_free_queue_t *)osal_calloc(1, sizeof(osal_lock_free_queue_t) + total_size);
+    osal_lock_free_queue_t *queue = (osal_lock_free_queue_t *)osal_calloc(1, sizeof(osal_lock_free_queue_t) + (msg_size * msg_max));
     if (queue == NULL)
     {
         return NULL;
@@ -25,7 +18,7 @@ osal_lock_free_queue_t *osal_lock_free_queue_init(uint32_t msg_size, uint32_t ms
     queue->read = 0;
     queue->write = 0;
     queue->msg_size = msg_size;
-    queue->total_size = total_size;
+    queue->total_size = msg_size * msg_max;
 
     return queue;
 }
