@@ -18,7 +18,13 @@ static void realloc_02(void)
     buff = osal_realloc(buff, 2048); // same as malloc
     CU_ASSERT_PTR_NOT_NULL(buff);
 
+    void *buff1 = NULL;
+
+    buff1 = osal_realloc(NULL, 1024); // same as malloc
+    CU_ASSERT_PTR_NOT_NULL(buff1);
+
     osal_free(buff);
+    osal_free(buff1);
 }
 
 static void realloc_03(void)

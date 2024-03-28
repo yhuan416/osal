@@ -130,6 +130,18 @@ typedef osal_task_t (*osal_api_task_create_pin_to_core)(const char *name,
                                                         int core_id);
 
 /**
+ * @brief 等待某个任务结束
+ * 
+ * @name osal_task_join
+ * 
+ * @param[in] task 任务句柄
+ * 
+ * @retval OSAL_API_OK 成功
+ * @retval other 失败
+ */
+typedef int (*osal_api_task_join)(osal_task_t task);
+
+/**
  * @brief 销毁一个任务
  *
  * @name osal_task_destroy
@@ -554,6 +566,7 @@ typedef struct osal_api
     // task
     osal_api_task_create task_create;
     osal_api_task_create_pin_to_core task_create_pin_to_core;
+    osal_api_task_join task_join;
     osal_api_task_destroy task_destroy;
     osal_api_task_self task_self;
     osal_api_task_yield task_yield;
@@ -615,6 +628,7 @@ extern osal_api_t osal_api;
 #ifndef osal_task_create
 #define osal_task_create osal_api.task_create
 #define osal_task_create_pin_to_core osal_api.task_create_pin_to_core
+#define osal_task_join osal_api.task_join
 #define osal_task_self osal_api.task_self
 #define osal_task_sleep osal_api.task_sleep
 #define osal_task_usleep osal_api.task_usleep
