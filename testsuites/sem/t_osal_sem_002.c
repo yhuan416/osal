@@ -6,7 +6,7 @@ static void sem_02(void)
     osal_sem_t sem2;
 
     // 创建sem1
-    sem1 = osal_sem_create(0);
+    sem1 = osal_sem_create(10, 0);
     CU_ASSERT_PTR_NOT_NULL(sem1);
 
     // 尝试获取
@@ -17,7 +17,7 @@ static void sem_02(void)
     sem1 = NULL;
 
     // 创建sem2
-    sem2 = osal_sem_create(1);
+    sem2 = osal_sem_create(10, 1);
     CU_ASSERT_PTR_NOT_NULL(sem2);
 
     // 获取

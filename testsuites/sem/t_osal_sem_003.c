@@ -13,7 +13,7 @@ void *taskEntry(void *arg)
 
 static void sem_03(void)
 {
-    osal_sem_t sem1 = osal_sem_create(0);
+    osal_sem_t sem1 = osal_sem_create(10, 0);
     CU_ASSERT_PTR_NOT_NULL(sem1);
 
     osal_task_t task = osal_task_create(

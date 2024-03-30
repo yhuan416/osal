@@ -218,12 +218,10 @@ typedef int (*osal_api_task_resume)(osal_task_t task);
  * @name osal_task_get_priority
  *
  * @param[in] task 任务句柄
- * @param[out] priority 任务优先级
  *
- * @retval OSAL_API_OK 成功
- * @retval other 失败
+ * @retval >=0 任务优先级
  */
-typedef int (*osal_api_task_get_priority)(osal_task_t task, int *priority);
+typedef int (*osal_api_task_get_priority)(osal_task_t task);
 
 /**
  * @brief 设置任务优先级, 一般用于rtos
@@ -313,7 +311,7 @@ typedef void *osal_sem_t;
  * @retval NULL 创建失败
  * @retval other 信号量句柄
  */
-typedef osal_sem_t (*osal_api_sem_create)(uint32_t init);
+typedef osal_sem_t (*osal_api_sem_create)(uint32_t max, uint32_t init);
 
 /**
  * @brief 销毁信号量

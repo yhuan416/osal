@@ -344,7 +344,7 @@ int osal_posix_mutex_unlock(osal_mutex_t mutex)
 
 #include <semaphore.h>
 
-osal_sem_t osal_posix_sem_create(uint32_t init)
+osal_sem_t osal_posix_sem_create(uint32_t max, uint32_t init)
 {
     int ret;
     sem_t *sem = (sem_t *)osal_calloc(1, sizeof(sem_t));

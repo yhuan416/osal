@@ -142,18 +142,6 @@ osal_task_t osal_freertos_task_create_pin_to_core(const char *name,
     return task_handle;
 }
 
-int osal_freertos_task_get_priority(osal_task_t task, int *priority)
-{
-    if (task == NULL || priority == NULL)
-    {
-        ESP_LOGE(TAG, "osal_freertos_task_get_priority: invalid parameters");
-        return -1;
-    }
-
-    *priority = uxTaskPriorityGet(task);
-    return 0;
-}
-
 osal_api_t osal_api = {
     .malloc = osal_freertos_malloc,
     .calloc = osal_freertos_calloc,
@@ -161,10 +149,6 @@ osal_api_t osal_api = {
 
     .task_create = osal_freertos_task_create,
     .task_create_pin_to_core = osal_freertos_task_create_pin_to_core,
-    .task_get_priority = osal_freertos_task_get_priority,
-
-    // .uptime = osal_posix_uptime,
-    // .calc_timedwait = osal_posix_calc_timedwait,
 };
 
 #endif
