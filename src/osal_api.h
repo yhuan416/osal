@@ -16,6 +16,10 @@
 #include "osal_posix.h"
 #endif
 
+#if defined(ESP_PLATFORM)
+#include "osal_freertos.h"
+#endif
+
 enum osal_api_ret
 {
     OSAL_API_OK = 0,   /*!< ok */
