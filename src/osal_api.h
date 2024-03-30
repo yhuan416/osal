@@ -545,7 +545,7 @@ typedef uint64_t (*osal_api_uptime)(void);
  *
  * @retval 生成的随机数
  */
-typedef unsigned long (*osal_api_random)(void);
+typedef uint32_t (*osal_api_random)(void);
 
 typedef struct osal_api
 {

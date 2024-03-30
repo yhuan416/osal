@@ -14,6 +14,7 @@
 #include "freertos/task.h"
 #include "freertos/semphr.h"
 
+#include "esp_random.h"
 #include "esp_system.h"
 #include "esp_err.h"
 
@@ -66,5 +67,9 @@
 #define osal_mq_send(xQueue, msg, msg_size, ms) FREERTOS_CALL(xQueueSend(xQueue, msg, pdMS_TO_TICKS(ms)))
 #define osal_mq_recv(xQueue, msg, msg_size, ms) FREERTOS_CALL(xQueueReceive(xQueue, msg, pdMS_TO_TICKS(ms)))
 #endif // !osal_mq_create
+
+#ifndef osal_random
+#define osal_random() esp_random()
+#endif // !osal_random
 
 #endif // !_OSAL_FREERTOS_H_
