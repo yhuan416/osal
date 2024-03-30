@@ -163,22 +163,6 @@ osal_api_t osal_api = {
     .task_create_pin_to_core = osal_freertos_task_create_pin_to_core,
     .task_get_priority = osal_freertos_task_get_priority,
 
-    // .mutex_create = osal_posix_mutex_create,
-    // .mutex_destroy = osal_posix_mutex_destroy,
-    // .mutex_lock = osal_posix_mutex_lock,
-    // .mutex_trylock = osal_posix_mutex_trylock,
-    // .mutex_unlock = osal_posix_mutex_unlock,
-
-    // .sem_create = osal_posix_sem_create,
-    // .sem_destroy = osal_posix_sem_destroy,
-    // .sem_wait = osal_posix_sem_wait,
-    // .sem_post = osal_posix_sem_post,
-
-    // .mq_create = osal_posix_mq_create,
-    // .mq_destroy = osal_posix_mq_destroy,
-    // .mq_recv = osal_posix_mq_recv,
-    // .mq_send = osal_posix_mq_send,
-
     // .uptime = osal_posix_uptime,
     // .calc_timedwait = osal_posix_calc_timedwait,
 };

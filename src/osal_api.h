@@ -269,12 +269,12 @@ typedef int (*osal_api_mutex_destroy)(osal_mutex_t mutex);
  * @name osal_mutex_lock
  *
  * @param[in] mutex mutex句柄
- * @param[in] timeout_ms 超时时间 ms
+ * @param[in] ms 超时时间 ms
  *
  * @retval OSAL_API_OK 成功
  * @retval other 失败
  */
-typedef int (*osal_api_mutex_lock)(osal_mutex_t mutex, uint32_t timeout_ms);
+typedef int (*osal_api_mutex_lock)(osal_mutex_t mutex, uint32_t ms);
 
 /**
  * @brief 尝试持有互斥锁
@@ -333,12 +333,12 @@ typedef int (*osal_api_sem_destroy)(osal_sem_t sem);
  * @name osal_sem_wait
  *
  * @param[in] sem 信号量句柄
- * @param[in] timeout_ms 等待超时时间 ms
+ * @param[in] ms 等待超时时间 ms
  *
  * @retval OSAL_API_OK 成功
  * @retval other 失败
  */
-typedef int (*osal_api_sem_wait)(osal_sem_t sem, uint32_t timeout_ms);
+typedef int (*osal_api_sem_wait)(osal_sem_t sem, uint32_t ms);
 
 /**
  * @brief 释放信号量
@@ -409,12 +409,12 @@ typedef void (*osal_api_event_destroy)(osal_event_t event);
  * @param[in] event 事件句柄
  * @param[in] set 等待的标记位
  * @param[in] option 选项 [ and | or | clear ]
- * @param[in] timeout_ms 超时时间 ms
+ * @param[in] ms 超时时间 ms
  *
  * @retval OSAL_API_OK 成功
  * @retval other 失败
  */
-typedef int (*osal_api_event_wait)(osal_event_t event, uint32_t set, uint32_t option, uint32_t timeout_ms);
+typedef int (*osal_api_event_wait)(osal_event_t event, uint32_t set, uint32_t option, uint32_t ms);
 
 /**
  * @brief 触发对应的事件
@@ -467,12 +467,12 @@ typedef int (*osal_api_mq_destroy)(osal_mq_t mq);
  * @param[in] mq 消息队列句柄
  * @param[in] msg 消息
  * @param[in] msg_size 消息大小
- * @param[in] timeout_ms 超时时间 ms
+ * @param[in] ms 超时时间 ms
  *
  * @retval OSAL_API_OK 成功
  * @retval other 失败
  */
-typedef int (*osal_api_mq_send)(osal_mq_t mq, const void *msg, int msg_size, int timeout_ms);
+typedef int (*osal_api_mq_send)(osal_mq_t mq, const void *msg, int msg_size, int ms);
 
 /**
  * @brief 接受消息
@@ -482,12 +482,12 @@ typedef int (*osal_api_mq_send)(osal_mq_t mq, const void *msg, int msg_size, int
  * @param[in] mq 消息队列句柄
  * @param[out] msg 消息
  * @param[in] msg_size 消息大小
- * @param[in] timeout_ms 超时时间 ms
+ * @param[in] ms 超时时间 ms
  *
  * @retval OSAL_API_OK 成功
  * @retval other 失败
  */
-typedef int (*osal_api_mq_recv)(osal_mq_t mq, void *msg, int msg_size, int timeout_ms);
+typedef int (*osal_api_mq_recv)(osal_mq_t mq, void *msg, int msg_size, int ms);
 
 //////////////////////////////////////////////// timer
 

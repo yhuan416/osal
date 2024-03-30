@@ -17,6 +17,9 @@
 #include "esp_system.h"
 #include "esp_err.h"
 
+// translate freeRTOS error code to osal error code
+#define FREERTOS_CALL(err) ((err) == pdPASS ? 0 : -1)
+
 #ifndef osal_malloc
 #define osal_malloc osal_api.malloc
 #define osal_free free
@@ -45,9 +48,23 @@
 #ifndef osal_mutex_create
 #define osal_mutex_create() xSemaphoreCreateMutex()
 #define osal_mutex_destroy(mutex) vSemaphoreDelete(mutex)
-#define osal_mutex_lock(mutex, ms) xSemaphoreTake(mutex, pdMS_TO_TICKS(ms))
-#define osal_mutex_trylock(mutex) xSemaphoreTake(mutex, 0)
-#define osal_mutex_unlock(mutex) xSemaphoreGive(mutex)
+#define osal_mutex_lock(mutex, ms) FREERTOS_CALL(xSemaphoreTake(mutex, pdMS_TO_TICKS(ms)))
+#define osal_mutex_trylock(mutex) FREERTOS_CALL(xSemaphoreTake(mutex, 0))
+#define osal_mutex_unlock(mutex) FREERTOS_CALL(xSemaphoreGive(mutex))
 #endif // !osal_mutex_create
+
+#ifndef osal_sem_create
+#define osal_sem_create(init) xSemaphoreCreateCounting(10, (init))
+#define osal_sem_destroy(sem) vSemaphoreDelete(sem)
+#define osal_sem_wait(sem, ms) FREERTOS_CALL(xSemaphoreTake(sem, pdMS_TO_TICKS(ms)))
+#define osal_sem_post(sem, ms) FREERTOS_CALL(xSemaphoreGive(sem))
+#endif // !osal_sem_create
+
+#ifndef osal_mq_create
+#define osal_mq_create(name, msg_size, msg_max, flag) xQueueCreate(msg_max, msg_size)
+#define osal_mq_destroy(xQueue) vQueueDelete(xQueue)
+#define osal_mq_send(xQueue, msg, msg_size, ms) FREERTOS_CALL(xQueueSend(xQueue, msg, pdMS_TO_TICKS(ms)))
+#define osal_mq_recv(xQueue, msg, msg_size, ms) FREERTOS_CALL(xQueueReceive(xQueue, msg, pdMS_TO_TICKS(ms)))
+#endif // !osal_mq_create
 
 #endif // !_OSAL_FREERTOS_H_
