@@ -7,10 +7,10 @@ static void sem_01(void)
     osal_sem_t sem1;
     osal_sem_t sem2;
 
-    sem1 = osal_sem_create(0);
+    sem1 = osal_sem_create(10, 0);
     CU_ASSERT_PTR_NOT_NULL(sem1);
 
-    sem2 = osal_sem_create(1);
+    sem2 = osal_sem_create(10, 1);
     CU_ASSERT_PTR_NOT_NULL(sem2);
 
     CU_ASSERT_EQUAL(osal_sem_destroy(sem1), OSAL_API_OK);

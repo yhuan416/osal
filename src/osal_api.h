@@ -16,6 +16,10 @@
 #include "osal_posix.h"
 #endif
 
+#if defined(ESP_PLATFORM)
+#include "osal_freertos.h"
+#endif
+
 enum osal_api_ret
 {
     OSAL_API_OK = 0,   /*!< ok */
@@ -226,12 +230,10 @@ typedef int (*osal_api_task_resume)(osal_task_t task);
  * @name osal_task_get_priority
  *
  * @param[in] task 任务句柄
- * @param[out] priority 任务优先级
  *
- * @retval OSAL_API_OK 成功
- * @retval other 失败
+ * @retval >=0 任务优先级
  */
-typedef int (*osal_api_task_get_priority)(osal_task_t task, int *priority);
+typedef int (*osal_api_task_get_priority)(osal_task_t task);
 
 /**
  * @brief 设置任务优先级, 一般用于rtos
@@ -277,12 +279,12 @@ typedef int (*osal_api_mutex_destroy)(osal_mutex_t mutex);
  * @name osal_mutex_lock
  *
  * @param[in] mutex mutex句柄
- * @param[in] timeout_ms 超时时间 ms
+ * @param[in] ms 超时时间 ms
  *
  * @retval OSAL_API_OK 成功
  * @retval other 失败
  */
-typedef int (*osal_api_mutex_lock)(osal_mutex_t mutex, uint32_t timeout_ms);
+typedef int (*osal_api_mutex_lock)(osal_mutex_t mutex, uint32_t ms);
 
 /**
  * @brief 尝试持有互斥锁
@@ -321,7 +323,7 @@ typedef void *osal_sem_t;
  * @retval NULL 创建失败
  * @retval other 信号量句柄
  */
-typedef osal_sem_t (*osal_api_sem_create)(uint32_t init);
+typedef osal_sem_t (*osal_api_sem_create)(uint32_t max, uint32_t init);
 
 /**
  * @brief 销毁信号量
@@ -341,12 +343,12 @@ typedef int (*osal_api_sem_destroy)(osal_sem_t sem);
  * @name osal_sem_wait
  *
  * @param[in] sem 信号量句柄
- * @param[in] timeout_ms 等待超时时间 ms
+ * @param[in] ms 等待超时时间 ms
  *
  * @retval OSAL_API_OK 成功
  * @retval other 失败
  */
-typedef int (*osal_api_sem_wait)(osal_sem_t sem, uint32_t timeout_ms);
+typedef int (*osal_api_sem_wait)(osal_sem_t sem, uint32_t ms);
 
 /**
  * @brief 释放信号量
@@ -417,12 +419,12 @@ typedef void (*osal_api_event_destroy)(osal_event_t event);
  * @param[in] event 事件句柄
  * @param[in] set 等待的标记位
  * @param[in] option 选项 [ and | or | clear ]
- * @param[in] timeout_ms 超时时间 ms
+ * @param[in] ms 超时时间 ms
  *
  * @retval OSAL_API_OK 成功
  * @retval other 失败
  */
-typedef int (*osal_api_event_wait)(osal_event_t event, uint32_t set, uint32_t option, uint32_t timeout_ms);
+typedef int (*osal_api_event_wait)(osal_event_t event, uint32_t set, uint32_t option, uint32_t ms);
 
 /**
  * @brief 触发对应的事件
@@ -475,12 +477,12 @@ typedef int (*osal_api_mq_destroy)(osal_mq_t mq);
  * @param[in] mq 消息队列句柄
  * @param[in] msg 消息
  * @param[in] msg_size 消息大小
- * @param[in] timeout_ms 超时时间 ms
+ * @param[in] ms 超时时间 ms
  *
  * @retval OSAL_API_OK 成功
  * @retval other 失败
  */
-typedef int (*osal_api_mq_send)(osal_mq_t mq, const void *msg, int msg_size, int timeout_ms);
+typedef int (*osal_api_mq_send)(osal_mq_t mq, const void *msg, int msg_size, int ms);
 
 /**
  * @brief 接受消息
@@ -490,12 +492,12 @@ typedef int (*osal_api_mq_send)(osal_mq_t mq, const void *msg, int msg_size, int
  * @param[in] mq 消息队列句柄
  * @param[out] msg 消息
  * @param[in] msg_size 消息大小
- * @param[in] timeout_ms 超时时间 ms
+ * @param[in] ms 超时时间 ms
  *
  * @retval OSAL_API_OK 成功
  * @retval other 失败
  */
-typedef int (*osal_api_mq_recv)(osal_mq_t mq, void *msg, int msg_size, int timeout_ms);
+typedef int (*osal_api_mq_recv)(osal_mq_t mq, void *msg, int msg_size, int ms);
 
 //////////////////////////////////////////////// timer
 
@@ -553,7 +555,7 @@ typedef uint64_t (*osal_api_uptime)(void);
  *
  * @retval 生成的随机数
  */
-typedef unsigned long (*osal_api_random)(void);
+typedef uint32_t (*osal_api_random)(void);
 
 typedef struct osal_api
 {
