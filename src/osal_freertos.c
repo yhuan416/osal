@@ -142,6 +142,13 @@ osal_task_t osal_freertos_task_create_pin_to_core(const char *name,
     return task_handle;
 }
 
+void osal_freertos_reboot(void)
+{
+    printf("Restarting now.\n");
+    fflush(stdout);
+    esp_restart();
+}
+
 osal_api_t osal_api = {
     .malloc = osal_freertos_malloc,
     .calloc = osal_freertos_calloc,
@@ -149,6 +156,8 @@ osal_api_t osal_api = {
 
     .task_create = osal_freertos_task_create,
     .task_create_pin_to_core = osal_freertos_task_create_pin_to_core,
+
+    .reboot = osal_freertos_reboot,
 };
 
 #endif
