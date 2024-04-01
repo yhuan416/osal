@@ -1,6 +1,8 @@
 #ifndef _OSAL_LOCK_FREE_QUEUE_H_
 #define _OSAL_LOCK_FREE_QUEUE_H_
 
+#if !defined(no_use_lock_free_queue)
+
 #include <stdio.h>
 #include <stdint.h>
 
@@ -24,5 +26,7 @@ int osal_lock_free_queue_push(osal_lock_free_queue_t *queue, const void *msg);
 int osal_lock_free_queue_pop(osal_lock_free_queue_t *queue, void *msg, uint32_t msg_size);
 
 int osal_lock_free_queue_deinit(osal_lock_free_queue_t *queue);
+
+#endif // !no_use_lock_free_queue
 
 #endif

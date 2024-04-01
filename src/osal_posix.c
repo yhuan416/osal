@@ -427,7 +427,7 @@ int osal_posix_sem_post(osal_sem_t sem)
     return OSAL_API_OK;
 }
 
-#if 0
+#if defined(no_use_lock_free_queue)
 
 #include <fcntl.h>    /* For O_* constants */
 #include <sys/stat.h> /* For mode constants */

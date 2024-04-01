@@ -1,3 +1,5 @@
+#if !defined(no_use_lock_free_queue)
+
 #include "osal_lock_free_queue.h"
 
 #include "osal_api.h"
@@ -118,3 +120,5 @@ int osal_lock_free_queue_deinit(osal_lock_free_queue_t *queue)
 
     return 0;
 }
+
+#endif // !no_use_lock_free_queue
