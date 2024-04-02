@@ -87,6 +87,16 @@ typedef void *(*osal_api_realloc)(void *ptr, size_t size);
 typedef void *osal_task_t;
 typedef void *(*osal_task_func_t)(void *arg);
 
+typedef struct osal_task_attr_t
+{
+    const char *name;
+    uint32_t stack_size;
+    void *stack_start;
+    uint32_t priority;
+    uint32_t affinity_mask;
+    uint32_t reserved;
+} osal_task_attr_t;
+
 /**
  * @brief 创建一个任务
  *
@@ -102,12 +112,16 @@ typedef void *(*osal_task_func_t)(void *arg);
  * @retval NULL 任务创建失败
  * @retval other 任务句柄
  */
-typedef osal_task_t (*osal_api_task_create)(const char *name,
-                                            osal_task_func_t func,
+// typedef osal_task_t (*osal_api_task_create)(const char *name,
+//                                             osal_task_func_t func,
+//                                             void *arg,
+//                                             void *stack_start,
+//                                             unsigned int stack_size,
+//                                             unsigned int priority);
+
+typedef osal_task_t (*osal_api_task_create)(osal_task_func_t func,
                                             void *arg,
-                                            void *stack_start,
-                                            unsigned int stack_size,
-                                            unsigned int priority);
+                                            const osal_task_attr_t *attr);
 
 /**
  * @brief 创建一个任务并制定其亲核性, 一般用于rtos
@@ -135,11 +149,11 @@ typedef osal_task_t (*osal_api_task_create_pin_to_core)(const char *name,
 
 /**
  * @brief 等待某个任务结束
- * 
+ *
  * @name osal_task_join
- * 
+ *
  * @param[in] task 任务句柄
- * 
+ *
  * @retval OSAL_API_OK 成功
  * @retval other 失败
  */

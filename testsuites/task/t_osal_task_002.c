@@ -13,17 +13,17 @@ static void task_02(void)
 {
     CU_ASSERT_EQUAL(i, 0);
 
+    osal_task_attr_t task_attr = {0};
+    task_attr.name = "task1";
+
     osal_task_t task1 = osal_task_create(
-        "task1",
         (osal_task_func_t)NULL,
         NULL,
-        NULL,
-        0,
-        0);
-    CU_ASSERT_PTR_NULL(task1);// 入参为空, 返回NULL
+        &task_attr);
+    CU_ASSERT_PTR_NULL(task1); // 入参为空, 返回NULL
 
     osal_task_sleep(1);
-    CU_ASSERT_EQUAL(i, 0);// task不执行, i不变
+    CU_ASSERT_EQUAL(i, 0); // task不执行, i不变
 }
 
 void t_osal_task_002(void)

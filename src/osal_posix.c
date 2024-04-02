@@ -150,26 +150,129 @@ static void *osal_task_wrapper(void *arg)
     return NULL;
 }
 
-osal_task_t osal_posix_task_create(const char *name,
-                                   osal_task_func_t func,
+// osal_task_t osal_posix_task_create(const char *name,
+//                                    osal_task_func_t func,
+//                                    void *arg,
+//                                    void *stack_start,
+//                                    unsigned int stack_size,
+//                                    unsigned int priority)
+// {
+//     int ret;
+//     pthread_t tid = (pthread_t)NULL;
+//     pthread_attr_t attr = {0};
+//     struct task_wrapper_t *wrap = NULL;
+
+//     // posix平台不关注这两个参数
+//     (void)stack_start;
+//     (void)priority;
+
+//     if (func == NULL)
+//     {
+//         pr_error("func is NULL.\n");
+//         return NULL;
+//     }
+
+//     if (ret = pthread_attr_init(&attr))
+//     {
+//         pr_error("pthread_attr_init fail, ret %d.\n", ret);
+//         return NULL;
+//     }
+
+//     if (ret = pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED))
+//     {
+//         pr_error("pthread_attr_setdetachstate fail, ret %d.\n", ret);
+//         goto osal_posix_task_create_out;
+//     }
+
+// // align to STACK_SIZE_ALIGNED(4096)
+// #define STACK_SIZE_ALIGNED (4096)
+//     unsigned int stack_size_aligned = ALIGN_SIZE(stack_size, STACK_SIZE_ALIGNED);
+//     if (stack_size && (ret = pthread_attr_setstacksize(&attr, stack_size_aligned)))
+//     {
+//         pr_error("pthread_attr_setstacksize fail, stack_size_aligned %d, ret %d.\n", stack_size_aligned, ret);
+//         goto osal_posix_task_create_out;
+//     }
+
+//     // use default stack name
+//     if (name == NULL)
+//     {
+//         name = DEFAULT_STACK_NAME;
+//     }
+
+//     if (wrap = osal_calloc(1, sizeof(struct task_wrapper_t)))
+//     {
+//         const char *p;
+//         p = strrchr(name, '&'); // (xxx)&routine
+//         if (!p)
+//         {
+//             p = strrchr(name, ')'); // (xxx)routine
+//             if (!p)
+//             {
+//                 p = name; // routine
+//             }
+//             else
+//             {
+//                 p++;
+//             }
+//         }
+//         else
+//         {
+//             p++;
+//         }
+
+//         snprintf(wrap->name, sizeof(wrap->name), "%s", p);
+//         wrap->func = func;
+//         wrap->arg = arg;
+
+//         if (ret = pthread_create(&tid, &attr, osal_task_wrapper, (void *)wrap))
+//         {
+//             pr_error("pthread_create(wrap) failed, ret = %d.\n", ret);
+//             tid = (pthread_t)NULL;
+
+//             // free wrap
+//             free(wrap);
+//             wrap = NULL;
+
+//             goto osal_posix_task_create_out;
+//         }
+//     }
+//     else
+//     {
+//         if ((ret = pthread_create(&tid, &attr, func, arg)))
+//         {
+//             pr_error("pthread_create failed, ret = %d.\n", ret);
+//             tid = (pthread_t)NULL;
+//             goto osal_posix_task_create_out;
+//         }
+//     }
+
+// osal_posix_task_create_out:
+
+//     pthread_attr_destroy(&attr);
+//     return (osal_task_t)tid;
+// }
+
+osal_task_t osal_posix_task_create(osal_task_func_t func,
                                    void *arg,
-                                   void *stack_start,
-                                   unsigned int stack_size,
-                                   unsigned int priority)
+                                   const osal_task_attr_t *task_attr)
 {
     int ret;
     pthread_t tid = (pthread_t)NULL;
     pthread_attr_t attr = {0};
     struct task_wrapper_t *wrap = NULL;
-
-    // posix平台不关注这两个参数
-    (void)stack_start;
-    (void)priority;
+    uint32_t stack_size = 0;
+    const char *name = NULL;
 
     if (func == NULL)
     {
         pr_error("func is NULL.\n");
         return NULL;
+    }
+
+    if (task_attr != NULL)
+    {
+        name = task_attr->name;
+        stack_size = task_attr->stack_size;
     }
 
     if (ret = pthread_attr_init(&attr))

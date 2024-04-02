@@ -13,13 +13,13 @@ static void task_01(void)
 {
     CU_ASSERT_EQUAL(i, 0);
 
+    osal_task_attr_t task_attr = {0};
+    task_attr.name = "task1";
+
     osal_task_t task = osal_task_create(
-        "task1",
         (osal_task_func_t)taskEntry,
         NULL,
-        NULL,
-        0,
-        0);
+        &task_attr);
     CU_ASSERT_PTR_NOT_NULL(task);
 
     osal_task_sleep(1);

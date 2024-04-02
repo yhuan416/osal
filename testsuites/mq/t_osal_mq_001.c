@@ -35,13 +35,16 @@ void *routine2(void *arg)
 
 static void mq_01(void)
 {
+    osal_task_attr_t task_attr = {0};
     osal_task_t task;
     osal_mq_t mq;
 
     mq = osal_mq_create("mq", sizeof(msg_t), 10, 0);
     CU_ASSERT_PTR_NOT_NULL(mq);
 
-    task = osal_task_create("mq", routine, (void *)mq, NULL, 0, 0);
+    task_attr.name = "mq";
+
+    task = osal_task_create(routine, (void *)mq, &task_attr);
     CU_ASSERT_PTR_NOT_NULL(task);
 
     msg_t msg;
@@ -61,7 +64,7 @@ static void mq_01(void)
 
     osal_task_t task2;
 
-    task2 = osal_task_create("mq", routine2, (void *)mq, NULL, 0, 0);
+    task2 = osal_task_create(routine2, (void *)mq, &task_attr);
     CU_ASSERT_PTR_NOT_NULL(task2);
 
     osal_task_sleep(1);
