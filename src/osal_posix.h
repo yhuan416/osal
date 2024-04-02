@@ -24,7 +24,6 @@
 
 #ifndef osal_task_create
 #define osal_task_create osal_api.task_create
-#define osal_task_create_pin_to_core(a, b, c, d, e, f, g) osal_task_create(a, b, c, d, e, f)
 #define osal_task_self() ((osal_task_t)pthread_self())
 #define osal_task_sleep(s) sleep(s)
 #define osal_task_usleep(us) usleep(us)

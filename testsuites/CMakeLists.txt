@@ -17,4 +17,4 @@ add_executable(${PROJECT_NAME} ${TEST_FILES} osal_test.c)
 target_include_directories(${PROJECT_NAME} PRIVATE include)
 target_link_libraries(${PROJECT_NAME} ${common_libs})
 
-add_test(NAME ${PROJECT_NAME} COMMAND $<TARGET_FILE:${PROJECT_NAME}>)
+add_test(NAME ${PROJECT_NAME} COMMAND valgrind --leak-check=full --show-reachable=yes --trace-children=yes --error-exitcode=1 $<TARGET_FILE:${PROJECT_NAME}>)

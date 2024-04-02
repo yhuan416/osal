@@ -102,50 +102,16 @@ typedef struct osal_task_attr_t
  *
  * @name osal_task_create
  *
- * @param[in] name 任务名
  * @param[in] func 任务入口
  * @param[in] arg 传递给任务的参数
- * @param[in] stack_start 任务栈起始地址, 为rtos预留
- * @param[in] stack_size 任务栈大小
- * @param[in] priority 任务优先级, 为rtos预留
+ * @param[in] attr 任务属性
  *
  * @retval NULL 任务创建失败
  * @retval other 任务句柄
  */
-// typedef osal_task_t (*osal_api_task_create)(const char *name,
-//                                             osal_task_func_t func,
-//                                             void *arg,
-//                                             void *stack_start,
-//                                             unsigned int stack_size,
-//                                             unsigned int priority);
-
 typedef osal_task_t (*osal_api_task_create)(osal_task_func_t func,
                                             void *arg,
                                             const osal_task_attr_t *attr);
-
-/**
- * @brief 创建一个任务并制定其亲核性, 一般用于rtos
- *
- * @name osal_task_create_pin_to_core
- *
- * @param[in] name 任务名
- * @param[in] func 任务入口
- * @param[in] arg 传递给任务的参数
- * @param[in] stack_start 任务栈起始地址, 为rtos预留
- * @param[in] stack_size 任务栈大小
- * @param[in] priority 任务优先级, 为rtos预留
- * @param[in] core_id 任务核心亲核性
- *
- * @retval NULL 任务创建失败
- * @retval other 任务句柄
- */
-typedef osal_task_t (*osal_api_task_create_pin_to_core)(const char *name,
-                                                        osal_task_func_t func,
-                                                        void *arg,
-                                                        void *stack_start,
-                                                        unsigned int stack_size,
-                                                        unsigned int priority,
-                                                        int core_id);
 
 /**
  * @brief 等待某个任务结束
@@ -581,7 +547,6 @@ typedef struct osal_api
 
     // task
     osal_api_task_create task_create;
-    osal_api_task_create_pin_to_core task_create_pin_to_core;
     osal_api_task_join task_join;
     osal_api_task_destroy task_destroy;
     osal_api_task_self task_self;
@@ -643,7 +608,6 @@ extern osal_api_t osal_api;
 
 #ifndef osal_task_create
 #define osal_task_create osal_api.task_create
-#define osal_task_create_pin_to_core osal_api.task_create_pin_to_core
 #define osal_task_join osal_api.task_join
 #define osal_task_self osal_api.task_self
 #define osal_task_sleep osal_api.task_sleep
