@@ -34,6 +34,7 @@
 
 #ifndef osal_task_create
 #define osal_task_create osal_api.task_create
+#define osal_task_join osal_api.task_join
 #define osal_task_self() xTaskGetCurrentTaskHandle()
 #define osal_task_sleep(S) vTaskDelay(pdMS_TO_TICKS(S * 1000))
 #define osal_task_usleep(US) usleep(US)
