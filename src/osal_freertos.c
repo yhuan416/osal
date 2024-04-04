@@ -203,7 +203,7 @@ osal_api_t osal_api = {
     .realloc = osal_freertos_realloc,
 
     .task_create = osal_freertos_task_create,
-    .join = osal_freertos_task_join,
+    .task_join = osal_freertos_task_join,
 
     .reboot = osal_freertos_reboot,
 };

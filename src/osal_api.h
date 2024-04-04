@@ -152,6 +152,17 @@ typedef int (*osal_api_task_destroy)(osal_task_t task);
 typedef osal_task_t (*osal_api_task_self)(void);
 
 /**
+ * @brief 获取指定任务名
+ * 
+ * @name osal_task_get_name
+ * 
+ * @param[in] task 任务句柄, 为NULL时返回当前任务名
+ * 
+ * @retval 任务名
+ */
+typedef const char *(*osal_api_task_get_name)(osal_task_t task);
+
+/**
  * @brief 任务调度, 一般用于rtos
  *
  * @name osal_task_tield
@@ -554,6 +565,7 @@ typedef struct osal_api
     osal_api_task_create task_create;
     osal_api_task_join task_join;
     osal_api_task_destroy task_destroy;
+    osal_api_task_get_name task_get_name;
     osal_api_task_self task_self;
     osal_api_task_yield task_yield;
     osal_api_task_sleep task_sleep;
@@ -614,6 +626,7 @@ extern osal_api_t osal_api;
 #ifndef osal_task_create
 #define osal_task_create osal_api.task_create
 #define osal_task_join osal_api.task_join
+#define osal_task_get_name osal_api.task_get_name
 #define osal_task_self osal_api.task_self
 #define osal_task_sleep osal_api.task_sleep
 #define osal_task_usleep osal_api.task_usleep
